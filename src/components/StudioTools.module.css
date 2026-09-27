@@ -1,0 +1,129 @@
+.tools {
+  position: relative;
+}
+
+.summary {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 11px;
+  border: 1px solid #ded8ca;
+  border-radius: 8px;
+  background: #fff;
+  color: #42423f;
+  cursor: pointer;
+  font-size: 0.74rem;
+  font-weight: 650;
+  list-style: none;
+  white-space: nowrap;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:hover,
+.summary:focus-visible,
+.tools[open] .summary {
+  border-color: #c41e3a;
+  color: #a3132d;
+}
+
+.summary:focus-visible {
+  outline: 3px solid rgba(196, 30, 58, 0.2);
+  outline-offset: 2px;
+}
+
+.menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 70;
+  width: min(285px, calc(100vw - 20px));
+  padding: 7px;
+  border: 1px solid #ded8ca;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 14px 38px rgba(28, 28, 28, 0.16);
+}
+
+.intro,
+.note {
+  margin: 0;
+  padding: 7px 9px;
+  color: #6b6b66;
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+.note {
+  margin-top: 5px;
+  border-top: 1px solid #ede7da;
+}
+
+.menu button,
+.menu a {
+  display: flex;
+  width: 100%;
+  min-height: 38px;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 9px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #1c1c1c;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+}
+
+.menu button:hover,
+.menu button:focus-visible,
+.menu a:hover,
+.menu a:focus-visible {
+  outline: 0;
+  background: #f4f0e6;
+}
+
+.menu button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.menu button span,
+.menu a {
+  flex: 1;
+}
+
+.menu kbd {
+  color: #8a857c;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.62rem;
+}
+
+.file {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .summary {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px;
+  }
+
+  .label {
+    display: none;
+  }
+
+  .menu button,
+  .menu a {
+    min-height: 44px;
+  }
+}
