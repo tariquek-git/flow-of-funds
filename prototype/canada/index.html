@@ -766,7 +766,7 @@ function render(){
   if (S.view==='ccy' && $('#map')) drawEdges();
   const t = S.view==='ccy' ? (S.node ? `${node(S.node).short} · ${S.ccy}` : S.ccy) : S.view==='flow' ? 'Railroom' : S.view==='type' ? IDX.groups[S.type].name : '';
   document.title = t ? `${t} · Settlement Map` : 'Settlement Map';
-  $('#foot').innerHTML = `<p>Data as of ${fmtDate(D.meta.as_of)}. ${esc(D.meta.scope)}</p><p>How this was made. Built by Fintech North with Claude, from central bank and operator documents first. Every number links to its source. Corrections by pull request.</p>`;
+  $('#foot').innerHTML = `<p>Data as of ${fmtDate(D.meta.as_of)}. ${esc(D.meta.scope)}</p><p>${esc(D.meta.inferred_note||'')}</p><p>How this was made. Built by Fintech North with Claude, from central bank and operator documents first. Every number links to its source. Corrections by pull request.</p>`;
 }
 function crumbs(parts){
   return `<nav class="crumbs" aria-label="Breadcrumb">${parts.map((p,i) => i===parts.length-1 ? `<span aria-current="location">${p.label}</span>` : `<a href="${p.href}" data-go='${JSON.stringify(p.go)}'>${p.label}</a>`).join('<span class="sep" aria-hidden="true">›</span>')}</nav>`;
@@ -889,14 +889,16 @@ function pathHTML(ids, cur, c, title){
   ids.forEach((x, i) => {
     const n = node(x.id); const next = ids[i+1];
     const isRoot = x.id===c.root, isCur = x.id===cur;
-    steps.push(`<li class="pstep${isCur?' cur':''}${isRoot?' root':''}">${glyph(n)}<div class="pb">${isCur ? `<b class="cur">${esc(n.name)}</b>` : `<a href="${pageHref(n.id)}" ${pageGo(n.id)}>${esc(n.name)}</a>`}<p>${esc(stepText(n, c))}</p></div></li>`);
+    const title = x.alts ? (L => L.slice(0,-1).join(', ') + ' or ' + L.at(-1))(x.alts.map(a => `<a href="${pageHref(a)}" ${pageGo(a)}>${esc(node(a).short)}</a>`)) : isCur ? `<b class="cur">${esc(n.name)}</b>` : `<a href="${pageHref(n.id)}" ${pageGo(n.id)}>${esc(n.name)}</a>`;
+    const text = x.alts ? 'Card networks. They set the rules and carry the messages.' : stepText(n, c);
+    steps.push(`<li class="pstep${isCur?' cur':''}${isRoot?' root':''}">${glyph(n)}<div class="pb">${title}<p>${esc(text)}</p></div></li>`);
     if (next) {
       const e = next.via; const planned = n.kind==='system' && n.rec.status==='planned';
       const k = e.type==='runs' ? 'runs' : e.type==='access' ? 'access' : planned ? 'plan' : 'settle';
       const lab = e.type==='runs' ? 'runs on' : e.type==='access' ? 'holds an account at' : `${planned?'will settle':'settles'} ${e.label || MODE[n.rec.settlement_mode].toLowerCase()}`;
       if (e.type==='settle' && n.kind==='system' && n.rec.settles_via) {
         steps.push(`<li class="pconn k-${k}"><i></i><span>${esc(lab)}</span></li>`);
-        steps.push(`<li class="pstep via"><svg class="glyph" viewBox="0 0 46 42" aria-hidden="true">${G.bank}</svg><div class="pb"><b>${esc(n.rec.settles_via)}</b><p>A bank with a seat. Banks that owe pay it, and it pays the banks that are owed.</p></div></li>`);
+        steps.push(`<li class="pstep via"><svg class="glyph" viewBox="0 0 46 42" aria-hidden="true">${G.bank}</svg><div class="pb"><b>${esc(x.alts ? "The network's settlement bank" : n.rec.settles_via)}</b><p>A bank with a seat. Banks that owe pay it, and it pays the banks that are owed.</p></div></li>`);
         steps.push(`<li class="pconn k-settle"><i></i><span>pays over ${esc(sys(next.id).short)}</span></li>`);
       } else steps.push(`<li class="pconn k-${k}"><i></i><span>${esc(lab)}</span></li>`);
     }
@@ -911,7 +913,9 @@ function vThing(n, c){
   const unk = '<span class="unk">Not confirmed</span>';
   // paths
   let paths;
-  if (n.kind==='product' && [r.runs_on].flat().length>1) paths = [r.runs_on].flat().map(t => pathHTML([{id:n.id, via:null}, ...pathDown(t).map((x,k)=>k===0?{id:x.id, via:{type:'runs'}}:x)], n.id, c, 'On ' + sys(t).short));
+  const ro = [r.runs_on].flat(); const tail = t => pathDown(t).slice(1).map(x=>x.id).join('>');
+  if (n.kind==='product' && ro.length>1 && ro.every(t => tail(t)===tail(ro[0]))) paths = [pathHTML([{id:n.id, via:null}, {id:ro[0], via:{type:'runs'}, alts:ro}, ...pathDown(ro[0]).slice(1)], n.id, c, '')];
+  else if (n.kind==='product' && ro.length>1) paths = ro.map(t => pathHTML([{id:n.id, via:null}, ...pathDown(t).map((x,k)=>k===0?{id:x.id, via:{type:'runs'}}:x)], n.id, c, 'On ' + sys(t).short));
   else paths = [pathHTML(pathDown(n.id), n.id, c, '')];
   // facts
   const fact = (k, v, acc) => `<div><dt>${k}</dt><dd${acc?' class="acc"':''}>${v}</dd></div>`;
@@ -946,7 +950,6 @@ function vThing(n, c){
     steps.length ? `<details><summary>Who runs each step</summary><div><ul>${steps.map(x=>`<li><b>${esc(x.rec.short)}</b>. Run by ${esc(party(x.rec.operator).name)}. ${esc(MODE[x.rec.settlement_mode])}${x.rec.settlement_timing?', '+esc(x.rec.settlement_timing.charAt(0).toLowerCase()+x.rec.settlement_timing.slice(1)):''}.</li>`).join('')}</ul></div></details>` : '',
     n.kind==='system' && r.participants_summary ? `<details><summary>Who takes part</summary><div><p>${esc(r.participants_summary)}</p>${r.participants_count?`<p>${esc(r.participants_count)}</p>`:''}</div></details>` : '',
     caveats.length ? `<details><summary>Good to know</summary><div><ul>${caveats.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></details>` : '',
-    unknowns.length ? `<details><summary>Not known yet</summary><div><ul>${unknowns.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></details>` : '',
     flows.length ? `<details><summary>Step through a real payment</summary><div><ul>${[...new Set(flows)].map(f=>`<li><a href="${href({view:'flow',flow:f,step:1,node:null})}" data-flow="${f}">${esc(IDX.scenarios[f].title)}</a></li>`).join('')}</ul></div></details>` : '',
     `<details><summary>Sources</summary><div><ul class="srcs">${srcRows}</ul></div></details>`].join('');
   const icon = n.kind==='system' ? logo(party(r.operator).logo) : '';

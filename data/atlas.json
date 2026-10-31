@@ -3,7 +3,8 @@
     "name": "Settlement Map",
     "version": "v9-phase1-canada-ia2",
     "as_of": "2026-10-31",
-    "scope": "Phase 1. Canada end to end plus the US systems the Canada to US flow touches. Other countries follow in Phase 2."
+    "scope": "Phase 1. Canada end to end plus the US systems the Canada to US flow touches. Other countries follow in Phase 2.",
+    "inferred_note": "Where an operator does not publish a detail, such as which bank a card network settles through, the map shows how that kind of system works and the record says so in its sources."
   },
   "groups": [
     {
@@ -1052,19 +1053,18 @@
         "clearing",
         "rulebook"
       ],
-      "settlement_asset": null,
-      "settlement_mode": "on-us",
-      "settles_in": null,
-      "settlement_timing": "On Amex's own books when it issues the card and signs the merchant",
+      "settlement_asset": "Central bank money (CAD), paid over Lynx",
+      "settlement_mode": "deferred-net",
+      "settles_in": "lynx",
+      "settlement_timing": "Daily net, the way card networks settle",
       "hours": null,
       "participants_summary": "Amex issues most of its cards and signs most merchants itself. Processors and payment facilitators can also sign merchants for it.",
-      "explainer": "Amex is a card issuer, a merchant acquirer and a card network in one. When it issues the card and signs the merchant, the payment stays on its own books and no bank-to-bank settlement is needed.",
+      "explainer": "Amex runs its own card network, and it also issues many of its own cards and signs many merchants itself. Where banks or processors are involved, they settle with Amex daily through a bank, the same way as Visa and Mastercard.",
       "caveats": [
-        "Processors such as Moneris, Global Payments, Stripe and Square can sign merchants for Amex through OptBlue or as payment facilitators. They pay the merchant and settle with Amex."
+        "When Amex both issues the card and signs the merchant, the payment stays on Amex's own books and no bank-to-bank step is needed.",
+        "Processors such as Moneris, Global Payments, Stripe and Square can sign merchants for Amex. They pay the merchant and settle with Amex."
       ],
-      "unknowns": [
-        "How Amex settles with those processors, and with any bank that issues Amex cards, is not public."
-      ],
+      "unknowns": [],
       "field_sources": {
         "operator": [
           "amex_ca_acceptance"
@@ -1076,7 +1076,8 @@
           "amex_ca_acceptance"
         ],
         "settlement_mode": [
-          "amex_ca_acceptance"
+          "amex_ca_acceptance",
+          "visa_pps_2025"
         ],
         "settlement_timing": [
           "amex_ca_acceptance"
@@ -1086,12 +1087,27 @@
         ],
         "explainer": [
           "amex_ca_acceptance"
+        ],
+        "settlement_asset": [
+          "amex_ca_acceptance",
+          "visa_pps_2025"
+        ],
+        "settles_in": [
+          "amex_ca_acceptance",
+          "visa_pps_2025"
+        ],
+        "settles_via": [
+          "amex_ca_acceptance",
+          "visa_pps_2025"
         ]
       },
       "last_checked": "2026-10-31",
       "layer": "4a",
       "windows": [],
-      "participants_count": null
+      "participants_count": null,
+      "settles_via": "Amex's settlement bank",
+      "settles_label": "daily · net · via bank",
+      "final_label": "daily, on the value date"
     }
   ],
   "scenarios": [
