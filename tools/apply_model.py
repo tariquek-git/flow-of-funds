@@ -29,7 +29,6 @@ FUNCTIONS = {
     "swift": ["financial-messaging"],
     "interac": ["domestic-schemes", "instant-links"],
     "marqeta": ["issuer-processing", "core-ledgers"],
-    "clearbank": ["banking-as-service", "scheme-sponsorship", "settlement-agency"],
     "circle": [],
     "payments-canada": ["domestic-schemes", "clearing-netting", "rtgs", "deferred-net"],
     "bank-of-canada": ["central-bank-accounts", "liquidity-provision"],
@@ -39,7 +38,7 @@ FUNCTIONS = {
 
 # Layers held by direct participation in a settlement system, without performing a layer-1 function.
 # ClearBank is a CHAPS direct participant (Bank of England), so it sits in layer 1 as a participant.
-DIRECT = {"clearbank": ["1"]}
+DIRECT = {}  # ClearBank (CHAPS direct participant, layer 1) archived with the UK pages
 
 # Plain-language note shown under a participant's function list, where the bare list would mislead.
 NOTES = {
@@ -47,9 +46,6 @@ NOTES = {
                "reserves sit in the Circle Reserve Fund, a government money market fund managed by "
                "BlackRock with BNY Mellon as custodian, and the rest is cash at banks.",
                "../holding/stablecoin-reserves.html", "Where stablecoin reserves sit"),
-    "clearbank": ("The Bank of England lists ClearBank as a CHAPS direct participant, so it holds its own "
-                  "settlement account there. Its clients do not hold that account.",
-                  "https://www.bankofengland.co.uk/payments/chaps/", "Bank of England, CHAPS participants"),
     "federal-reserve": ("Fedwire Funds is the Federal Reserve's RTGS. FedNow is its instant service and "
                         "FedACH its ACH operator. All settle in Reserve Bank master accounts, held directly or "
                         "through a correspondent.",
@@ -61,7 +57,6 @@ NOTES = {
 
 DESC = {
     "federal-reserve": "Operates Fedwire Funds, FedNow and FedACH, and holds master accounts for eligible institutions.",
-    "clearbank": "Bank accounts and indirect access to UK and EU payment schemes for business and fintech clients, settled through ClearBank's own direct participation.",
     "banco-central-do-brasil": "Owns and operates Pix, including SPI settlement and DICT addressing, and runs the STR.",
     "interac": "Operator of Canadian payment services including Interac e-Transfer. Funds stay at participating institutions.",
 }

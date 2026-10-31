@@ -1,0 +1,26 @@
+{
+  "clearbank": {
+    "id": "clearbank",
+    "name": "ClearBank",
+    "desc": "Bank accounts and indirect access to UK and EU payment schemes for business and fintech clients, settled through ClearBank's own direct participation.",
+    "layers": [
+      "2b",
+      "1"
+    ],
+    "markets": [
+      "UK"
+    ],
+    "caution": "The company states direct participation in UK and EU schemes; do not infer that any particular client settles in its own account.",
+    "sources": [
+      "clearbank"
+    ],
+    "functions": [
+      "banking-as-service",
+      "scheme-sponsorship",
+      "settlement-agency"
+    ],
+    "direct_layers": [
+      "1"
+    ]
+  }
+}

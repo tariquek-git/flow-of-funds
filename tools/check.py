@@ -59,6 +59,7 @@ for p in pages():
 
 # 2. Facts that must be present on the high-stakes pages.
 REQUIRED = {
+    "index.html": ["Covers Canada and the United States", "T2", "CLS", "CIPS"],
     "systems/chips.html": ["Federal Reserve Bank of New York", "does not own the balances"],
     "systems/rtp.html": ["prefunded balance account at a Federal Reserve Bank", "agent"],
     "systems/us-clearing-house.html": ["TCH does not hold those balances"],
@@ -67,8 +68,6 @@ REQUIRED = {
     "systems/india-npci.html": ["multilateral net settlement batch"],
     "systems/upi.html": ["RTGS accounts at RBI"],
     "markets/india.html": ["multilateral net settlement batch"],
-    "systems/boe-rtgs.html": ["CLS", "CREST", "Visa Europe and Mastercard"],
-    "participants/clearbank.html": ["CHAPS direct participant"],
     "participants/federal-reserve.html": ["Fedwire Funds"],
     "participants/swift.html": ["neither a payment system nor a settlement system"],
 }
@@ -154,6 +153,12 @@ for p in pages():
     t = p.read_text()
     if '<main class="main"' in t and "skip-link" not in t:
         fail(f"no skip link on {p.relative_to(SITE)}")
+
+# 5b. Scope: archived pages stay unpublished and unlinked.
+for gone in ("corridors", "markets/uk.html", "markets/mexico.html", "markets/ecuador.html", "systems/chaps.html",
+             "participants/clearbank.html", "review", "QA_V7.md"):
+    if (SITE / gone).exists():
+        fail(f"{gone} is archived but still published")
 
 # 6. Generated outputs match the source.
 home = (SITE / "index.html").read_text()

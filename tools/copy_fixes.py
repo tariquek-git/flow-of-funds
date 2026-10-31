@@ -41,13 +41,6 @@ FIXES = [
      "The Reserve Bank of India operates national central settlement systems.",
      "The Reserve Bank of India operates the RTGS system. NPCI nets UPI obligations between banks and "
      "RBI's RTGS posts them as a multilateral net settlement batch to members' RTGS accounts."),
-    # UK RTGS scope
-    ("systems/boe-rtgs.html",
-     "<p>Finality in central-bank money</p>",
-     "<p>Finality in central-bank money. Besides CHAPS, the same RTGS accounts settle the net positions of "
-     "Faster Payments, Bacs and the cheque Image Clearing System, card schemes including Visa Europe and "
-     "Mastercard, the sterling legs of CLS, and CREST, the UK securities settlement system run by Euroclear "
-     "UK and International.</p>"),
     # CHIPS
     ("systems/chips.html",
      "High-value interbank payment settlement under CHIPS rules",
@@ -114,7 +107,6 @@ SOURCES = {
                                          ("BlackRock Funds N-CSR, Circle Reserve Fund (custodian named)", CRF_NCSR, "Primary / SEC filing")],
     "systems/india-npci.html": [("NPCI, UPI settlement process", NPCI_SETTLE, "Primary / operator"),
                                 ("RBI Payment System Report, December 2024 (RTGS settles NPCI net batches)", RBI_PSR, "Primary / central bank")],
-    "systems/boe-rtgs.html": [("Bank of England, RTGS and CHAPS PFMI self-assessment (assessed 31 Oct 2023)", BOE_PFMI, "Primary / central bank")],
     "markets/india.html": [("NPCI, UPI settlement process", NPCI_SETTLE, "Primary / operator")],
     "systems/upi.html": [("NPCI, UPI settlement process", NPCI_SETTLE, "Primary / operator"),
                          ("RBI Payment System Report, December 2024", RBI_PSR, "Primary / central bank")],
