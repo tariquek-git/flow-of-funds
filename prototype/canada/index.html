@@ -125,9 +125,9 @@ main{padding-bottom:56px}
 .lhead > span:not(.lid){grid-column:1/-1;font-size:var(--t-xs);color:var(--muted);line-height:1.3}
 .lnodes{display:grid;grid-auto-flow:row dense;grid-template-columns:repeat(var(--cols,9),minmax(0,1fr));gap:8px;align-items:center;padding:14px 0 14px 4px;position:relative;z-index:3}
 .node{all:unset;position:relative;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:1px;min-height:44px;justify-content:center;padding:7px 9px;background:var(--paper);border:1px solid var(--rule-strong);border-radius:2px;transition:opacity .15s}
-.node .nm{font-weight:700;font-size:var(--t-s);line-height:1.15;font-variation-settings:"wdth" 80;display:flex;gap:6px;align-items:center}
+.node .nm{font-weight:700;font-size:var(--t-s);line-height:1.15;font-variation-settings:"wdth" 80;display:flex;flex-wrap:wrap;gap:2px 5px;align-items:center;min-width:0}
 .node .sb{font-size:var(--t-xs);color:var(--muted);line-height:1.25;font-variation-settings:"wdth" 85}
-.node.k-product{border:0;border-top:2px solid var(--ink);border-radius:0;background:var(--rowbg);padding:6px 2px 2px}
+.node.k-product{border:0;border-top:2px solid var(--ink);border-radius:0;background:color-mix(in srgb,var(--rowbg) 82%,transparent);padding:6px 2px 2px}
 .node.k-product.planned{border-top-color:var(--planned);border-top-style:dashed;background-image:none}
 .node.k-product.planned::after{position:static;align-self:flex-start;margin-top:4px}
 .node.k-product .nm{font-variation-settings:"wdth" 85}
@@ -338,7 +338,7 @@ details li{margin:0 0 6px}
 .step.on .ln{stroke:var(--ink)}
 .step .ln.settle{stroke:var(--accent)}
 .step:not(.on) .ln.settle{opacity:.5}
-.step .lbl{font:600 10px var(--mono);fill:var(--muted)}
+.step .lbl{font:600 10px var(--mono);fill:var(--muted);paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round}
 .step.on .lbl,.step.on .step-num{fill:var(--ink)}
 .step .lbl.final{fill:var(--accent)}
 .controls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:0 0 6px}
@@ -776,7 +776,19 @@ function drawEdges(){
         const x1 = attach(a, outs[e.from], e, false, 'out'), y1 = upward ? a.y : a.y + a.h;
         const x2 = attach(b, ins[e.to], e, b.base, 'in'), y2 = upward ? b.y + b.h : b.y;
         const dy = (upward ? -1 : 1) * Math.max(18, Math.abs(y2-y1)*0.5);
-        d = `M${x1} ${y1} C${x1} ${y1+dy} ${x2} ${y2-dy} ${x2} ${y2}`;
+        // Bend around boxes the line does not connect to, so it never reads as passing through them.
+        let c1 = x1, c2 = x2;
+        const obst = $$('[data-node]', map).filter(el => el.dataset.node!==e.from && el.dataset.node!==e.to && !el.classList.contains('base') && !el.classList.contains('k-product')).map(el => { const r = el.getBoundingClientRect(); return {l:r.left-mb.left-8, r:r.right-mb.left+8, t:r.top-mb.top-4, b:r.bottom-mb.top+4}; });
+        const pt = (t) => { const u=1-t; return {x:u*u*u*x1+3*u*u*t*c1+3*u*t*t*c2+t*t*t*x2, y:u*u*u*y1+3*u*u*t*(y1+dy)+3*u*t*t*(y2-dy)+t*t*t*y2}; };
+        for (let it=0; it<4; it++) {
+          let hit = null, hp = null;
+          for (const t of [.15,.25,.35,.45,.55,.65,.75,.85]) { const q = pt(t); const o = obst.find(o => q.x>o.l && q.x<o.r && q.y>o.t && q.y<o.b); if (o) { hit = o; hp = q; break; } }
+          if (!hit) break;
+          const goLeft = (hp.x - hit.l) < (hit.r - hp.x);
+          const shift = (goLeft ? hit.l - hp.x : hit.r - hp.x) * 1.3;
+          c1 = Math.min(Math.max(c1 + shift, 8), mb.width - 8); c2 = Math.min(Math.max(c2 + shift, 8), mb.width - 8);
+        }
+        d = `M${x1} ${y1} C${c1} ${y1+dy} ${c2} ${y2-dy} ${x2} ${y2}`;
         if (e.type==='settle' && e.label && (!narrow || (lit && lit.has(e.from) && lit.has(e.to)))) labels.push({x:(x1+x2)/2, y:(y1+y2)/2, t:e.label, e});
       }
       const on = !lit || (upS.has(e.from) && upS.has(e.to)) || (dnS.has(e.from) && dnS.has(e.to));
