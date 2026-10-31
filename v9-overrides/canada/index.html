@@ -477,6 +477,69 @@ details li{margin:0 0 6px}
 }
 @media (max-width: 600px){.tlbox{display:none}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- site pages: country index and one page per thing ---------- */
+.lede{font-size:var(--t-m);max-width:62ch;margin:14px 0 0}
+.ix-sec{margin-top:34px}
+.ix-sec>.section-h{margin-top:0}
+.ix-group{margin:0 0 4px;font-family:var(--mono);font-size:var(--t-xs);color:var(--muted);padding:12px 0 6px}
+.ix-group.g-rt{color:var(--accent)}
+.ix-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink);display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));column-gap:28px}
+.ix-list li{border-bottom:1px solid var(--rule)}
+.ix-item{display:grid;grid-template-columns:52px minmax(0,1fr);gap:2px 12px;align-items:center;padding:12px 0;text-decoration:none;color:inherit;min-height:44px}
+.ix-item .glyph{width:46px;height:42px;grid-row:1 / span 3;overflow:visible}
+.ix-item b{font-size:var(--t-m)}
+.ix-item:hover b{text-decoration:underline}
+.ix-item:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.ix-item .d{color:var(--muted);font-size:var(--t-s)}
+.ix-item .m{font-family:var(--mono);font-size:var(--t-xs)}
+.ix-item .m.set{color:var(--accent)}
+.ix-item .m.plan{color:var(--planned)}
+.ix-item .logo{margin-right:4px}
+.ix-more{margin-top:34px}
+.thing-k{font-family:var(--mono);font-size:var(--t-xs);color:var(--muted);margin:0 0 8px;display:block}
+#ptitle:focus{outline:none}
+@media (max-width:560px){ .facts3{grid-template-columns:1fr 1fr} }
+.facts3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);margin:22px 0 0}
+.facts3>div{padding:12px 16px 12px 0}
+.facts3 dt{font-size:var(--t-xs);color:var(--muted);margin:0 0 3px}
+.facts3 dd{margin:0;font-weight:700}
+.facts3 dd.acc{color:var(--accent)}
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:24px 36px;margin:6px 0 0}
+.path h3{font-size:var(--t-s);margin:0 0 8px;color:var(--muted);font-weight:400}
+.path ol{list-style:none;margin:0;padding:0}
+.pstep{position:relative;display:grid;grid-template-columns:52px minmax(0,1fr);gap:0 12px;padding:0 0 4px}
+.pstep .glyph{width:46px;height:42px;overflow:visible}
+.pstep .pb{padding:6px 0 0}
+.pstep .pb a,.pstep .pb b.cur{font-weight:700;font-size:var(--t-m)}
+.pstep .pb a{color:inherit}
+.pstep .pb p{margin:2px 0 0;color:var(--muted);font-size:var(--t-s);max-width:52ch}
+.pstep.cur .glyph .f-t{fill:var(--ink)}
+.pstep.root .pb b,.pstep.root .pb a{color:var(--accent)}
+.pstep.root .glyph .f-t{fill:color-mix(in srgb,var(--accent) 18%,var(--paper))}
+.pstep.root .glyph .f-l,.pstep.root .glyph .f-r{fill:color-mix(in srgb,var(--accent) 34%,var(--paper))}
+.pstep.via .pb b{font-weight:400;font-style:italic}
+.pconn{display:grid;grid-template-columns:52px minmax(0,1fr);gap:0 12px;min-height:34px;align-items:center}
+.pconn i{justify-self:center;width:0;height:100%;min-height:34px;border-left:1.4px solid var(--ink)}
+.pconn.k-settle i{border-left:5px double var(--accent)}
+.pconn.k-plan i{border-left:5px double var(--planned)}
+.pconn.k-access i{border-left:2px dotted var(--rule-strong)}
+.pconn span{font-family:var(--mono);font-size:var(--t-xs);color:var(--muted)}
+.pconn.k-settle span{color:var(--accent)}
+.pend{display:grid;grid-template-columns:52px minmax(0,1fr);gap:0 12px;margin-top:6px}
+.pend span{grid-column:2;font-family:var(--mono);font-size:var(--t-xs);color:var(--muted)}
+.uses{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.uses li{border-bottom:1px solid var(--rule)}
+.uses a{display:flex;justify-content:space-between;gap:12px;padding:10px 0;text-decoration:none;color:inherit}
+.uses a:hover b{text-decoration:underline}
+.uses .mono{color:var(--muted);font-size:var(--t-xs)}
+.more{margin-top:34px;max-width:780px}
+.pn{display:flex;justify-content:space-between;gap:16px;margin-top:34px;padding-top:14px;border-top:1px solid var(--ink)}
+.pn a{text-decoration:none;color:inherit;max-width:48%}
+.pn a span{display:block;font-size:var(--t-xs);color:var(--muted)}
+.pn a b{font-size:var(--t-m)}
+.pn a:hover b{text-decoration:underline}
+.pn a.next{text-align:right;margin-left:auto}
 </style>
 
 <header class="top gut">
@@ -698,9 +761,9 @@ function render(){
   if (S.view==='home') app.innerHTML = vHome();
   else if (S.view==='type') app.innerHTML = vType();
   else if (S.view==='flow') app.innerHTML = vFlow();
-  else app.innerHTML = vCcy();
+  else { const c = IDX.currencies[S.ccy]; app.innerHTML = S.node ? vThing(node(S.node), c) : vIndex(c); }
   wire();
-  if (S.view==='ccy') drawEdges();
+  if (S.view==='ccy' && $('#map')) drawEdges();
   const t = S.view==='ccy' ? (S.node ? `${node(S.node).short} · ${S.ccy}` : S.ccy) : S.view==='flow' ? 'Railroom' : S.view==='type' ? IDX.groups[S.type].name : '';
   document.title = t ? `${t} · Settlement Map` : 'Settlement Map';
   $('#foot').innerHTML = `<p>Data as of ${fmtDate(D.meta.as_of)}. ${esc(D.meta.scope)}</p><p>How this was made. Built by Fintech North with Claude, from central bank and operator documents first. Every number links to its source. Corrections by pull request.</p>`;
@@ -750,8 +813,155 @@ function vType(){
      ${list.length ? `<div class="typehead" style="margin-top:18px" aria-hidden="true"><span></span><span>System</span><span>Operator</span><span>Settles in</span><span>Timing</span></div><ul class="typelist" style="border-top:1px solid var(--rule)">${rows}</ul>` : `<p class="muted">Nothing loaded for this type yet. It arrives in Phase 2.</p>`}`;
 }
 
+
+/* ---------- site: one page per thing ---------- */
+const SECTIONS = [
+  {id:'types', name:'Payment types', blurb:'What customers and businesses do. Ordered by how fast the banks settle it.'},
+  {id:'networks', name:'Networks', blurb:'They set the rules and carry the messages. They never hold the money.'},
+  {id:'settlement', name:'Settlement', blurb:'Where banks pay each other, in central bank money.'},
+  {id:'seats', name:'Who holds the accounts', blurb:'Who has a seat at the Bank of Canada, and who gets there through someone else.'}];
+function sectionOf(n, c){ if (n.kind==='product') return 'types'; if (n.kind==='access') return 'seats'; if (n.layer==='4a') return 'networks'; return 'settlement'; }
+const SPEED_ORDER = ['rt','nbd','day','mix','unk'];
+const speedText = f => f.b==='nbd' ? f.t.charAt(0).toUpperCase()+f.t.slice(1) : f.b==='mix' ? f.t : FIN_LABEL[f.b];
+function thingsIn(c){
+  const region = c.region, lay = LAYOUT[c.id] || {pos:{}}; const col = id => parseInt(lay.pos[id]||'99');
+  const prods = D.products.filter(p=>p.region===region).map(p=>node(p.id)).sort((a,b)=> SPEED_ORDER.indexOf(finality(a.id).b)-SPEED_ORDER.indexOf(finality(b.id).b) || (a.rec.status==='planned')-(b.rec.status==='planned') || col(a.id)-col(b.id));
+  const sys_ = D.systems.filter(s=>s.region===region).map(s=>node(s.id)).sort((a,b)=>col(a.id)-col(b.id));
+  const out = {types:prods, networks:sys_.filter(n=>n.layer==='4a'), settlement:sys_.filter(n=>n.layer!=='4a' && n.id!==c.root).concat([node(c.root)]), seats:D.access.filter(a=>a.region===region).map(a=>node(a.id)).sort((a,b)=>(a.rec.through?1:0)-(b.rec.through?1:0))};
+  return out;
+}
+const pageHref = id => href({view:'ccy', node:id});
+const pageGo = id => `data-go='${JSON.stringify({view:'ccy', node:id})}'`;
+function oneLine(n, c){
+  const r = n.rec;
+  if (n.kind==='product') return r.plain;
+  if (n.kind==='access') return r.through ? 'Reach the rails through a bank with a seat.' : 'Hold a settlement account at the Bank of Canada.';
+  if (n.id===c.root) return 'Holds the accounts everything above settles in.';
+  if (r.rollup && r.sub) return r.sub;
+  return party(r.operator).name;
+}
+function metaLine(n, c){
+  const r = n.rec;
+  if (n.kind==='product') { const f = finality(n.id); return r.status==='planned' ? `<span class="m plan">Planned · ${esc(FIN_LABEL[f.b])}</span>` : `<span class="m">${esc(speedText(f))}</span>`; }
+  if (r.status==='planned') return '<span class="m plan">Planned</span>';
+  if (n.kind==='system' && r.settlement_mode==='on-us') return '<span class="m">No bank-to-bank step</span>';
+  if (n.kind==='system' && r.settles_in && n.layer==='4a') return `<span class="m">Banks settle ${esc((r.settles_label||'').split(' · ')[0])}${r.settles_via?', through its bank':''}</span>`;
+  if (n.kind==='system' && r.settles_in) return `<span class="m">Settles in ${esc(sys(r.settles_in).short)}</span>`;
+  if (n.id===c.root) return '<span class="m set">Final</span>';
+  return '';
+}
+function ixItem(n, c){
+  const lg = n.kind==='system' ? logo(party(n.rec.operator).logo) : '';
+  return `<li><a class="ix-item" href="${pageHref(n.id)}" ${pageGo(n.id)}>${glyph(n)}<b>${lg}${esc(n.short)}</b><span class="d">${esc(oneLine(n, c))}</span>${metaLine(n, c)}</a></li>`;
+}
+function vIndex(c){
+  const T = thingsIn(c);
+  const types = (() => { const groups = {}; T.types.forEach(n => { const b = n.rec.status==='planned' ? 'planned' : finality(n.id).b; (groups[b] ||= []).push(n); });
+    return ['rt','nbd','day','mix','unk','planned'].filter(b=>groups[b]).map(b => `<p class="ix-group${b==='rt'?' g-rt':''}">${b==='planned' ? 'Coming' : esc(FIN_LABEL[b])}</p><ul class="ix-list">${groups[b].map(n=>ixItem(n, c)).join('')}</ul>`).join(''); })();
+  const sec = (id, body) => { const S_ = SECTIONS.find(x=>x.id===id); return `<section class="ix-sec" id="sec-${id}"><div class="section-h"><h2>${esc(S_.name)}</h2><p>${esc(S_.blurb)}</p></div>${body}</section>`; };
+  const flows = D.scenarios.filter(sc => IDX.ccyByRegion[sys(sc.rail).region]===c);
+  return crumbs([HOME, {label:c.id}]) +
+    `<section class="pagehead"><div><h1>${flag(c.flag)}${c.id} <span style="font-weight:400;color:var(--muted)">${esc(c.central_bank)}</span></h1><p class="lede">${esc(c.how)}</p></div></section>
+     <p class="hint" style="margin-top:14px">Every payment below ends in one place, the banks' accounts at the ${esc(c.central_bank)}. Pick anything to see its path.</p>
+     ${sec('types', types)}
+     ${sec('networks', `<ul class="ix-list">${T.networks.map(n=>ixItem(n,c)).join('')}</ul><p class="hint">Wires, direct deposits, pre-authorized debits and cheques skip this step. They run on Payments Canada's own rules.</p>`)}
+     ${sec('settlement', `<ul class="ix-list">${T.settlement.map(n=>ixItem(n,c)).join('')}</ul>`)}
+     ${sec('seats', `<ul class="ix-list">${T.seats.map(n=>ixItem(n,c)).join('')}</ul>`)}
+     <div class="more ix-more">
+       <details><summary>When each one settles</summary><div>${vTiming(c).replace(/<div class="section-h">[\s\S]*?<\/div>/,'')}</div></details>
+       <details><summary>What's changing</summary><div>${vTimeline(c).replace(/<div class="section-h">[\s\S]*?<\/div>/,'')}</div></details>
+       ${flows.length ? `<details><summary>Step through a real payment</summary><div><ul>${flows.map(sc=>`<li><a href="${href({view:'flow',flow:sc.id,step:1,node:null})}" data-flow="${sc.id}">${esc(sc.title)}</a> <span class="mono muted">${sc.steps.length} steps</span></li>`).join('')}</ul></div></details>` : ''}
+     </div>`;
+}
+function stepText(n, c){
+  const r = n.rec;
+  if (n.id===c.root) return `Final. ${r.settlement_asset}.`;
+  if (n.kind==='product') return r.plain;
+  if (n.kind==='access') return r.summary;
+  if (r.settlement_mode==='on-us') return r.settlement_timing + '.';
+  const op = party(r.operator).name.replace(/\.$/,'');
+  if (n.layer==='4a') return `Run by ${op}. Sets the rules and carries the messages.`;
+  if (r.status==='planned') return `Run by ${op}. Planned.`;
+  return `Run by ${op}. Banks pay each other here.`;
+}
+function pathHTML(ids, cur, c, title){
+  const steps = [];
+  ids.forEach((x, i) => {
+    const n = node(x.id); const next = ids[i+1];
+    const isRoot = x.id===c.root, isCur = x.id===cur;
+    steps.push(`<li class="pstep${isCur?' cur':''}${isRoot?' root':''}">${glyph(n)}<div class="pb">${isCur ? `<b class="cur">${esc(n.name)}</b>` : `<a href="${pageHref(n.id)}" ${pageGo(n.id)}>${esc(n.name)}</a>`}<p>${esc(stepText(n, c))}</p></div></li>`);
+    if (next) {
+      const e = next.via; const planned = n.kind==='system' && n.rec.status==='planned';
+      const k = e.type==='runs' ? 'runs' : e.type==='access' ? 'access' : planned ? 'plan' : 'settle';
+      const lab = e.type==='runs' ? 'runs on' : e.type==='access' ? 'holds an account at' : `${planned?'will settle':'settles'} ${e.label || MODE[n.rec.settlement_mode].toLowerCase()}`;
+      if (e.type==='settle' && n.kind==='system' && n.rec.settles_via) {
+        steps.push(`<li class="pconn k-${k}"><i></i><span>${esc(lab)}</span></li>`);
+        steps.push(`<li class="pstep via"><svg class="glyph" viewBox="0 0 46 42" aria-hidden="true">${G.bank}</svg><div class="pb"><b>${esc(n.rec.settles_via)}</b><p>A bank with a seat. Banks that owe pay it, and it pays the banks that are owed.</p></div></li>`);
+        steps.push(`<li class="pconn k-settle"><i></i><span>pays over ${esc(sys(next.id).short)}</span></li>`);
+      } else steps.push(`<li class="pconn k-${k}"><i></i><span>${esc(lab)}</span></li>`);
+    }
+  });
+  const last = node(ids.at(-1).id);
+  const end = ids.at(-1).id===c.root ? '' : last.kind==='system' && last.rec.settlement_mode==='on-us' ? '<div class="pend"><span>No bank-to-bank step.</span></div>' : last.kind==='system' && last.rec.settlement_mode==='unknown' ? '<div class="pend"><span>Path not confirmed.</span></div>' : '';
+  return `<div class="path">${title?`<h3>${esc(title)}</h3>`:''}<ol>${steps.join('')}</ol>${end}</div>`;
+}
+function vThing(n, c){
+  const r = n.rec; const secId = sectionOf(n, c); const sec = SECTIONS.find(x=>x.id===secId);
+  const T = thingsIn(c); const list = T[secId]; const i = list.findIndex(x=>x.id===n.id); const prev = list[i-1], next = list[i+1];
+  const unk = '<span class="unk">Not confirmed</span>';
+  // paths
+  let paths;
+  if (n.kind==='product' && [r.runs_on].flat().length>1) paths = [r.runs_on].flat().map(t => pathHTML([{id:n.id, via:null}, ...pathDown(t).map((x,k)=>k===0?{id:x.id, via:{type:'runs'}}:x)], n.id, c, 'On ' + sys(t).short));
+  else paths = [pathHTML(pathDown(n.id), n.id, c, '')];
+  // facts
+  const fact = (k, v, acc) => `<div><dt>${k}</dt><dd${acc?' class="acc"':''}>${v}</dd></div>`;
+  let facts = '', explain = '', srcIds = [], allSrc = [], kind = '';
+  if (n.kind==='product'){
+    const f = finality(n.id); kind = 'Payment type';
+    facts = fact('Banks settle', esc(r.status==='planned' ? 'Real time, once live' : speedText(f))) + fact('Runs on', esc([r.runs_on].flat().map(t=>sys(t).short).join(', '))) + (r.after_settlement ? fact('Can it be undone after?', 'Yes, see below') : '');
+    explain = `${r.name} runs on ${[r.runs_on].flat().map(t=>sys(t).short).join(', ').replace(/, ([^,]*)$/,' and $1')}. ${pathDown(n.id).at(-1).id===c.root ? `The banks involved settle what they owe each other at the ${c.central_bank}.` : 'Where the banks settle is not confirmed in the sources checked.'}`;
+    srcIds = r.sources; allSrc = [...new Set([...r.sources, ...(r.after_settlement?.sources||[])])];
+  } else if (n.kind==='system'){
+    kind = n.id===c.root ? 'Central bank' : sec.name.replace(/s$/,'');
+    facts = fact(r.rollup ? 'Run by' : 'Operator', esc(party(r.operator).name)) +
+      (r.rollup ? fact('Includes', esc(r.members.map(m=>m.short).join(' and '))) : '') +
+      (n.id===c.root ? fact('Settlement', esc(r.settlement_asset), true) : r.settlement_mode==='on-us' ? fact('Settles', esc(r.settlement_timing)) : fact(r.status==='planned' ? 'Will settle in' : 'Settles in', r.settles_in ? esc(sys(r.settles_in).short) + (r.settles_via ? ', through ' + esc(r.settles_via.replace(/^.*?'s /,'its ')) : '') : unk, !!r.settles_in));
+    explain = r.explainer; srcIds = r.field_sources.explainer; allSrc = [...new Set(Object.values(r.field_sources).flat())];
+  } else {
+    kind = 'Account holders';
+    facts = (r.holds_account_at ? fact('Account at', esc(sys(r.holds_account_at).short), true) : '') + (r.through ? fact('Access', 'Through ' + esc(node(r.through).name.toLowerCase())) : '') + fact('Uses', esc(r.uses.map(u=>sys(u).short).join(', ')));
+    explain = r.summary; srcIds = r.sources; allSrc = r.sources;
+  }
+  // drill up
+  const upEdges = (IDX.up[n.id]||[]).filter(e=>node(e.from));
+  const uses = upEdges.length ? `<div class="section-h"><h2>Depends on this</h2><p>What stops or slows if this is down.</p></div><ul class="uses">${upEdges.map(e => { const u = node(e.from); const how = e.type==='runs' ? 'runs on it' : e.type==='access' ? 'holds an account here' : e.type==='funded' ? 'funds its accounts here' : 'settles here'; return `<li><a href="${pageHref(u.id)}" ${pageGo(u.id)}><b>${esc(u.name)}</b><span class="mono">${how}</span></a></li>`; }).join('')}</ul>` : '';
+  // drop-downs
+  const srcRows = D.sources.filter(s=>allSrc.includes(s.id)).map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a><span class="mono">${esc(s.tier)} · ${s.published?'dated '+esc(s.published)+' · ':''}checked ${esc(s.accessed)}</span></li>`).join('');
+  const caveats = n.kind==='system' ? (r.caveats||[]) : [], unknowns = n.kind==='system' ? (r.unknowns||[]) : [];
+  const steps = n.kind==='product' ? [...new Map([r.runs_on].flat().flatMap(t=>pathDown(t)).map(x=>[x.id, node(x.id)])).values()].filter(x=>x.kind==='system') : [];
+  const flows = IDX.flowsFor[n.id] || (n.kind==='product' ? [r.runs_on].flat().flatMap(t => IDX.flowsFor[t]||[]) : []);
+  const dd = [
+    r.after_settlement ? `<details open><summary>Can it be undone after settlement?</summary><div><p>${esc(r.after_settlement.text)}</p><p class="mono muted">${esc(srcNames(r.after_settlement.sources))}</p></div></details>` : '',
+    r.rollup ? `<details><summary>What's inside</summary><div><ul>${r.members.map(m=>`<li><b>${esc(m.name)}</b>. ${esc(m.explainer)}${m.settlement_timing?` <span class="mono muted">${esc(m.settlement_timing)}</span>`:''}</li>`).join('')}</ul></div></details>` : '',
+    steps.length ? `<details><summary>Who runs each step</summary><div><ul>${steps.map(x=>`<li><b>${esc(x.rec.short)}</b>. Run by ${esc(party(x.rec.operator).name)}. ${esc(MODE[x.rec.settlement_mode])}${x.rec.settlement_timing?', '+esc(x.rec.settlement_timing.charAt(0).toLowerCase()+x.rec.settlement_timing.slice(1)):''}.</li>`).join('')}</ul></div></details>` : '',
+    n.kind==='system' && r.participants_summary ? `<details><summary>Who takes part</summary><div><p>${esc(r.participants_summary)}</p>${r.participants_count?`<p>${esc(r.participants_count)}</p>`:''}</div></details>` : '',
+    caveats.length ? `<details><summary>Good to know</summary><div><ul>${caveats.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></details>` : '',
+    unknowns.length ? `<details><summary>Not known yet</summary><div><ul>${unknowns.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></details>` : '',
+    flows.length ? `<details><summary>Step through a real payment</summary><div><ul>${[...new Set(flows)].map(f=>`<li><a href="${href({view:'flow',flow:f,step:1,node:null})}" data-flow="${f}">${esc(IDX.scenarios[f].title)}</a></li>`).join('')}</ul></div></details>` : '',
+    `<details><summary>Sources</summary><div><ul class="srcs">${srcRows}</ul></div></details>`].join('');
+  const icon = n.kind==='system' ? logo(party(r.operator).logo) : '';
+  return crumbs([HOME, {label:c.id, href:href({node:null}), go:{node:null}}, {label:esc(sec.name), href:href({node:null})+'', go:{node:null}}, {label:esc(n.short)}]) +
+    `<section class="pagehead"><div><p class="thing-k">${esc(kind)}</p><h1 id="ptitle" tabindex="-1">${icon}${esc(n.name)}${r.status==='planned'?' <span class="tag">planned</span>':''}</h1><p class="lede">${esc(explain)}</p><p class="src" style="margin:6px 0 0">Source: ${esc(srcNames(srcIds))}.</p></div></section>
+     <dl class="facts3">${facts}</dl>
+     <div class="section-h"><h2>The path to the ${esc(c.central_bank)}</h2><p>${n.id===c.root ? 'This is where it ends.' : 'Top to bottom. Pick any step to open it.'}</p></div>
+     <div class="paths">${paths.join('')}</div>
+     ${uses}
+     <div class="more">${dd}</div>
+     <nav class="pn" aria-label="More in ${esc(sec.name)}">${prev?`<a href="${pageHref(prev.id)}" ${pageGo(prev.id)}><span>← ${esc(sec.name)}</span><b>${esc(prev.short)}</b></a>`:''}${next?`<a class="next" href="${pageHref(next.id)}" ${pageGo(next.id)}><span>${esc(sec.name)} →</span><b>${esc(next.short)}</b></a>`:''}</nav>`;
+}
+
 /* ---------- L2 currency ---------- */
-function vCcy(){
+function vCcyMap(){
   const c = IDX.currencies[S.ccy]; const region = c.region; const root = sys(c.root);
   const lay = LAYOUT[c.id] || {cols:6,pos:{}};
   const nodesIn = D.systems.filter(s=>s.region===region && s.id!==root.id).map(s=>node(s.id))
@@ -1127,7 +1337,7 @@ function openNode(id){
   if (!id || !node(id)) return;
   if (!S.node) lastFocus = id;
   const n = node(id); const c = IDX.ccyByRegion[n.region];
-  go({view:'ccy', ccy:c.id, node:id, flow:null, type:null}, {focus:true});
+  go({view:'ccy', ccy:c.id, node:id, flow:null, type:null}); window.scrollTo(0,0); $('#ptitle')?.focus({preventScroll:true});
 }
 function placeClockLabels(){
   const svg = cb.querySelector('svg'); const sc = svg.getBoundingClientRect().width / 1000;
@@ -1144,7 +1354,7 @@ function bringSelectedIntoView(){
 function closePanel(){ const id = S.node; go({node:null, full:false}); const el = document.querySelector(`.map [data-node="${CSS.escape(lastFocus||id)}"]`); el && el.focus(); }
 function wire(){
   const app = $('#app');
-  $$('[data-go]', app).forEach(a => a.addEventListener('click', e => { e.preventDefault(); go(JSON.parse(a.dataset.go)); }));
+  $$('[data-go]', app).forEach(a => a.addEventListener('click', e => { if (e.metaKey || e.ctrlKey) return; e.preventDefault(); go(JSON.parse(a.dataset.go)); window.scrollTo(0,0); $('#ptitle')?.focus({preventScroll:true}); }));
   $$('[data-node]', app).forEach(b => b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); const id=b.dataset.node; if (!id) return; if (b.closest('.map') && S.node===id) closePanel(); else openNode(id); }));
   $$('[data-open-ccy]', app).forEach(b => b.addEventListener('click', () => openNode(b.dataset.node)));
   $$('[data-flow]', app).forEach(a => a.addEventListener('click', e => { e.preventDefault(); go({view:'flow', flow:a.dataset.flow, step:1, node:null}); }));

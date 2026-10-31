@@ -133,3 +133,11 @@ Instrument Sans for reading and labels, using its narrow widths inside the map s
 - **Amex** is an issuer, acquirer and network in one (Amex Canada merchant pricing page). When it issues the card and signs the merchant, there is no bank-to-bank step, so its node has no line down.
 - **Data.** `rollups` in `data/atlas.json` defines the buckets. The view folds them in at load. Checks and sources still run on the detailed records.
 - **Rule for later.** Bucket anything a reader would not tell apart, and name a brand only when people already know it.
+
+## Version 5 changes (31 Oct 2026). A clickable site, one page per thing
+
+- **No single map.** The all-in-one map is gone as a page, because one chart cannot answer every question at once. (The map code stays in the file, unused, until it is deleted for good.)
+- **Currencies › Canada.** The Canada page lists four sections, with no lines. Payment types are grouped by how fast banks settle them. Then Networks, Settlement, and Who holds the accounts. "When each one settles", "What's changing" and "Step through a real payment" are drop-downs at the bottom.
+- **One page per thing** (17 for Canada). Each page has a kind label, the name and a two-sentence explainer with its source, then up to three key facts. Next is one vertical path to the Bank of Canada, with each step linking to its own page (drill down). "Depends on this" lists what sits above it (drill up). Drop-downs for detail follow, closed by default except "Can it be undone". Previous and next links stay within the section.
+- **Card purchase** shows three short paths side by side (Visa, Mastercard, Amex), stacked on phones.
+- **URLs.** `?ccy=CAD&node=<id>` on the site and `#cad-<id>` in the single-file build, so every page can be linked.
