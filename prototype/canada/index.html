@@ -348,6 +348,7 @@ dl.facts .acc{color:var(--accent);font-weight:700}
 .rung.cur .rl::after{background:var(--ink)}
 .rung.root .rl::after{border-color:var(--accent);background:var(--accent)}
 .rung .rb{padding:3px 0 14px;font-size:var(--t-s)}
+.rung.via .rb b{font-weight:400;font-style:italic}
 .rung .rb button{all:unset;cursor:pointer;font-weight:700}
 .rung .rb button:hover{text-decoration:underline}
 .rung .rb button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
@@ -766,7 +767,7 @@ function vCcy(){
 </section>
      <div class="section-h"><h2>Who does what</h2><p>Customer money stays in bank accounts. The lines show where the banks settle what they owe each other. Pick anything to trace it.</p></div>
      ${map}
-     <p class="hint">Wires, direct deposits, pre-authorized debits and cheques run on Payments Canada's own rules, so they go straight to ACSS or Lynx without a separate network.</p>
+     <p class="hint">Wires, direct deposits, pre-authorized debits and cheques run on Payments Canada's own rules, so they go straight to ACSS or Lynx without a separate network. Networks never settle. Banks do, in Lynx, directly or through a bank that has a seat.</p>
      <p class="hint">Settlement between banks is final, but some payments can still be undone afterwards. Cheques can be returned, pre-authorized debits disputed for 90 days, and card payments charged back. Pick one to see the rule and its source.</p>
      <p class="hint narrow-hint">Tap a payment type to draw its path to the central bank.</p>
      ${clock}
@@ -979,6 +980,7 @@ function vPanel(n, c){
       f('Participants', esc(r.participants_count || r.participants_summary) || unk) +
       f('Settlement asset', esc(r.settlement_asset) || unk) +
       f('Hours', esc(r.hours) || unk) +
+      (r.settles_via ? f('Settles through', esc(r.settles_via)) : '') +
       (r.funded_by ? f('Accounts funded by', esc(sys(r.funded_by).name)+' payments') : '') +
       f(r.status==='planned' ? 'Will settle in' : 'Settles in', r.settlement_mode==='none' ? 'Does not settle' : r.settles_in ? esc(sys(r.settles_in).name) : r.settlement_mode==='unknown' ? unk : 'Final here');
     explain = r.explainer; srcIds = r.field_sources.explainer; allSrc = [...new Set(Object.values(r.field_sources).flat())];
@@ -1004,7 +1006,8 @@ function vPanel(n, c){
     else if (isRoot) how = `Final · ${root.settlement_asset}`;
     else if (nd.kind==='system' && nd.rec.settlement_mode==='unknown') how = 'settlement path not confirmed';
     const kcls = next && next.via.type==='runs' ? ' k-runs' : next && nd.kind==='system' && nd.rec.status==='planned' ? ' k-plan' : '';
-    return `<li class="rung${i===0?' cur':''}${isRoot?' root':''}${kcls}"><span class="rl" aria-hidden="true"></span><div class="rb">${i===0?`<b>${esc(nd.name)}</b>`:`<button type="button" data-node="${x.id}">${esc(nd.name)}</button>`}<span class="how">${esc(how)}</span></div></li>`;
+    const viaRung = next && next.via.type==='settle' && nd.kind==='system' && nd.rec.settles_via ? `<li class="rung via"><span class="rl" aria-hidden="true"></span><div class="rb"><b>${esc(nd.rec.settles_via)}</b><span class="how">pays and receives over ${esc(node(next.id).short)}</span></div></li>` : '';
+    return `<li class="rung${i===0?' cur':''}${isRoot?' root':''}${kcls}"><span class="rl" aria-hidden="true"></span><div class="rb">${i===0?`<b>${esc(nd.name)}</b>`:`<button type="button" data-node="${x.id}">${esc(nd.name)}</button>`}<span class="how">${esc(how)}</span></div></li>` + viaRung;
   }).join('');
   const multi = n.kind==='product' && [r.runs_on].flat().length>1 ? `<p class="src">Also runs on ${[r.runs_on].flat().slice(1).map(t=>esc(sys(t).name)).join(', ')}.</p>` : '';
   const flows = IDX.flowsFor[n.id] || (n.kind==='product' ? [r.runs_on].flat().flatMap(t => IDX.flowsFor[t]||[]) : []);
@@ -1020,7 +1023,7 @@ function vPanel(n, c){
     <dl class="facts">${facts}</dl>
     <p class="explain">${esc(explain)}</p>
     <p class="src">Source: ${esc(srcNames(srcIds))}.${n.kind==='system'?' Checked '+fmtDate(r.last_checked)+'.':''}</p>
-    <div class="ph"><span>Settlement path</span><span>${n.id===root.id ? 'this is where it ends' : (chain.at(-1).id===root.id ? (chain.length-1)+' step'+(chain.length===2?'':'s')+' to the central bank' : 'path not confirmed')}</span></div>
+    <div class="ph"><span>Settlement path</span><span>${n.id===root.id ? 'this is where it ends' : (chain.at(-1).id===root.id ? (()=>{const k=chain.length-1+chain.filter((x,i)=>i<chain.length-1&&node(x.id).kind==='system'&&node(x.id).rec.settles_via).length; return k+' step'+(k===1?'':'s')+' to the central bank';})() : 'path not confirmed')}</span></div>
     <ol class="ladder">${ladder}</ol>${multi}
     <div class="drillrow">
       <button class="btn strong" type="button" data-node="${downId||''}" ${downId?'':'disabled'}>↓ Drill down</button>

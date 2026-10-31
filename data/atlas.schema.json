@@ -306,7 +306,8 @@
               "explainer",
               "windows",
               "participants_count",
-              "funded_by"
+              "funded_by",
+              "settles_via"
             ]
           },
           "patternProperties": {
@@ -344,6 +345,10 @@
         "final_label": {
           "type": "string",
           "maxLength": 40
+        },
+        "settles_via": {
+          "type": ["string", "null"],
+          "maxLength": 60
         },
         "funded_by": {
           "anyOf": [

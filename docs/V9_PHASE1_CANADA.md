@@ -209,6 +209,8 @@ UPI, CHIPS, RTP and USDC tests report "pending" until Phase 2 loads those record
 
 ---
 
+- **Card networks do not settle.** Visa holds no Bank of Canada account. It nets each member's position daily, then banks in a net debit pay Visa's settlement bank over Lynx and that bank pays the banks owed (VisaNet PPS disclosure, 14 Oct 2025). The map now shows that bank as its own rung on Visa's path (new `settles_via` field). Mastercard is likely the same but stays "Not confirmed".
+
 ## 8. What I would cut
 
 - The ⌘K command menu. Ten systems and a region filter do not need search. Add it past about 60 records.

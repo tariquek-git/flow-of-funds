@@ -659,18 +659,19 @@
         "netting",
         "rulebook"
       ],
-      "settlement_asset": "Central bank money (CAD), via Lynx",
+      "settlement_asset": "Central bank money (CAD), paid over Lynx",
       "settlement_mode": "deferred-net",
       "settles_in": "lynx",
-      "settlement_timing": "Daily net settlement through Lynx, final on the value date",
+      "settlement_timing": "Daily net. Banks pay and receive their net amounts over Lynx, final on the value date",
       "hours": null,
       "participants_summary": "Issuers and acquirers licensed by Visa.",
-      "explainer": "VisaNet carries Visa card payments and works out each member's net position, which settles once a day through Lynx and is final on the value date. Visa Canada guarantees settlement, so acquirers are paid if an issuer defaults.",
+      "explainer": "VisaNet works out what each issuer and acquirer owes once a day, but Visa does not settle in Lynx itself. Banks in a net debit pay Visa's settlement bank over Lynx, that bank pays the banks owed, and Visa Canada guarantees the settlement.",
       "caveats": [
-        "Members in a net debit position pay into a designated Visa Canada account by a daily cutoff. The disclosure says commercial banks are used in Canada and also that daily settlement uses Lynx."
+        "Visa holds no Bank of Canada account. The disclosure says commercial banks are used in Canada and that daily settlement uses Lynx.",
+        "Issuers without their own Lynx access pay through a bank that has it."
       ],
       "unknowns": [
-        "The settlement banks are not named in the disclosure."
+        "Visa's Canadian settlement bank is not named in the disclosure."
       ],
       "field_sources": {
         "operator": [
@@ -700,14 +701,18 @@
         ],
         "settlement_timing": [
           "visa_pps_2025"
+        ],
+        "settles_via": [
+          "visa_pps_2025"
         ]
       },
       "last_checked": "2026-10-31",
       "layer": "4a",
       "windows": [],
       "participants_count": null,
-      "settles_label": "daily · net",
-      "final_label": "daily, on the value date"
+      "settles_label": "daily · net · via bank",
+      "final_label": "daily, on the value date",
+      "settles_via": "Visa's settlement bank"
     },
     {
       "id": "interac-debit",
@@ -798,7 +803,8 @@
         "GCMS handles clearing. SMS is Mastercard's single message system."
       ],
       "unknowns": [
-        "Mastercard's Canadian settlement path was not found in a public primary source. Its systems were designated prominent by the Bank of Canada in October 2023, so a disclosure may exist but was not located."
+        "Mastercard's Canadian settlement path was not found in a public primary source.",
+        "Mastercard's general model uses a settlement bank it chooses, so Canada likely works like Visa, through a bank that pays over Lynx. Not confirmed."
       ],
       "field_sources": {
         "operator": [

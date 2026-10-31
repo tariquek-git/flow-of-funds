@@ -53,7 +53,7 @@ const tests = {
   'every-claim-sourced': (d) => {
     const errors = [];
     const src = byId(d.sources);
-    const claimFields = ['operator', 'scheme_owner', 'roles', 'settlement_asset', 'settlement_mode', 'settles_in', 'settlement_timing', 'hours', 'participants_summary', 'participants_count', 'funded_by', 'explainer'];
+    const claimFields = ['operator', 'scheme_owner', 'roles', 'settlement_asset', 'settlement_mode', 'settles_in', 'settlement_timing', 'hours', 'participants_summary', 'participants_count', 'funded_by', 'settles_via', 'explainer'];
     for (const s of d.systems) {
       for (const f of claimFields) {
         const v = s[f];
