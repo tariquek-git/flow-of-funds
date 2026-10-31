@@ -355,7 +355,7 @@
           "label": "Settlement window 1 closes"
         }
       ],
-      "participants_count": "16 Payments Canada members including the Bank of Canada. Over 50 other institutions clear through them.",
+      "participants_count": "16 Payments Canada members including the Bank of Canada. Over 50 other institutions have clearing relationships with them.",
       "settles_label": "real time · gross"
     },
     {
@@ -590,7 +590,7 @@
           "end": "24:00",
           "tz": "America/Toronto",
           "kind": "cycle",
-          "label": "Settlement cycle 00:00 to 23:59 ET"
+          "label": "Settlement cycle, 00:00 to 23:59 ET"
         },
         {
           "days": "next-business",
@@ -648,6 +648,68 @@
         ],
         "explainer": [
           "boc_oversight"
+        ]
+      },
+      "last_checked": "2026-10-31",
+      "layer": "4a",
+      "windows": [],
+      "participants_count": null
+    },
+    {
+      "id": "interac-debit",
+      "name": "Interac Debit (Inter-Member Network)",
+      "short": "Interac Debit",
+      "group": "cards",
+      "region": "CA",
+      "status": "live",
+      "operator": "interac-corp",
+      "scheme_owner": "interac-corp",
+      "roles": [
+        "messaging",
+        "rulebook"
+      ],
+      "settlement_asset": "Central bank money (CAD), via ACSS and Lynx",
+      "settlement_mode": "deferred-net",
+      "settles_in": "acss",
+      "settles_label": "next day · via ACSS",
+      "settlement_timing": "Aggregated the same day, cleared through ACSS the next day, settled on Lynx after that",
+      "hours": null,
+      "participants_summary": "Financial institutions that issue Interac debit cards and acquire point-of-sale payments.",
+      "explainer": "Interac's Inter-Member Network carries debit payments at the point of sale, including chip and PIN, tap and mobile debit. Interac does not hold funds, and participants clear the amounts through ACSS and settle them on Lynx.",
+      "caveats": [
+        "Interac's only settlement role is calculating interchange amounts for Flash and Mobile Debit."
+      ],
+      "unknowns": [
+        "The disclosure is dated 31 December 2023. Recheck for a newer edition."
+      ],
+      "field_sources": {
+        "operator": [
+          "interac_imn_2023",
+          "boc_oversight"
+        ],
+        "scheme_owner": [
+          "interac_imn_2023"
+        ],
+        "roles": [
+          "interac_imn_2023"
+        ],
+        "settlement_asset": [
+          "interac_imn_2023"
+        ],
+        "settlement_mode": [
+          "interac_imn_2023"
+        ],
+        "settles_in": [
+          "interac_imn_2023"
+        ],
+        "settlement_timing": [
+          "interac_imn_2023"
+        ],
+        "participants_summary": [
+          "interac_imn_2023"
+        ],
+        "explainer": [
+          "interac_imn_2023"
         ]
       },
       "last_checked": "2026-10-31",
@@ -1197,6 +1259,15 @@
       "tier": "press",
       "published": "2026-08-10",
       "accessed": "2026-10-31"
+    },
+    {
+      "id": "interac_imn_2023",
+      "title": "Interac · Inter-Member Network disclosure against Bank of Canada PPS standards (as at 2023-12-31)",
+      "url": "https://www.interac.ca/wp-content/uploads/2024/05/IMN-PPS-Public-Disclosure_vF-003.pdf",
+      "publisher": "Interac Corp.",
+      "tier": "operator",
+      "published": "2023-12-31",
+      "accessed": "2026-10-31"
     }
   ],
   "layers": [
@@ -1254,12 +1325,13 @@
       "central_bank": "Bank of Canada",
       "root": "boc-accounts",
       "phase": 1,
-      "how": "Payments Canada runs the shared systems and the Bank of Canada holds the accounts they settle in. Interac runs e-Transfer and settles it a day later through Lynx. A 24/7 Real-Time Rail is due in Q4 2026.",
+      "how": "Payments Canada runs the shared systems and the Bank of Canada holds the accounts they settle in. Interac's debit and e-Transfer networks settle a day later through ACSS and Lynx. A 24/7 Real-Time Rail is due in Q4 2026.",
       "how_sources": [
         "pc_lynx",
         "boc_lynx_acss",
         "interac_pps_2025",
-        "pc_rtr_faq"
+        "pc_rtr_faq",
+        "interac_imn_2023"
       ]
     },
     {
@@ -1401,11 +1473,12 @@
     {
       "id": "ca-pos-debit",
       "name": "Debit at checkout",
-      "plain": "Point-of-service debit at a store",
+      "plain": "Interac debit card at a store, chip, tap or phone",
       "region": "CA",
-      "runs_on": "acss",
+      "runs_on": "interac-debit",
       "status": "live",
       "sources": [
+        "interac_imn_2023",
         "pc_acss"
       ]
     },

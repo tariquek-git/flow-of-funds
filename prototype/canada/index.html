@@ -36,7 +36,7 @@ body{margin:0;background:var(--paper);color:var(--ink);font:400 var(--t-m)/1.5 v
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--paper)}
 a{color:inherit}
 button{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .mono{font-family:var(--mono);font-size:var(--t-xs);letter-spacing:0;font-variation-settings:"wdth" 85}
 .muted{color:var(--muted)}
 .gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -55,10 +55,10 @@ h1,h2,h3{text-wrap:balance}
 .brand b{font-size:var(--t-l);font-weight:700;letter-spacing:-.01em;font-variation-settings:"wdth" 88}
 .brand span{font-family:var(--mono);font-size:var(--t-xs);color:var(--muted)}
 .nav{display:flex;gap:2px}
-.nav a{font-family:var(--mono);font-size:var(--t-xs);text-decoration:none;padding:16px 10px 14px;border-bottom:3px solid transparent;margin-bottom:-1px}
-.nav a[aria-current="page"]{border-bottom-color:var(--accent);font-weight:600}
+.nav a{font-size:var(--t-s);text-decoration:none;padding:16px 10px 14px;border-bottom:3px solid transparent;margin-bottom:-1px}
+.nav a[aria-current="page"]{border-bottom-color:var(--ink);font-weight:700}
 
-.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;padding-block:14px 0;font-family:var(--mono);font-size:var(--t-xs)}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;padding-block:14px 0;font-size:var(--t-s)}
 .crumbs a{color:var(--muted);text-decoration:none;padding:6px 0}
 .crumbs a:hover{color:var(--ink);text-decoration:underline}
 .crumbs [aria-current]{font-weight:600}
@@ -87,7 +87,7 @@ main{padding-bottom:56px}
 .ccy-code{font-family:var(--mono);font-size:var(--t-l);font-weight:600;font-variation-settings:"wdth" 90}
 .ccy-cb{font-weight:700;font-size:var(--t-m);font-variation-settings:"wdth" 90}
 .ccy-how{color:var(--muted);font-size:var(--t-s);margin-top:2px;max-width:66ch}
-.strip-label{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:3px}
+.strip-label{display:flex;justify-content:space-between;font-size:var(--t-xs);color:var(--muted);margin-bottom:3px}
 .layerstrip{display:grid;grid-template-columns:repeat(9,1fr);gap:2px}
 .layerstrip i{height:18px;background:var(--band);box-shadow:inset 0 0 0 1px var(--rule);font:normal 9px/18px var(--mono);text-align:center;color:var(--muted)}
 .layerstrip i.on{background:var(--ink);color:var(--paper);box-shadow:none}
@@ -117,16 +117,17 @@ main{padding-bottom:56px}
 .lrow{display:grid;grid-template-columns:168px minmax(0,1fr);min-height:76px;border-top:1px solid var(--rule)}
 .lrow:first-of-type{border-top:0}
 .lrow:nth-of-type(even){background:var(--band)}
-.lhead{padding:12px 14px 12px 0;display:grid;grid-template-columns:30px 1fr;gap:0 8px;align-content:center}
+.lhead{padding:12px 14px 12px 0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;align-content:center}
 .lhead{position:relative;z-index:3}
-.lhead .lid{font-family:var(--mono);font-size:var(--t-xs);font-weight:600;border:1px solid var(--rule-strong);text-align:center;height:22px;line-height:20px;background:var(--paper)}
+.lhead .lid{font-family:var(--mono);font-size:10px;color:var(--muted);align-self:start;padding-top:2px}
 .lhead b{font-size:var(--t-s);line-height:1.2;font-variation-settings:"wdth" 85}
-.lhead > span:not(.lid){grid-column:2;font-size:var(--t-xs);color:var(--muted);line-height:1.3}
-.lnodes{display:grid;grid-template-columns:repeat(var(--cols,9),minmax(0,1fr));gap:8px;align-items:center;padding:14px 0 14px 4px;position:relative;z-index:3}
+.lhead > span:not(.lid){grid-column:1/-1;font-size:var(--t-xs);color:var(--muted);line-height:1.3}
+.lnodes{display:grid;grid-auto-flow:row dense;grid-template-columns:repeat(var(--cols,9),minmax(0,1fr));gap:8px;align-items:center;padding:14px 0 14px 4px;position:relative;z-index:3}
 .node{all:unset;position:relative;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:1px;min-height:44px;justify-content:center;padding:7px 9px;background:var(--paper);border:1px solid var(--rule-strong);border-radius:2px;transition:opacity .15s}
 .node .nm{font-weight:700;font-size:var(--t-s);line-height:1.15;font-variation-settings:"wdth" 80;display:flex;gap:6px;align-items:center}
 .node .sb{font-size:var(--t-xs);color:var(--muted);line-height:1.25;font-variation-settings:"wdth" 85}
-.node.k-product{border-style:solid;border-color:var(--rule)}
+.node.k-product{border:0;border-top:2px solid var(--ink);border-radius:0;background:transparent;padding:6px 2px 2px}
+.node.k-product.planned{border-top-color:var(--planned)}
 .node.k-product .nm{font-variation-settings:"wdth" 85}
 .node.k-system{border:1.5px solid var(--ink)}
 .node.l-1{border:2px solid var(--accent)}
@@ -135,23 +136,31 @@ main{padding-bottom:56px}
 .node.planned::after{content:"planned";position:absolute;top:-8px;right:6px;font:600 9px/14px var(--mono);color:var(--planned);background:var(--paper);border:1px solid currentColor;padding:0 4px}
 .node.unknown{border-style:dashed}
 .node:hover{outline:1px solid var(--ink)}
-.node:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.node:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .node.sel{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .node.sel .sb{color:var(--paper);opacity:.8}
 .node.sel.planned::after{color:var(--planned)}
-.map.has-sel .node:not(.lit),.map.has-sel .base:not(.lit){opacity:.25}
+.map.has-sel .node:not(.lit){color:var(--muted);border-color:var(--rule);background-image:none}
+.map.has-sel .node.k-product:not(.lit){border-top-color:var(--rule)}
+.map.has-sel .node:not(.lit) .nm{font-weight:400}
+.map.has-sel .node:not(.lit) .logo{opacity:.5}
+.map.has-sel .base:not(.lit){background:var(--band);border-top-color:var(--rule)}
+.node.lit:not(.sel){box-shadow:0 0 0 1px var(--ink)}
 .base{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:168px minmax(0,1fr) auto;align-items:center;gap:0 4px;width:100%;padding:14px 12px 14px 0;background:var(--accent-soft);border-top:4px double var(--accent);position:relative;z-index:3}
 .base .lhead{padding:0 14px 0 0}
-.base .lhead .lid{border-color:var(--accent);color:var(--accent)}
+.base .lhead .lid{color:var(--accent)}
 .base .bname{font-weight:700;font-size:var(--t-l);font-variation-settings:"wdth" 85;display:flex;align-items:center;gap:10px;padding-left:4px}
 .base .bsub{font-family:var(--mono);font-size:var(--t-xs);color:var(--accent);text-align:right}
 .base.sel{outline:2px solid var(--ink);outline-offset:-2px}
-.base:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.base:focus-visible{outline:2px solid var(--ink);outline-offset:-4px}
 .e{fill:none;transition:opacity .15s}
 .e-runs{stroke:var(--ink);stroke-width:1.2}
 .e-settle-out{stroke:var(--accent);stroke-width:5}
 .e-settle-in{stroke:var(--paper);stroke-width:1.6}
 .e-access{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:1.5 3.5;stroke-linecap:round}
+.e-plan-out{stroke:var(--planned);stroke-width:5;stroke-dasharray:7 4}
+.e-plan-in{stroke:var(--paper);stroke-width:1.6}
+.e-lab.plan text{fill:var(--planned)}
 .e-unknown{stroke:var(--rule-strong);stroke-width:1.2;stroke-dasharray:3 3}
 .e-lab rect{fill:var(--paper)}
 .e-lab text{font:600 10px var(--mono);fill:var(--accent)}
@@ -172,7 +181,8 @@ main{padding-bottom:56px}
 .c-sub{font:400 10px var(--sans);fill:var(--muted)}
 .c-grid{stroke:var(--rule);stroke-width:1}
 .c-gridd{stroke:var(--rule-strong);stroke-width:1}
-.c-open{fill:var(--ink)}
+.c-open{fill:var(--accent)}
+.c-cycle{stroke:var(--rule-strong);stroke-width:1}
 .c-cust{fill:none;stroke:var(--ink);stroke-width:1.2;stroke-dasharray:2 2}
 .c-settle{fill:var(--accent)}
 .c-settle-t{font:600 9.5px var(--mono);fill:var(--accent)}
@@ -186,7 +196,7 @@ main{padding-bottom:56px}
 .c-hol-t{font:600 9.5px var(--mono);fill:var(--muted)}
 .c-cut{stroke:var(--paper);stroke-width:1.5}
 .toggle{display:inline-flex;align-items:center;gap:8px;font-size:var(--t-s);cursor:pointer;user-select:none;min-height:40px}
-.toggle input{width:18px;height:18px;accent-color:var(--accent);margin:0}
+.toggle input{width:18px;height:18px;accent-color:var(--ink);margin:0}
 .clock-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:4px 28px;margin:10px 0 0;padding:0;list-style:none;font-size:var(--t-s);color:var(--muted)}
 .clock-notes li{padding:6px 0;border-bottom:1px solid var(--rule)}
 .clock-notes b{color:var(--ink);font-weight:700}
@@ -211,36 +221,39 @@ main{padding-bottom:56px}
 
 /* type view */
 .typelist{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
-.typelist li button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:28px minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:4px 16px;width:100%;padding:12px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.typehead{display:grid;grid-template-columns:28px minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.2fr);gap:4px 16px;padding:10px 0 8px;border-top:1px solid var(--ink);font-size:var(--t-xs);color:var(--muted)}
+.typelist li button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:28px minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.2fr);gap:4px 16px;width:100%;padding:12px 0;border-bottom:1px solid var(--rule);align-items:baseline}
 .typelist li button:hover b{text-decoration:underline}
-.typelist li button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.typelist li button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .typelist .set{color:var(--accent);font-weight:700}
 
 /* panel */
 .panel{min-width:0;border-left:1px solid var(--ink);padding:14px 0 24px 24px;align-self:start;position:sticky;top:calc(env(safe-area-inset-top,0px) + 53px);max-height:calc(100vh - 53px - env(safe-area-inset-top,0px));overflow:auto;overscroll-behavior:contain}
 .pbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
 .pbar .grip{display:none}
-.btn{border:1px solid var(--rule-strong);background:var(--paper);border-radius:2px;padding:0 12px;min-height:36px;cursor:pointer;font-family:var(--mono);font-size:var(--t-xs)}
+.btn{border:1px solid var(--rule-strong);background:var(--paper);border-radius:2px;padding:0 12px;min-height:36px;cursor:pointer;font-size:var(--t-s);font-weight:600}
 .btn:hover{border-color:var(--ink)}
 .btn:disabled{color:var(--muted);border-color:var(--rule);cursor:default}
 .btn.strong{border-color:var(--ink)}
-.panel .ptype{font-family:var(--mono);font-size:var(--t-xs);color:var(--muted);margin:0 0 2px}
+.panel .ptype{font-size:var(--t-s);color:var(--muted);margin:0 0 2px}
 .panel h2{margin:0 0 12px;font-size:var(--t-xl);line-height:1.12;font-weight:700;letter-spacing:-.01em;font-variation-settings:"wdth" 85;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .panel h2:focus{outline:none}
 .panel h2 .tag{font:600 10px var(--mono);color:var(--planned);border:1px solid currentColor;padding:1px 4px}
 dl.facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 14px;margin:0 0 14px;padding:12px 0;border-block:1px solid var(--rule);font-size:var(--t-s)}
-dl.facts dt{font-family:var(--mono);font-size:var(--t-xs);color:var(--muted);padding-top:1px}
+dl.facts dt{font-size:var(--t-s);color:var(--muted)}
 dl.facts dd{margin:0}
 dl.facts .acc{color:var(--accent);font-weight:700}
 .unk{color:var(--muted);font-style:italic}
 .explain{margin:0 0 6px}
 .src{font-size:var(--t-xs);color:var(--muted);margin:0 0 18px}
-.ph{font-family:var(--mono);font-size:var(--t-xs);font-weight:600;margin:0 0 8px;display:flex;justify-content:space-between}
+.ph{font-size:var(--t-s);font-weight:700;margin:0 0 8px;display:flex;justify-content:space-between;gap:12px}
+.ph span:last-child{font-weight:400;color:var(--muted)}
 .ladder{list-style:none;margin:0 0 10px;padding:0}
 .rung{display:grid;grid-template-columns:20px minmax(0,1fr);gap:0 10px}
 .rung .rl{position:relative}
 .rung .rl::before{content:"";position:absolute;left:7px;top:0;bottom:0;border-left:5px double var(--accent)}
 .rung.k-runs .rl::before{border-left:1.2px solid var(--ink);left:9px}
+.rung.k-plan .rl::before{border-left:5px double var(--planned)}
 .rung:last-child .rl::before{display:none}
 .rung .rl::after{content:"";position:absolute;left:4px;top:7px;width:12px;height:12px;background:var(--paper);border:2px solid var(--ink);border-radius:2px}
 .rung.root .rl::after{border-color:var(--accent);background:var(--accent)}
@@ -248,7 +261,7 @@ dl.facts .acc{color:var(--accent);font-weight:700}
 .rung .rb{padding:3px 0 14px;font-size:var(--t-s)}
 .rung .rb button{all:unset;cursor:pointer;font-weight:700}
 .rung .rb button:hover{text-decoration:underline}
-.rung .rb button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.rung .rb button:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .rung .how{display:block;font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:1px}
 .rung.root .how{color:var(--accent)}
 .drillrow{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 6px}
@@ -296,8 +309,9 @@ details li{margin:0 0 6px}
 .step .lbl.final{fill:var(--accent)}
 .controls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:0 0 6px}
 .scrub{flex:1;min-width:220px;display:grid;gap:4px}
-.scrub input{width:100%;accent-color:var(--accent);min-height:28px}
-.marks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.scrub input{width:100%;accent-color:var(--ink);min-height:28px}
+.marks{position:relative;height:16px;font-size:var(--t-xs);color:var(--muted)}
+.marks span{position:absolute;top:0}
 .caption{min-height:3.2em;max-width:72ch;font-size:var(--t-l);margin:4px 0 16px;font-variation-settings:"wdth" 90}
 .caption .mono{display:block;color:var(--muted)}
 .four{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:0 28px;border-top:1px solid var(--ink);margin:6px 0 18px}
@@ -321,24 +335,26 @@ details li{margin:0 0 6px}
 }
 @media (max-width: 900px){
   .split.has-panel{grid-template-columns:minmax(0,1fr)}
-  .panel{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:15;height:58vh;max-height:none;border-left:0;border-top:1px solid var(--ink);background:var(--paper);
+  .panel{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:15;height:50vh;height:50svh;max-height:none;border-left:0;border-top:1px solid var(--ink);background:var(--paper);
     padding:0 max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));box-shadow:0 -8px 24px color-mix(in srgb,var(--ink) 12%,transparent)}
   .panel.full{height:calc(100vh - 52px - env(safe-area-inset-top,0px))}
   .pbar{position:sticky;top:0;background:var(--paper);padding:10px 0 8px;z-index:2}
   .pbar .grip{display:inline-flex;align-items:center}
-  .split.has-panel .main-col{padding-bottom:60vh}
+  .split.has-panel .main-col{padding-bottom:52vh}
+  html:has(.panel){scroll-padding-bottom:52vh}
   .pagehead{grid-template-columns:minmax(0,1fr)}
   .pagehead .now{text-align:left}
   .pagehead h1{font-size:28px}
   .typelist li button{grid-template-columns:28px minmax(0,1fr)}
   .typelist li button > :nth-child(n+3){grid-column:2}
+  .typehead{display:none}
   .tl-list li{grid-template-columns:28px minmax(0,1fr)}
   .tl-list li .d{grid-column:2}
   .tl-list li > span:last-child{grid-column:2}
 }
 @container (max-width: 860px){
   .lrow{grid-template-columns:minmax(0,1fr)}
-  .lhead{padding:10px 0 0;grid-template-columns:30px minmax(0,1fr)}
+  .lhead{padding:10px 0 0;grid-template-columns:auto auto;justify-content:start}
   .lhead > span:not(.lid){display:none}
   .lnodes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 8px;padding:12px 0 16px}
   .lnodes .node{flex:0 1 auto;max-width:calc(50% - 4px);min-width:96px}
@@ -357,6 +373,7 @@ details li{margin:0 0 6px}
   .nav a{padding-inline:8px}
   .brand span{display:none}
 }
+@media (max-width: 600px){.tlbox{display:none}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 
@@ -369,7 +386,7 @@ details li{margin:0 0 6px}
     </nav>
   </div>
 </header>
-<main class="gut"><div class="wrap" id="app" aria-live="polite"><p class="muted" style="padding-top:24px">Loading the atlas data.</p></div></main>
+<main class="gut"><div class="wrap" id="app"><p class="muted" style="padding-top:24px">Loading the atlas data.</p></div></main>
 <footer class="gut"><div class="wrap foot" id="foot"></div></footer>
 
 <script type="application/json" id="atlas-inline"></script>
@@ -387,7 +404,7 @@ const MODE = {'rtgs':'Real-time gross','deferred-net':'Deferred net','real-time-
 // Column placement for the wide layer map. Presentation only, keyed by node id.
 const LAYOUT = {
   CAD:{cols:9, pos:{'ca-wire':'1','ca-direct-deposit':'2','ca-pad':'3','ca-cheque':'4','ca-pos-debit':'5','ca-etransfer':'6','ca-credit-card':'7 / span 2','ca-rtr-payment':'9',
-        'interac-e-transfer':'6','visanet-canada':'7','mastercard-canada':'8','acss':'2 / span 4','ca-through-a-seat':'7','ca-seat-holders':'8','lynx':'1 / span 6','rtr':'9'}},
+        'interac-debit':'5','interac-e-transfer':'6','visanet-canada':'7','mastercard-canada':'8','acss':'2 / span 4','ca-through-a-seat':'7','ca-seat-holders':'8','lynx':'1 / span 6','rtr':'9'}},
   USD:{cols:9, pos:{'fedwire-funds':'1 / span 4'}}
 };
 
@@ -510,11 +527,7 @@ function go(patch, {replace=false, focus=false}={}){
   render();
   if (focus) {
     $('#ptitle')?.focus({preventScroll:true});
-    // On phones the record opens as a bottom sheet, so bring the selected item into the strip above it.
-    if (window.matchMedia('(max-width: 900px)').matches && S.node) {
-      const el = document.querySelector(`.map [data-node="${CSS.escape(S.node)}"]`);
-      if (el) window.scrollTo({top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - 64), behavior:'auto'});
-    }
+    bringSelectedIntoView();
   }
 }
 const href = patch => toURL({...S, ...patch});
@@ -535,7 +548,7 @@ function render(){
   else if (S.view==='flow') app.innerHTML = vFlow();
   else app.innerHTML = vCcy();
   wire();
-  if (S.view==='ccy') drawEdges();
+  if (S.view==='ccy') { drawEdges(); const cb = $('.clockbox'); if (cb && cb.scrollWidth > cb.clientWidth) { const n = torontoNow(); const frac = (150 + (n.dow + n.mins/1440)*(850/7))/1000; cb.scrollLeft = Math.max(0, frac*cb.scrollWidth - cb.clientWidth*0.6); } }
   const t = S.view==='ccy' ? (S.node ? `${node(S.node).short} · ${S.ccy}` : S.ccy) : S.view==='flow' ? 'Railroom' : S.view==='type' ? IDX.groups[S.type].name : '';
   document.title = t ? `${t} · Settlement Map` : 'Settlement Map';
   $('#foot').innerHTML = `<p>Data as of ${fmtDate(D.meta.as_of)}. ${esc(D.meta.scope)}</p><p>How this was made. Built by Fintech North with Claude, from central bank and operator documents first. Every number links to its source. Corrections by pull request.</p>`;
@@ -588,10 +601,10 @@ function vHome(){
 function vType(){
   const g = IDX.groups[S.type]; const list = D.systems.filter(s=>s.group===g.id);
   const rows = list.map(s => { const c = IDX.ccyByRegion[s.region];
-    return `<li><button type="button" data-open-ccy="${c?c.id:''}" data-node="${s.id}" ${c?'':'disabled'}>${flag(c?.flag)||'<span class="mono">GL</span>'}<b>${esc(s.name)}${s.status==='planned'?' <span class="mono" style="color:var(--planned)">planned</span>':''}</b><span class="muted">${esc(party(s.operator).name)}</span><span class="${s.settles_in?'set':'muted'}">${s.settles_in ? 'settles in '+esc(sys(s.settles_in).short) : s.settlement_mode==='unknown' ? 'settlement not confirmed' : s.settlement_mode==='none' ? 'does not settle' : 'final here'}</span></button></li>`; }).join('');
+    return `<li><button type="button" data-open-ccy="${c?c.id:''}" data-node="${s.id}" ${c?'':'disabled'}>${flag(c?.flag)||'<span class="mono">GL</span>'}<b>${esc(s.name)}${s.status==='planned'?' <span class="mono" style="color:var(--planned)">planned</span>':''}</b><span class="muted">${esc(party(s.operator).name)}</span><span class="${s.settles_in && s.status!=='planned'?'set':'muted'}">${s.settles_in ? esc(sys(s.settles_in).short) : s.settlement_mode==='unknown' ? 'Not confirmed' : s.settlement_mode==='none' ? 'Does not settle' : 'Final here'}</span><span class="muted">${esc(s.settlement_timing || s.hours || 'Not confirmed')}</span></button></li>`; }).join('');
   return crumbs([HOME, {label:'By system type'}, {label:esc(g.name)}]) +
     `<section class="pagehead"><div><h1>${esc(g.name)}</h1><p>${esc(g.definition)}</p></div></section>
-     ${list.length ? `<ul class="typelist" style="margin-top:18px">${rows}</ul>` : `<p class="muted">Nothing loaded for this type yet. It arrives in Phase 2.</p>`}`;
+     ${list.length ? `<div class="typehead" style="margin-top:18px" aria-hidden="true"><span></span><span>System</span><span>Operator</span><span>Settles in</span><span>Timing</span></div><ul class="typelist" style="border-top:1px solid var(--rule)">${rows}</ul>` : `<p class="muted">Nothing loaded for this type yet. It arrives in Phase 2.</p>`}`;
 }
 
 /* ---------- L2 currency ---------- */
@@ -604,7 +617,7 @@ function vCcy(){
   const lit = S.node ? new Set([S.node, ...reach(S.node,'down'), ...reach(S.node,'up')]) : null;
   const rows = LAYER_ORDER.filter(l => nodesIn.some(n=>n.layer===l)).map(l => {
     const L = IDX.layers[l]; const ns = nodesIn.filter(n=>n.layer===l);
-    return `<div class="lrow" data-layer="${l}"><div class="lhead"><span class="lid">${l}</span><b>${esc(l==='7'?'What customers use':L.name)}</b><span>${esc(L.does)}</span></div>
+    return `<div class="lrow" data-layer="${l}"><div class="lhead"><b>${esc(l==='7'?'What customers use':L.name)}</b><span class="lid" title="Layer ${l}">${l}</span><span>${esc(L.does)}</span></div>
       <div class="lnodes" style="--cols:${lay.cols}">${ns.map(n => nodeBtn(n, lay.pos[n.id], lit)).join('')}</div></div>`;
   }).join('');
   const rs = rootMainSystem(c); const st = rs ? openStatus(rs) : null; const n = torontoNow();
@@ -612,7 +625,7 @@ function vCcy(){
       <svg class="edges" id="edges" aria-hidden="true"></svg>
       ${rows}
       <button type="button" class="base${S.node===root.id?' sel':''}${lit && lit.has(root.id)?' lit':''}" data-node="${root.id}" aria-label="${esc(root.name)}. Final settlement in ${esc(root.settlement_asset)}.">
-        <div class="lhead"><span class="lid">CB</span><b>Central bank</b><span>Holds the accounts everything above settles in.</span></div>
+        <div class="lhead"><b>Central bank</b><span class="lid">CB</span><span>Holds the accounts everything above settles in.</span></div>
         <span class="bname">${flag(c.flag)}${esc(root.name)}</span>
         <span class="bsub">Final · ${esc(root.settlement_asset)}</span>
       </button>
@@ -620,6 +633,7 @@ function vCcy(){
     <div class="maplegend" aria-hidden="true">
       <span><svg width="34" height="10"><path d="M0 5H34" class="e e-runs"/></svg>runs on</span>
       <span><svg width="34" height="10"><path d="M0 5H34" class="e e-settle-out"/><path d="M0 5H34" class="e e-settle-in"/></svg>settles in, with timing</span>
+      <span><svg width="34" height="10"><path d="M0 5H34" class="e e-plan-out"/><path d="M0 5H34" class="e e-plan-in"/></svg>will settle in, once live</span>
       <span><svg width="34" height="10"><path d="M0 5H34" class="e e-access"/></svg>holds an account at</span>
       <span><svg width="34" height="10"><path d="M0 5H22" class="e e-unknown"/><text x="25" y="9" class="e-q">?</text></svg>not confirmed</span>
       <span><svg width="22" height="12"><rect width="22" height="12" fill="url(#hatch-l)" stroke="currentColor" stroke-width=".8"/><defs><pattern id="hatch-l" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="6" fill="currentColor" opacity=".35"/></pattern></defs></svg>planned</span>
@@ -631,7 +645,7 @@ function vCcy(){
    `<div class="split${panel?' has-panel':''}"><div class="main-col">
      <section class="pagehead"><div><h1>${flag(c.flag)}${c.id} <span style="font-weight:400;color:var(--muted)">${esc(c.central_bank)}</span></h1><p>${esc(c.how)}</p></div>
        ${rs ? `<div class="now">Toronto <b>${n.label}</b><br><span class="dot ${st.open?'on':'off'}"></span>${esc(rs.short)} ${st.open?'open':'closed'}, ${esc(st.text)}</div>` : ''}</section>
-     <div class="section-h"><h2>Who does what</h2><p>Pick anything to see what it settles through, down to the central bank, and what depends on it.</p></div>
+     <div class="section-h"><h2>Who does what</h2><p>Customer money stays in bank accounts. The lines show where the banks settle what they owe each other for each kind of payment. Pick anything to trace it.</p></div>
      ${map}
      <p class="hint narrow-hint">Tap a payment type to draw its path to the central bank.</p>
      ${clock}
@@ -691,7 +705,9 @@ function drawEdges(){
       }
       const on = !lit || (upS.has(e.from) && upS.has(e.to)) || (dnS.has(e.from) && dnS.has(e.to));
       const L = on && lit ? ' lit' : '';
-      if (e.type==='settle') out += `<path d="${d}" class="e e-settle-out${L}"/><path d="${d}" class="e e-settle-in${L}"/>`;
+      const planned = e.type==='settle' && sys(e.from)?.status==='planned';
+      if (planned) out += `<path d="${d}" class="e e-plan-out${L}"/><path d="${d}" class="e e-plan-in${L}"/>`;
+      else if (e.type==='settle') out += `<path d="${d}" class="e e-settle-out${L}"/><path d="${d}" class="e e-settle-in${L}"/>`;
       else if (e.type==='access') out += `<path d="${d}" class="e e-access${L}"/>`;
       else out += `<path d="${d}" class="e e-runs${L}"/>`;
     }
@@ -700,22 +716,23 @@ function drawEdges(){
       const b = box(s.id); const x = b.x + b.w/2, y = b.y + b.h; const L = lit && lit.has(s.id) ? ' lit' : '';
       out += `<path d="M${x} ${y} L${x} ${y+16}" class="e e-unknown${L}"/><text x="${x}" y="${y+28}" text-anchor="middle" class="e-q${L}">?</text>`;
     });
-    const placed = [];
+    const placed = $$('.node, .base', map).map(el => { const b = el.getBoundingClientRect(); return {x:b.left-mb.left+b.width/2, y:b.top-mb.top+b.height/2, w:b.width, h:b.height}; });
     labels.sort((p,q)=>p.y-q.y);
     for (const l of labels) {
       const w0 = l.t.length*6.3 + 10;
-      for (let k=0; k<6; k++) { const hit = placed.some(r => Math.abs(r.x-l.x) < (r.w+w0)/2+4 && Math.abs(r.y-l.y) < 18); if (!hit) break; l.y -= 18; }
-      placed.push({x:l.x, y:l.y, w:w0});
+      const x0 = l.x, y0 = l.y; const tries = [[0,0],[0,-18],[0,18],[0,-36],[0,36],[-60,0],[60,0],[-60,-18],[60,-18],[0,-54]];
+      for (const [dx,dy] of tries) { l.x = x0+dx; l.y = y0+dy; const hit = placed.some(r => Math.abs(r.x-l.x) < (r.w+w0)/2+3 && Math.abs(r.y-l.y) < ((r.h||16)+16)/2+2); if (!hit) break; }
+      placed.push({x:l.x, y:l.y, w:w0, h:16});
     }
     for (const l of labels) {
       const on = !lit || (upS.has(l.e.from) && upS.has(l.e.to)) || (dnS.has(l.e.from) && dnS.has(l.e.to));
       const w = l.t.length*6.3 + 10;
-      out += `<g class="e-lab${on&&lit?' lit':''}"><rect x="${l.x-w/2}" y="${l.y-8}" width="${w}" height="16" rx="1"/><text x="${l.x}" y="${l.y+3.5}" text-anchor="middle">${esc(l.t)}</text></g>`;
+      out += `<g class="e-lab${on&&lit?' lit':''}${sys(l.e.from)?.status==='planned'?' plan':''}"><rect x="${l.x-w/2}" y="${l.y-8}" width="${w}" height="16" rx="1"/><text x="${l.x}" y="${l.y+3.5}" text-anchor="middle">${esc(l.t)}</text></g>`;
     }
     svg.setAttribute('viewBox', `0 0 ${mb.width} ${mb.height}`);
     svg.innerHTML = out;
   };
-  draw();
+  draw(); requestAnimationFrame(draw);
   if ('ResizeObserver' in window) { ro = new ResizeObserver(() => draw()); ro.observe(map); }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
 }
@@ -728,7 +745,7 @@ function vClock(c){
   const unknownCards = all.filter(s => s.settlement_mode==='unknown');
   const sysIn = all.filter(s => s.settlement_mode!=='unknown');
   if (unknownCards.length) sysIn.push({id:'cards-unknown', short:'Card networks', settlement_mode:'unknown', windows:[], names:unknownCards.map(x=>x.short)});
-  const order = ['lynx','acss','interac-e-transfer','rtr','fedwire-funds','cards-unknown'];
+  const order = ['lynx','acss','interac-debit','interac-e-transfer','rtr','fedwire-funds','cards-unknown'];
   sysIn.sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));
   const W=1000, LW=150, dayW=(W-LW)/7, top=40, rh=52;
   const n = torontoNow(); const hol = S.holiday;
@@ -756,6 +773,11 @@ function vClock(c){
       g += `<rect x="${x(0,0)+4}" y="${mid-6}" width="280" height="12" fill="var(--paper)"/><text x="${x(0,0)+8}" y="${mid+3.5}" class="c-plan-t">24/7/365 exchange and settlement, once live</text>`;
       return;
     }
+    if (s.id==='interac-debit') {
+      for (let d=0; d<7; d++) if (isBiz(d,hol)) g += `<rect x="${x(d,6*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,6*60)}" y="${mid-11}" class="c-settle-t">via ACSS</text>`;
+      notes.push(`<li><b>Interac Debit</b> payments are totalled the same day, cleared through ACSS the next day and settled on Lynx.</li>`);
+      return;
+    }
     if (s.id==='acss') {
       for (let d=0; d<7; d++) if (isBiz(d,hol)) { const prev = (()=>{ let k=d-1; const list=[]; while(k>=-1){ const dd=(k+7)%7; list.unshift(DAYS[dd]); if (isBiz(dd,hol) || k===d-1 && false) break; k--; if (list.length>3) break; } return list; })();
         g += `<rect x="${x(d,6*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,6*60)}" y="${mid-11}" class="c-settle-t">morning</text>`; }
@@ -763,27 +785,29 @@ function vClock(c){
       return;
     }
     if (s.id==='interac-e-transfer') {
-      g += `<line x1="${x(0,0)}" x2="${x(6,1440)}" y1="${mid-12}" y2="${mid-12}" class="c-cust"/><rect x="${x(5,0)+2}" y="${mid-19}" width="186" height="13" fill="var(--paper)"/><text x="${x(5,0)+6}" y="${mid-9}" class="c-sub">customers send and receive any time</text>`;
+      for (let d=0; d<7; d++) g += `<line x1="${x(d,0)+3}" x2="${x(d,1440)-3}" y1="${mid-12}" y2="${mid-12}" class="c-cycle"/>`;
+      g += `<text x="${x(5,0)+4}" y="${mid-16}" class="c-sub">one cycle per day, 00:00 to 23:59</text>`;
       // settlement days: each cycle settles on the next business day after its value date
       const settleOn = {};
-      for (let d=0; d<7; d++){ let k=1; while(k<6 && !isBiz((d+k)%7,hol)) k++; const sd=(d+k)%7; if (d+k<=7+1) (settleOn[sd] ||= []).push(d); }
+      for (let d=0; d<7; d++){ let k=1; while(k<6 && !isBiz((d+k)%7,hol)) k++; const sd=(d+k)%7; (settleOn[sd] ||= []).push({d, k}); }
+      for (const v of Object.values(settleOn)) v.sort((a,b)=>b.k-a.k);
       for (let d=0; d<7; d++) if (isBiz(d,hol) && settleOn[d]) {
-        const fromDays = settleOn[d].map(k=>DAYS[k]);
-        g += `<rect x="${x(d,0)+2}" y="${mid-1}" width="${dayW-4}" height="9" class="c-settle"/><text x="${x(d,0)+4}" y="${mid+19}" class="c-settle-t">settles ${fromDays.length>1 ? fromDays[0]+'–'+fromDays.at(-1) : fromDays[0]}</text>`;
+        const fromDays = settleOn[d].map(o=>DAYS[o.d]);
+        g += `<rect x="${x(d,30)}" y="${mid-4}" width="${dayW*0.3}" height="12" class="c-settle"/><text x="${x(d,30)}" y="${mid+20}" class="c-settle-t">${fromDays.length>1 ? fromDays[0]+'–'+fromDays.at(-1) : fromDays[0]} items</text>`;
       }
-      notes.push(`<li><b>e-Transfer</b> lands for the customer in minutes. Between banks it settles net the day after the value date, through Lynx. ${hol ? 'With Monday off, Friday to Monday all settle on Tuesday.' : 'Toggle the holiday to see a four-day gap.'}</li>`);
+      notes.push(`<li><b>e-Transfer</b> feels instant to customers. Between banks it settles net the day after the value date, through Lynx. Interac says weekends and holidays can stretch this to four days. Which day each weekend cycle lands on is our reading of that rule. ${hol ? 'With Monday off, Friday to Monday all settle on Tuesday.' : 'Tick the holiday box to see the four-day gap.'}</li>`);
       return;
     }
     // open windows (Lynx, Fedwire)
     for (let d=0; d<7; d++) for (const [a,b] of openIntervals(s,d,hol)) g += `<rect x="${x(d,a)}" y="${mid-6}" width="${(b-a)/1440*dayW}" height="12" class="c-open"/>`;
     for (const w of s.windows.filter(w=>w.kind==='cutoff')) for (let d=0; d<7; d++) if (isBiz(d,hol)) g += `<line x1="${x(d,toMin(w.start))}" x2="${x(d,toMin(w.start))}" y1="${mid-6}" y2="${mid+6}" class="c-cut"/>`;
-    if (s.id==='lynx') notes.push(`<li><b>Lynx</b> settles each payment as it goes, on business days only. The white mark is 18:00, when regular payments close.</li>`);
+    if (s.id==='lynx') notes.push(`<li><b>Lynx</b> settles each payment as it goes, so the whole bar is final. Business days only. The white mark is 18:00, when regular payments close.</li>`);
     if (s.id==='fedwire-funds') notes.push(`<li><b>Fedwire</b> opens at 21:00 the evening before each business day. The white mark is the 18:45 third-party cutoff.</li>`);
   });
   const H = top + sysIn.length*rh + 8;
   const nx = x(n.dow, n.mins);
   g += `<line x1="${nx}" x2="${nx}" y1="${top-10}" y2="${H}" class="c-now"/><text x="${nx+4}" y="${H-2}" class="c-now-t">now</text>`;
-  return `<div class="section-h"><h2>When it's final</h2><p>This week in Toronto time. Bars are opening hours, accent marks are when money settles between institutions.</p></div>
+  return `<div class="section-h"><h2>When it's final</h2><p>This week in Toronto time. Accent means money is settling between institutions. A long bar settles all day, a short mark settles once.</p></div>
     <label class="toggle"><input type="checkbox" id="holiday" ${hol?'checked':''}> Monday is a statutory holiday</label>
     <div class="clockbox" tabindex="0" role="img" aria-label="Weekly settlement clock for ${c.id}. ${esc(notes.map(n=>n.replace(/<[^>]+>/g,'')).join(' '))}"><svg viewBox="0 0 ${W} ${H+6}">${g}</svg></div>
     <p class="scrollhint">Scroll sideways for the full week.</p>
@@ -831,14 +855,15 @@ function vPanel(n, c){
       f('Participants', esc(r.participants_count || r.participants_summary) || unk) +
       f('Settlement asset', esc(r.settlement_asset) || unk) +
       f('Hours', esc(r.hours) || unk) +
-      f('Settles in', r.settlement_mode==='none' ? 'Does not settle' : r.settles_in ? esc(sys(r.settles_in).name) : r.settlement_mode==='unknown' ? unk : 'Final here');
+      f(r.status==='planned' ? 'Will settle in' : 'Settles in', r.settlement_mode==='none' ? 'Does not settle' : r.settles_in ? esc(sys(r.settles_in).name) : r.settlement_mode==='unknown' ? unk : 'Final here');
     explain = r.explainer; srcIds = r.field_sources.explainer; allSrc = [...new Set(Object.values(r.field_sources).flat())];
     if ((r.windows||[]).some(w=>w.kind==='open')) { const nn = torontoNow(); today = `<div class="today"><div class="ph"><span>Today</span><span>${esc(openStatus(r).text)}</span></div>${day24(r, nn.dow, false, true)}<div class="hrs"><span>00:00</span><span>06</span><span>12</span><span>18</span><span>24:00</span></div></div>`; }
   } else if (n.kind==='product'){
     kindLabel = 'What customers use · layer 7';
     const targets = [r.runs_on].flat().map(t=>sys(t));
     facts = `<dt>What it is</dt><dd>${esc(r.plain)}</dd><dt>Runs on</dt><dd>${targets.map(t=>esc(t.name)).join(', ')}</dd><dt>Settles in</dt><dd class="acc">${targets.map(t => t.settles_in ? esc(sys(t.settles_in).name) : '<span class="unk">Not confirmed</span>').join(', ')}</dd>`;
-    explain = `${r.name} runs on ${targets.map(t=>t.name).join(' and ')}. Follow the path below to see where it becomes final.`;
+    const ch = pathDown(n.id); const ends = ch.at(-1).id===root.id;
+    explain = `${r.name} runs on ${targets.map(t=>t.name).join(' and ')}. ${ends ? `The banks involved settle what they owe each other in ${root.name}.` : 'Where the banks settle what they owe each other is not confirmed in the sources checked.'}`;
     srcIds = r.sources; allSrc = r.sources;
   } else {
     kindLabel = `Layer ${r.layer} · ${IDX.layers[r.layer].name}`;
@@ -851,7 +876,7 @@ function vPanel(n, c){
     if (next) { const e = next.via; how = e.type==='runs' ? 'runs on' : e.type==='access' ? 'holds an account at' : `settles ${e.label || MODE[nd.rec.settlement_mode].toLowerCase()}`; }
     else if (isRoot) how = `Final · ${root.settlement_asset}`;
     else if (nd.kind==='system' && nd.rec.settlement_mode==='unknown') how = 'settlement path not confirmed';
-    const kcls = next && next.via.type==='runs' ? ' k-runs' : '';
+    const kcls = next && next.via.type==='runs' ? ' k-runs' : next && nd.kind==='system' && nd.rec.status==='planned' ? ' k-plan' : '';
     return `<li class="rung${i===0?' cur':''}${isRoot?' root':''}${kcls}"><span class="rl" aria-hidden="true"></span><div class="rb">${i===0?`<b>${esc(nd.name)}</b>`:`<button type="button" data-node="${x.id}">${esc(nd.name)}</button>`}<span class="how">${esc(how)}</span></div></li>`;
   }).join('');
   const multi = n.kind==='product' && [r.runs_on].flat().length>1 ? `<p class="src">Also runs on ${[r.runs_on].flat().slice(1).map(t=>esc(sys(t).name)).join(', ')}.</p>` : '';
@@ -891,7 +916,7 @@ function vFlow(){
   const lineName = {message:'Message', money:'Money movement', settlement:'Settlement', customer:'Customer'};
   const ccy = IDX.ccyByRegion[rail.region];
   return crumbs([HOME, {label:'Railroom'}, {label:esc(sc.title)}]) +
-   `<div class="flow-head"><h1>${esc(sc.title)}</h1><span class="mono muted">Rail <a class="set" style="color:var(--accent);font-weight:600" href="${href({view:'ccy',ccy:ccy.id,node:rail.id})}" data-go='{"view":"ccy","ccy":"${ccy.id}","node":"${rail.id}"}'>${esc(rail.name)}</a></span></div>
+   `<div class="flow-head"><h1>${esc(sc.title)}</h1><span class="mono muted">Rail <a style="font-weight:700" href="${href({view:'ccy',ccy:ccy.id,node:rail.id})}" data-go='{"view":"ccy","ccy":"${ccy.id}","node":"${rail.id}"}'>${esc(rail.name)}</a></span></div>
     <p class="lede">${esc(sc.summary)} Dashed line is a message. Solid line is money moving on a bank's books. Double line into the last column is final settlement in central bank money.</p>
     <div class="diagram" role="img" aria-label="Sequence diagram with ${sc.steps.length} steps. The steps are listed in text below.">${svgFlow(sc)}</div>
     <div class="controls">
@@ -899,7 +924,7 @@ function vFlow(){
       <button class="btn strong" type="button" id="next" ${S.step===sc.steps.length?'disabled':''}>Next →</button>
       <label class="scrub"><span class="mono muted">Step ${S.step} of ${sc.steps.length} · ${esc(st.phase)} · ${esc(st.timing)}</span>
         <input type="range" id="scrub" min="1" max="${sc.steps.length}" value="${S.step}" aria-label="Step">
-        <span class="marks" aria-hidden="true"><span>authorization</span><span>clearing</span><span>settlement</span></span></label>
+        <span class="marks" aria-hidden="true">${['authorization','clearing','settlement'].map(ph => { const i = sc.steps.findIndex(x=>x.phase===ph); return i<0 ? '' : `<span style="left:${i/(sc.steps.length-1)*100}%">${ph}</span>`; }).join('')}</span></label>
     </div>
     <p class="caption" aria-live="polite"><span class="mono">${S.step}. ${esc(lineName[st.type])}</span>${esc(st.caption)}</p>
     <div class="four">${[['messaging','Messaging'],['money','Money movement'],['settlement','Settlement'],['customer','Customer sees']].map(([k,l]) => `<div><h3${k==='settlement'?' class="acc"':''}>${l}</h3><p>${esc(sc.explainer[k].text)}</p><p class="src" style="margin:0">${esc(srcNames(sc.explainer[k].sources))}</p></div>`).join('')}</div>
@@ -939,6 +964,12 @@ function openNode(id){
   const n = node(id); const c = IDX.ccyByRegion[n.region];
   go({view:'ccy', ccy:c.id, node:id, flow:null, type:null}, {focus:true});
 }
+// On phones the record opens as a bottom sheet, so bring the selected item into the strip above it.
+function bringSelectedIntoView(){
+  if (!window.matchMedia('(max-width: 900px)').matches || !S.node) return;
+  const el = document.querySelector(`.map [data-node="${CSS.escape(S.node)}"]`);
+  if (el) window.scrollTo({top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - 64), behavior:'auto'});
+}
 function closePanel(){ const id = S.node; go({node:null, full:false}); const el = document.querySelector(`.map [data-node="${CSS.escape(lastFocus||id)}"]`); el && el.focus(); }
 function wire(){
   const app = $('#app');
@@ -965,7 +996,7 @@ document.addEventListener('keydown', e => {
 });
 $$('header [data-nav]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); if (a.dataset.nav==='flow') go({view:'flow', flow:D.scenarios[0].id, step:1, node:null}); else go({view:'home', ccy:null, node:null, type:null, flow:null}); }));
 
-load().then(d => { D=d; build(); S=fromURL(); render(); if (S.node) $('#ptitle')?.focus({preventScroll:true}); })
+load().then(d => { D=d; build(); S=fromURL(); render(); if (S.node) { $('#ptitle')?.focus({preventScroll:true}); bringSelectedIntoView(); } })
   .catch(err => { $('#app').innerHTML = `<div class="err"><strong>The atlas data did not load.</strong> ${esc(err.message)}. Serve the repo root with a local web server (for example <span class="mono">npx serve .</span>) and open /prototype/canada/.</div>`; console.error(err); });
 })();
 </script>
