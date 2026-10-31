@@ -81,7 +81,9 @@ main{padding-bottom:56px}
 
 /* L1 currency ledger */
 .ledger{border-top:1px solid var(--ink)}
-.ccy{display:grid;grid-template-columns:132px minmax(0,1fr) 260px;gap:6px 24px;align-items:center;padding:16px 0;border-bottom:1px solid var(--rule);text-decoration:none}
+.ccy-count{text-align:right;color:var(--muted);line-height:1.7}
+.later{color:var(--muted);font-size:var(--t-s);padding:12px 0;border-bottom:1px solid var(--rule);margin:0}
+.ccy{display:grid;grid-template-columns:132px minmax(0,1fr) 140px;gap:6px 24px;align-items:center;padding:16px 0;border-bottom:1px solid var(--rule);text-decoration:none}
 .ccy:hover .ccy-code{color:var(--accent)}
 .ccy-id{display:flex;align-items:center;gap:10px}
 .ccy-code{font-family:var(--mono);font-size:var(--t-l);font-weight:600;font-variation-settings:"wdth" 90}
@@ -148,7 +150,7 @@ main{padding-bottom:56px}
 .map.has-sel .node:not(.lit) .logo{opacity:.5}
 .map.has-sel .base:not(.lit){background:var(--band);border-top-color:var(--rule)}
 .node.lit:not(.sel){box-shadow:0 0 0 1px var(--ink)}
-.base{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:168px minmax(0,1fr) auto;align-items:center;gap:0 4px;width:100%;padding:14px 12px 14px 0;background:var(--accent-soft);border-top:4px double var(--accent);position:relative;z-index:3}
+.base{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:168px minmax(0,1fr) auto;align-items:center;gap:0 4px;width:100%;padding:14px 12px 14px 0;background:var(--accent-soft);border-top:4px double var(--accent);border-bottom:10px solid color-mix(in srgb,var(--accent) 30%,var(--paper));box-shadow:inset 0 -1px 0 var(--accent);position:relative;z-index:3}
 .base .lhead{padding:0 14px 0 0}
 .base .lhead .lid{color:var(--accent)}
 .base .bname{font-weight:700;font-size:var(--t-l);font-variation-settings:"wdth" 85;display:flex;align-items:center;gap:10px;padding-left:4px}
@@ -160,9 +162,9 @@ main{padding-bottom:56px}
 .e-settle-out{stroke:var(--accent);stroke-width:5}
 .e-settle-in{stroke:var(--paper);stroke-width:1.6}
 .e-access{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:1.5 3.5;stroke-linecap:round}
-.e-funded{stroke:var(--planned);stroke-width:1.4;stroke-dasharray:2 3}
-.e-plan-out{stroke:var(--planned);stroke-width:5;stroke-dasharray:7 4}
-.e-plan-in{stroke:var(--paper);stroke-width:1.6}
+.e-funded{stroke:var(--planned);stroke-width:1.8;stroke-dasharray:1.5 4;stroke-linecap:round}
+.e-plan-out{stroke:var(--planned);stroke-width:1.8;stroke-dasharray:1.5 4;stroke-linecap:round}
+.e-plan-in{stroke:none}
 .e-lab.plan text{fill:var(--planned)}
 .e-unknown{stroke:var(--rule-strong);stroke-width:1.2;stroke-dasharray:3 3}
 .e-lab rect{fill:var(--paper)}
@@ -176,6 +178,42 @@ main{padding-bottom:56px}
 .narrow-hint{display:none}
 .sel-note{display:none;font-style:normal;font-size:var(--t-xs);color:var(--muted);grid-column:1/-1}
 
+/* isometric glyph nodes: no boxes, a small iso object above each label */
+.node,.node.k-product,.node.k-system,.node.l-1,.node.k-access{border:0;background:transparent;border-radius:0;padding:4px 2px 6px;align-items:center;text-align:center;gap:0;min-height:0}
+.node .nm{justify-content:center;font-size:var(--t-s)}
+.node .sb{display:none}
+.node .glyph{width:46px;height:42px;display:block;margin:0 auto 2px;overflow:visible}
+.node.l-4b .glyph,.node.l-1 .glyph{width:64px}
+.node .glyph.wide{width:100%;height:22px;margin:0 0 4px}
+.glyph.wide polygon{vector-effect:non-scaling-stroke}
+@container (max-width: 860px){ .node .glyph.wide{min-width:140px} }
+.glyph .f-t{fill:var(--paper);stroke:var(--ink);stroke-width:1.1;stroke-linejoin:round}
+.glyph .f-l{fill:color-mix(in srgb,var(--ink) 10%,var(--paper));stroke:var(--ink);stroke-width:1.1;stroke-linejoin:round}
+.glyph .f-r{fill:color-mix(in srgb,var(--ink) 20%,var(--paper));stroke:var(--ink);stroke-width:1.1;stroke-linejoin:round}
+.glyph .g-line{stroke:var(--ink);stroke-width:1;fill:none}
+.glyph .ic{fill:none;stroke:var(--ink);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.node.l-1:not(.planned) .glyph polygon{stroke:var(--accent)}
+.node.l-1:not(.planned) .glyph .f-t{fill:color-mix(in srgb,var(--accent) 10%,var(--paper))}
+.node.l-1:not(.planned) .glyph .f-l{fill:color-mix(in srgb,var(--accent) 22%,var(--paper))}
+.node.l-1:not(.planned) .glyph .f-r{fill:color-mix(in srgb,var(--accent) 34%,var(--paper))}
+.node.planned .glyph polygon{fill:var(--paper);stroke:var(--planned);stroke-dasharray:3 2}
+.node.planned .glyph .ic{stroke:var(--planned)}
+.node.unknown .glyph polygon{stroke-dasharray:3 2}
+.node.planned::after{content:none}
+.node .ptag{font:600 9px var(--mono);color:var(--planned);margin-top:2px}
+.node .fin{margin-top:1px}
+.node:hover{outline:0}
+.node:hover .nm{text-decoration:underline}
+.node.sel{background:transparent;color:var(--ink)}
+.node.sel .glyph polygon{stroke:var(--ink);stroke-width:2.2}
+.node.sel .glyph .f-t{fill:var(--ink)}
+.node.sel .glyph .ic{stroke:var(--paper)}
+.node.sel .nm{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.node.sel .fin{color:inherit}
+.node.lit:not(.sel){box-shadow:none}
+.map.has-sel .node:not(.lit) .glyph{opacity:.3}
+.node.k-product{border-top:0!important;background:var(--rowbg)!important}
+
 /* finality scale and seats column */
 .map.with-seats{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:0}
 .stack{min-width:0}
@@ -187,7 +225,7 @@ main{padding-bottom:56px}
 .finscale .fin-nbd{color:var(--ink)}
 .finscale .fin-unk,.finscale .fin-mix{color:var(--muted);border-top-style:dashed}
 .finscale .fin-day{color:var(--ink)}
-.node .fin{font:600 9.5px/1.3 var(--mono);margin-top:3px}
+.node .fin{font:500 11px/1.3 var(--sans);margin-top:2px;color:var(--muted)}
 .node .fin-rt{color:var(--accent)} .node .fin-nbd,.node .fin-day{color:var(--ink)} .node .fin-unk,.node .fin-mix{color:var(--muted)}
 .node.planned .fin-rt{color:var(--planned)}
 .node.sel .fin{color:var(--paper)}
@@ -200,38 +238,55 @@ main{padding-bottom:56px}
 .seats-h span{display:block;font-size:var(--t-xs);color:var(--muted);line-height:1.35;margin-top:2px}
 .seats .node{margin-right:10px}
 
-/* clock */
-.clockbox{overflow-x:auto;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);-webkit-overflow-scrolling:touch}
-.clockbox svg{display:block;min-width:720px;width:100%;height:auto}
-.c-day{font:600 11px var(--mono);fill:var(--ink)}
-.c-date{font:400 10px var(--mono);fill:var(--muted)}
-.c-row{font:700 12px var(--sans);fill:var(--ink)}
-.c-sub{font:400 10px var(--sans);fill:var(--muted)}
-.c-grid{stroke:var(--rule);stroke-width:1}
-.c-gridd{stroke:var(--rule-strong);stroke-width:1}
-.c-open{fill:var(--accent)}
-.c-cycle{stroke:var(--rule-strong);stroke-width:1}
-.c-cust{fill:none;stroke:var(--ink);stroke-width:1.2;stroke-dasharray:2 2}
-.c-settle{fill:var(--accent)}
-.c-settle-t{font:600 9.5px var(--mono);fill:var(--accent)}
-.c-plan{fill:url(#hatch)}
-.c-plan-edge{fill:none;stroke:var(--planned);stroke-width:1}
-.c-plan-t{font:600 9.5px var(--mono);fill:var(--planned)}
-.c-unk{font:400 11px var(--sans);fill:var(--muted);font-style:italic}
-.c-now{stroke:var(--accent);stroke-width:2}
-.c-now-t{font:600 10px var(--mono);fill:var(--accent)}
-.c-hol{fill:var(--band)}
-.c-hol-t{font:600 9.5px var(--mono);fill:var(--muted)}
-.c-cut{stroke:var(--paper);stroke-width:1.5}
-.clockwrap{position:relative}
-.clocklabels{display:none;position:relative}
-.clocklabels div{position:absolute;left:0;right:6px;display:flex;align-items:center;font-size:11px;line-height:1.15;border-top:1px solid var(--rule)}
-.clockbox svg.clock-days{display:none}
-.toggle{display:inline-flex;align-items:center;gap:8px;font-size:var(--t-s);cursor:pointer;user-select:none;min-height:40px}
-.toggle input{width:18px;height:18px;accent-color:var(--ink);margin:0}
-.clock-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:4px 28px;margin:10px 0 0;padding:0;list-style:none;font-size:var(--t-s);color:var(--muted)}
-.clock-notes li{padding:6px 0;border-bottom:1px solid var(--rule)}
-.clock-notes b{color:var(--ink);font-weight:700}
+/* isometric overview */
+.iso-wrap{border-top:1px solid var(--ink);padding-top:8px}
+svg.iso{display:block;width:100%;height:auto;max-height:78vh}
+.iso .f-t{fill:var(--paper);stroke:var(--ink);stroke-width:1;stroke-linejoin:round}
+.iso .f-l{fill:color-mix(in srgb,var(--ink) 9%,var(--paper));stroke:var(--ink);stroke-width:1;stroke-linejoin:round}
+.iso .f-r{fill:color-mix(in srgb,var(--ink) 17%,var(--paper));stroke:var(--ink);stroke-width:1;stroke-linejoin:round}
+.iso .k-root .f-t{fill:var(--accent-soft);stroke:var(--accent)}
+.iso .k-root .f-l{fill:color-mix(in srgb,var(--accent) 22%,var(--paper));stroke:var(--accent)}
+.iso .k-root .f-r{fill:color-mix(in srgb,var(--accent) 34%,var(--paper));stroke:var(--accent)}
+.iso .k-stl:not(.planned) polygon{stroke:var(--accent);stroke-width:1.6}
+.iso .k-stl:not(.planned) .f-t{fill:color-mix(in srgb,var(--accent) 8%,var(--paper))}
+.iso .planned polygon{fill:var(--paper);stroke:var(--planned);stroke-dasharray:4 3}
+.iso .unknown polygon{stroke-dasharray:3 3}
+.iso .k-prod .f-t{fill:var(--paper)}
+.iso .ic-bg{fill:var(--paper);stroke:var(--rule-strong)}
+.iso .ic{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.iso .planned .ic{stroke:var(--planned)}
+.iso-lab{font:700 12px var(--sans);fill:var(--ink);font-variation-settings:"wdth" 82;paint-order:stroke;stroke:var(--paper);stroke-width:3px;stroke-linejoin:round}
+.iso-lab.small{font-weight:600;font-size:11px}
+.iso-tier{font:600 11px var(--sans);fill:var(--muted);letter-spacing:.02em}
+.iso-plate{font:700 15px var(--sans);fill:var(--ink);font-variation-settings:"wdth" 85}
+.iso-plate-sub{font:600 10.5px var(--mono);fill:var(--accent)}
+.iso-q{font:700 13px var(--mono);fill:var(--muted)}
+.iso .ie-runs{fill:none;stroke:var(--ink);stroke-width:1.3}
+.iso .ie-out,.iso-legend .ie-out{fill:none;stroke:var(--accent);stroke-width:5;stroke-linejoin:round}
+.iso .ie-in,.iso-legend .ie-in{fill:none;stroke:var(--paper);stroke-width:1.6;stroke-linejoin:round}
+.iso .ie-dot,.iso-legend .ie-dot{fill:none;stroke:var(--muted);stroke-width:1.8;stroke-dasharray:1.5 4;stroke-linecap:round}
+.iso .ie-dot.planned{stroke:var(--planned)}
+.iso-legend .ie-runs{stroke:var(--ink);stroke-width:1.3}
+.ie-lab{font:600 10.5px var(--mono);fill:var(--accent);stroke:var(--paper);stroke-width:4px;stroke-linejoin:round}
+.ie-lab.planned{fill:var(--planned)}
+.iso .speed line{stroke:var(--muted);stroke-width:1}
+.iso .speed text{font:600 10.5px var(--sans);fill:var(--muted)}
+.iso-node{cursor:pointer}
+.iso-node:focus{outline:none}
+.iso-node:focus-visible polygon,.iso-node:hover polygon{stroke-width:2.2}
+.iso-node.sel polygon{stroke:var(--ink);stroke-width:2.6}
+.iso-node.sel .f-t{fill:color-mix(in srgb,var(--ink) 14%,var(--paper))}
+.iso-node.dim polygon,.iso-node.dim .ic-bg,.iso-node.dim .ic{opacity:.3}
+.iso-node.dim text{fill:var(--muted);font-weight:400}
+.ie.dim{opacity:.12}
+.iso-legend{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:var(--t-xs);color:var(--muted);padding:6px 0 0}
+.iso-legend span{display:inline-flex;align-items:center;gap:6px}
+.detailmap{margin-top:14px}
+.detailmap .map-inner{display:none;margin-top:10px}
+.detailmap.open .map-inner{display:block}
+.timing{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.timing li{padding:10px 0;border-bottom:1px solid var(--rule);max-width:80ch}
+.timing .s{display:block;font-size:var(--t-xs);color:var(--muted);margin-top:2px}
 
 /* timeline */
 .tlbox{overflow-x:auto;border-top:1px solid var(--ink)}
@@ -402,11 +457,6 @@ details li{margin:0 0 6px}
   .base{grid-template-columns:minmax(0,1fr);gap:4px;padding:12px}
   .base .lhead{display:none}
   .base .bsub{text-align:left;padding-left:4px}
-  .clockwrap{display:grid;grid-template-columns:78px minmax(0,1fr);border-top:1px solid var(--ink)}
-  .clocklabels{display:block}
-  .clockbox{border-top:0}
-  .clockbox svg.clock-wide{display:none!important}
-  .clockbox svg.clock-days{display:block!important;min-width:770px;width:770px!important}
   .scrollhint{display:block}
   .narrow-hint{display:block}
   .map.sel-product .lrow[data-layer="7"] .node.k-product:not(.sel){display:none}
@@ -616,7 +666,7 @@ function render(){
   else if (S.view==='flow') app.innerHTML = vFlow();
   else app.innerHTML = vCcy();
   wire();
-  if (S.view==='ccy') { drawEdges(); const cb = $('.clockbox'); if (cb && cb.scrollWidth > cb.clientWidth + 2 && window.matchMedia('(max-width: 600px)').matches) { const n = torontoNow(); cb.scrollLeft = Math.max(0, (n.dow + n.mins/1440)*110 - cb.clientWidth*0.5); } }
+  if (S.view==='ccy') drawEdges();
   const t = S.view==='ccy' ? (S.node ? `${node(S.node).short} · ${S.ccy}` : S.ccy) : S.view==='flow' ? 'Railroom' : S.view==='type' ? IDX.groups[S.type].name : '';
   document.title = t ? `${t} · Settlement Map` : 'Settlement Map';
   $('#foot').innerHTML = `<p>Data as of ${fmtDate(D.meta.as_of)}. ${esc(D.meta.scope)}</p><p>How this was made. Built by Fintech North with Claude, from central bank and operator documents first. Every number links to its source. Corrections by pull request.</p>`;
@@ -636,27 +686,21 @@ function day24(s, dow, holiday, withNow){
   return `<div class="day24" role="img" aria-label="${esc(s.short)} hours ${iv.length ? iv.map(([a,b])=>fmtMin(a)+' to '+fmtMin(b===1440?0:b)).join(', ') : 'closed'}">${[6,12,18].map(h=>`<span class="tick" style="left:${h/24*100}%"></span>`).join('')}${iv.map(([a,b])=>`<span class="open" style="left:${a/1440*100}%;width:${(b-a)/1440*100}%"></span>`).join('')}${withNow?`<span class="now" style="left:calc(${n.mins/1440*100}% - 1px)"></span>`:''}</div>`;
 }
 function vHome(){
-  const n = torontoNow();
-  const loaded = D.currencies.filter(c=>c.phase===1), later = D.currencies.filter(c=>c.phase!==1);
+  const loaded = D.currencies.filter(c=>c.phase===1 && D.products.some(p=>p.region===c.region));
+  const later = D.currencies.filter(c=>!loaded.includes(c));
   const rows = loaded.map(c => {
-    const region = c.region;
-    const used = new Set([...D.systems.filter(s=>s.region===region && s.id!==c.root).map(s=>s.layer), ...D.products.filter(p=>p.region===region).map(()=> '7'), ...D.access.filter(a=>a.region===region).map(a=>a.layer)]);
-    const count = D.systems.filter(s=>s.region===region).length + D.products.filter(p=>p.region===region).length;
-    const rs = rootMainSystem(c); const st = rs ? openStatus(rs) : null;
+    const nProd = D.products.filter(p=>p.region===c.region).length, nSys = D.systems.filter(s=>s.region===c.region).length;
     return `<a class="ccy" href="${href({view:'ccy',ccy:c.id,node:null})}" data-go='{"view":"ccy","ccy":"${c.id}","node":null}'>
       <div class="ccy-id">${flag(c.flag)}<span class="ccy-code">${c.id}</span></div>
       <div class="ccy-main"><div class="ccy-cb">${esc(c.central_bank)}</div><div class="ccy-how">${esc(c.how)}</div></div>
-      <div>${rs ? `<div class="strip-label"><span>${esc(rs.short)} today</span><span class="${st.open?'status-open':'status-closed'}"><span class="dot ${st.open?'on':'off'}"></span>${st.open?'open':'closed'}</span></div>${day24(rs, n.dow, false, true)}<div class="strip-label" style="margin-top:3px"><span>00</span><span>12</span><span>24</span></div>` : ''}</div>
+      <div class="ccy-count mono">${nProd} payment types<br>${nSys} systems</div>
     </a>`;
   }).join('');
-  const types = [...D.groups].sort((a,b)=>a.order-b.order).map(g => { const k = D.systems.filter(s=>s.group===g.id).length;
-    return `<li><a class="${k?'':'empty'}" href="${href({view:'type',type:g.id})}" data-go='{"view":"type","type":"${g.id}"}'><span>${esc(g.name)}</span><span class="mono">${k ? k+' system'+(k>1?'s':'') : 'Phase 2'}</span></a></li>`; }).join('');
   const flows = D.scenarios.map(sc => `<li><a href="${href({view:'flow',flow:sc.id,step:1})}" data-flow="${sc.id}"><span>${esc(sc.title)}</span><span class="mono">${sc.steps.length} steps</span></a></li>`).join('');
-  return `<section class="pagehead"><div><h1>Where money becomes final</h1><p>Each currency settles in one place, the central bank. Open a currency to see who does what on top of it, what depends on what, and when each system settles.</p></div>
-      <div class="now">Toronto <b>${n.label}</b></div></section>
-    <div class="section-h"><h2>Currencies</h2><p>Phase 1 covers Canada end to end and the US systems the Canada to US flow touches.</p></div>
+  return `<section class="pagehead"><div><h1>Where money becomes final</h1><p>Each currency settles in one place, its central bank. Open a currency to see who does what on top of it, and when the banks settle each kind of payment.</p></div></section>
+    <div class="section-h"><h2>Currencies</h2></div>
     <div class="ledger">${rows}</div>
-    <div class="ccy-later" aria-label="Coming in Phase 2">${later.map(c=>`<div>${flag(c.flag)}<b>${c.id}</b><span>${esc(c.central_bank)}</span></div>`).join('')}</div>
+    <p class="later">More currencies are coming. ${later.map(c=>c.id).join(', ')}.</p>
     <div class="idx" style="margin-top:34px">
       <div><div class="section-h" style="margin-top:0"><h2>Flows</h2><p>Step through one payment, message by message.</p></div><ul>${flows}</ul></div>
     </div>`;
@@ -708,21 +752,18 @@ function vCcy(){
     </div>
     <div class="maplegend" aria-hidden="true">
       <span><svg width="34" height="10"><path d="M0 5H34" class="e e-runs"/></svg>runs on</span>
-      <span><svg width="34" height="10"><path d="M0 5H34" class="e e-settle-out"/><path d="M0 5H34" class="e e-settle-in"/></svg>settles in, with timing</span>
-      <span><svg width="34" height="10"><path d="M0 5H34" class="e e-plan-out"/><path d="M0 5H34" class="e e-plan-in"/></svg>will settle in, once live</span>
-      <span><svg width="34" height="10"><path d="M0 5H34" class="e e-funded"/></svg>accounts funded by</span>
-      <span><svg width="34" height="10"><path d="M0 5H34" class="e e-access"/></svg>holds an account at</span>
-      <span><svg width="34" height="10"><path d="M0 5H22" class="e e-unknown"/><text x="25" y="9" class="e-q">?</text></svg>not confirmed</span>
-      <span><svg width="22" height="12"><rect width="22" height="12" fill="url(#hatch-l)" stroke="currentColor" stroke-width=".8"/><defs><pattern id="hatch-l" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="6" fill="currentColor" opacity=".35"/></pattern></defs></svg>planned</span>
+      <span><svg width="34" height="10"><path d="M0 5H34" class="e e-settle-out"/><path d="M0 5H34" class="e e-settle-in"/></svg>settles in</span>
+      <span><svg width="34" height="10"><path d="M0 5H34" class="e e-access"/></svg>planned, account link, or not confirmed</span>
     </div>`;
-  const clock = vClock(c);
+  const clock = vTiming(c);
+
   const tl = vTimeline(c);
   const panel = S.node ? vPanel(node(S.node), c) : '';
   return crumbs([HOME, ...(S.node ? [{label:c.id, href:href({node:null}), go:{node:null}}, {label:esc(node(S.node).short)}] : [{label:c.id}])]) +
    `<div class="split${panel?' has-panel':''}"><div class="main-col">
      <section class="pagehead"><div><h1>${flag(c.flag)}${c.id} <span style="font-weight:400;color:var(--muted)">${esc(c.central_bank)}</span></h1><p>${esc(c.how)}</p></div>
-       ${rs ? `<div class="now">Toronto <b>${n.label}</b><br><span class="dot ${st.open?'on':'off'}"></span>${esc(rs.short)} ${st.open?'open':'closed'}, ${esc(st.text)}</div>` : ''}</section>
-     <div class="section-h"><h2>Who does what</h2><p>Customer money stays in bank accounts. The lines show where the banks settle what they owe each other for each kind of payment. Pick anything to trace it.</p></div>
+</section>
+     <div class="section-h"><h2>Who does what</h2><p>Customer money stays in bank accounts. The lines show where the banks settle what they owe each other. Pick anything to trace it.</p></div>
      ${map}
      <p class="hint">Settlement between banks is final, but some payments can still be undone afterwards. Cheques can be returned, pre-authorized debits disputed for 90 days, and card payments charged back. Pick one to see the rule and its source.</p>
      <p class="hint narrow-hint">Tap a payment type to draw its path to the central bank.</p>
@@ -738,12 +779,14 @@ function nodeBtn(n, pos, lit){
   if (lit && lit.has(n.id)) cls.push('lit');
   let sub = '', lg = '';
   let fin = '';
-  if (n.kind==='product') { sub = r.plain; const f = finality(n.id); fin = `<span class="fin fin-${f.b}">${esc(finText(f))}</span>`; }
+  if (n.kind==='product') { sub = ''; const f = finality(n.id); const short = f.b==='rt' ? 'Real time' : f.b==='nbd' ? 'Next business day' : f.b==='day' ? 'Daily' : f.b==='mix' ? 'Visa daily, Mastercard not confirmed' : 'Not confirmed';
+    fin = `<span class="fin fin-${f.b}">${esc(short)}</span>`; }
   else if (n.kind==='system') { sub = party(r.operator).name.replace(/ Inc\.| International Inc\.| Corp\./g,''); lg = logo(party(r.operator).logo); }
   else sub = r.through ? 'Over 50 institutions, through a seat holder' : 'Lynx participants and ACSS direct clearers';
   const dn = pathDown(n.id).slice(1).map(x=>node(x.id)?.short).filter(Boolean);
   const aria = `${n.name}${r.status==='planned'?', planned':''}. ${dn.length ? 'Settles through '+dn.join(', then ') : n.kind==='system' && r.settlement_mode==='unknown' ? 'Settlement path not confirmed' : ''}.`;
-  return `<button type="button" class="${cls.join(' ')}" data-node="${n.id}" ${pos?`style="grid-column:${pos}"`:''} aria-label="${esc(aria)}" aria-pressed="${S.node===n.id}"><span class="nm">${lg}${esc(n.short)}</span><span class="sb">${esc(sub)}</span>${fin}</button>`;
+  const tag = r.status==='planned' ? '<span class="ptag">planned</span>' : '';
+  return `<button type="button" class="${cls.join(' ')}" data-node="${n.id}" ${pos?`style="grid-column:${pos}"`:''} aria-label="${esc(aria)}" aria-pressed="${S.node===n.id}">${glyph(n, n.kind!=='product' && /span/.test(pos||''))}<span class="nm">${lg}${esc(n.short)}</span>${sub?`<span class="sb">${esc(sub)}</span>`:''}${fin}${tag}</button>`;
 }
 
 function drawEdges(){
@@ -811,7 +854,7 @@ function drawEdges(){
           const ya = yTop, yb = yBot;
           d = `M${x1} ${y1} C${x1} ${(y1+ya)/2} ${rx} ${(y1+ya)/2} ${rx} ${ya} L${rx} ${yb} C${rx} ${(yb+y2)/2} ${x2b} ${(yb+y2)/2} ${x2b} ${y2}`;
         }
-        if (e.type==='settle' && e.label && (!narrow || (lit && lit.has(e.from) && lit.has(e.to)))) labels.push({x:(x1+x2)/2, y:(y1+y2)/2, t:e.label, e});
+        if (e.type==='settle' && e.label && lit && lit.has(e.from) && lit.has(e.to)) labels.push({x:(x1+x2)/2, y:(y1+y2)/2, t:e.label, e});
       }
       const on = !lit || (upS.has(e.from) && upS.has(e.to)) || (dnS.has(e.from) && dnS.has(e.to));
       const L = on && lit ? ' lit' : '';
@@ -851,91 +894,45 @@ function drawEdges(){
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
 }
 
-/* ---------- clock ---------- */
-function vClock(c){
-  const region = c.region;
-  const rows = [];
-  const all = D.systems.filter(s => s.region===region && s.id!==c.root);
-  const unknownCards = all.filter(s => s.settlement_mode==='unknown');
-  const sysIn = all.filter(s => s.settlement_mode!=='unknown');
-  if (unknownCards.length) sysIn.push({id:'cards-unknown', short:unknownCards.length>1?'Card networks':unknownCards[0].short, settlement_mode:'unknown', windows:[], names:unknownCards.map(x=>x.short)});
-  const order = ['lynx','acss','interac-debit','interac-e-transfer','visanet-canada','rtr','fedwire-funds','cards-unknown'];
-  sysIn.sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));
-  const top=40, rh=52;
-  const build = (W, LW) => { const dayW=(W-LW)/7;
-  const n = torontoNow(); const hol = S.holiday;
-  const x = (dow, min) => LW + dow*dayW + min/1440*dayW;
-  let g = `<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="6" fill="var(--planned)" opacity=".4"/></pattern></defs>`;
-  // header
-  const today = new Date(n.date+'T12:00:00'); const monday = new Date(today); monday.setDate(today.getDate()-n.dow);
-  for (let d=0; d<7; d++){
-    const dt = new Date(monday); dt.setDate(monday.getDate()+d);
-    if (hol && d===0) g += `<rect x="${x(0,0)}" y="${top-6}" width="${dayW}" height="${sysIn.length*rh+6}" class="c-hol"/>`;
-    g += `<text x="${x(d,0)+6}" y="16" class="c-day">${DAYS[d]}${hol&&d===0?' · holiday':''}</text><text x="${x(d,0)+6}" y="30" class="c-date">${dt.getDate()} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()]}</text>`;
-    g += `<line x1="${x(d,0)}" x2="${x(d,0)}" y1="${top-6}" y2="${top+sysIn.length*rh}" class="c-gridd"/>`;
-    g += `<line x1="${x(d,720)}" x2="${x(d,720)}" y1="${top-2}" y2="${top+sysIn.length*rh}" class="c-grid"/>`;
-  }
-  const notes = [];
-  sysIn.forEach((s,i) => {
-    const y = top + i*rh, mid = y + rh/2;
-    g += `<line x1="0" x2="${W}" y1="${y+rh}" y2="${y+rh}" class="c-grid"/>`;
-    if (LW) g += `<text x="0" y="${mid-2}" class="c-row">${esc(s.short)}${s.status==='planned'?' ':''}</text>`;
-    let sub = s.status==='planned' ? 'planned' : s.settlement_mode==='unknown' ? 'not confirmed' : s.settlement_mode==='rtgs' ? 'each payment, as it goes' : 'once a day, in one total';
-    if (LW) g += `<text x="0" y="${mid+12}" class="c-sub">${esc(sub)}</text>`;
-    if (s.settlement_mode==='unknown') { g += `<rect x="${LW+4}" y="${mid-9}" width="430" height="16" fill="var(--paper)"/><text x="${LW+8}" y="${mid+4}" class="c-unk">Where ${esc(s.names.join(' and '))} net amounts settle in ${c.id} is not confirmed in the sources checked.</text>`; return; }
-    if (s.status==='planned') {
-      g += `<rect x="${x(0,0)}" y="${mid-8}" width="${7*dayW}" height="16" class="c-plan"/><rect x="${x(0,0)}" y="${mid-8}" width="${7*dayW}" height="16" class="c-plan-edge"/>`;
-      g += `<rect x="${x(0,0)+4}" y="${mid-6}" width="280" height="12" fill="var(--paper)"/><text x="${x(0,0)+8}" y="${mid+3.5}" class="c-plan-t">24/7/365 exchange and settlement, once live</text>`;
-      return;
-    }
-    if (s.id==='visanet-canada') {
-      for (let d=0; d<7; d++) if (isBiz(d,hol)) g += `<rect x="${x(d,9*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,9*60)}" y="${mid-11}" class="c-settle-t">once a day</text>`;
-      notes.push(`<li><b>Visa</b> settles each member's net position once a business day through Lynx, final on the value date. Visa Canada guarantees it. Time of day is not published, so the mark's position is indicative.</li>`);
-      return;
-    }
-    if (s.id==='interac-debit') {
-      for (let d=0; d<7; d++) if (isBiz(d,hol)) g += `<rect x="${x(d,6*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,6*60)}" y="${mid-11}" class="c-settle-t">yesterday's</text>`;
-      notes.push(`<li><b>Interac Debit</b> payments are totalled the same day, cleared through ACSS the next day and settled on Lynx.</li>`);
-      return;
-    }
-    if (s.id==='acss') {
-      for (let d=0; d<7; d++) if (isBiz(d,hol)) { const prev = (()=>{ let k=d-1; const list=[]; while(k>=-1){ const dd=(k+7)%7; list.unshift(DAYS[dd]); if (isBiz(dd,hol) || k===d-1 && false) break; k--; if (list.length>3) break; } return list; })();
-        g += `<rect x="${x(d,6*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,6*60)}" y="${mid-11}" class="c-settle-t">yesterday's</text>`; }
-      notes.push(`<li><b>ACSS</b> settles the previous business day's net balances each business morning, through Lynx.</li>`);
-      return;
-    }
-    if (s.id==='interac-e-transfer') {
-      for (let d=0; d<7; d++) g += `<line x1="${x(d,0)+3}" x2="${x(d,1440)-3}" y1="${mid-12}" y2="${mid-12}" class="c-cycle"/>`;
+/* ---------- timing, as plain facts ---------- */
+function vTiming(c){
+  if (c.id!=='CAD') return '';
+  const lynx = sys('lynx');
+  const items = [
+    {t:`Wires settle one by one on Lynx, on business days, ${lynx.hours.replace(/^Business days, /,'').replace(/\. .*/,'')}.`, src:lynx.field_sources.hours},
+    {t:'Cheques, direct deposits, pre-authorized debits and debit card payments clear through ACSS. The banks settle each day\'s totals the next business morning, through Lynx.', src:['pc_acss','interac_imn_2023']},
+    {t:'An e-Transfer arrives in minutes, but the banks settle it the day after. One sent on a Friday evening settles on Monday, or on Tuesday if Monday is a holiday. Interac says weekends and holidays can stretch this to four days, and which day each lands on is our reading of that rule.', src:['interac_pps_2025']},
+    {t:'Visa settles each bank\'s net position once a business day through Lynx.', src:['visa_pps_2025']},
+    {t:'The Real-Time Rail will settle every payment the moment it is sent, around the clock, once it launches.', src:['pc_rtr_faq']}];
+  return `<div class="section-h"><h2>When it settles</h2><p>The timing that matters, in plain terms.</p></div>
+    <ul class="timing">${items.map(x=>`<li>${esc(x.t)}<span class="s">${esc(srcNames(x.src))}</span></li>`).join('')}</ul>`;
+}
 
-      // settlement days: each cycle settles on the next business day after its value date
-      const settleOn = {};
-      for (let d=0; d<7; d++){ let k=1; while(k<6 && !isBiz((d+k)%7,hol)) k++; const sd=(d+k)%7; (settleOn[sd] ||= []).push({d, k}); }
-      for (const v of Object.values(settleOn)) v.sort((a,b)=>b.k-a.k);
-      for (let d=0; d<7; d++) if (isBiz(d,hol) && settleOn[d]) {
-        const fromDays = settleOn[d].map(o=>DAYS[o.d]);
-        g += `<rect x="${x(d,30)}" y="${mid-4}" width="${dayW*0.3}" height="12" class="c-settle"/><text x="${x(d,30)}" y="${mid+20}" class="c-settle-t">${fromDays.length>1 ? fromDays[0]+'–'+fromDays.at(-1) : fromDays[0]}</text>`;
-      }
-      notes.push(`<li><b>e-Transfer</b> feels instant to customers. Between banks it settles net the day after the value date, through Lynx. Interac says weekends and holidays can stretch this to four days. Which day each weekend cycle lands on is our reading of that rule. ${hol ? 'With Monday off, Friday to Monday all settle on Tuesday.' : 'Tick the holiday box to see the four-day gap.'}</li>`);
-      return;
-    }
-    // open windows (Lynx, Fedwire)
-    for (let d=0; d<7; d++) for (const [a,b] of openIntervals(s,d,hol)) g += `<rect x="${x(d,a)}" y="${mid-6}" width="${(b-a)/1440*dayW}" height="12" class="c-open"/>`;
-    for (const w of s.windows.filter(w=>w.kind==='cutoff')) for (let d=0; d<7; d++) if (isBiz(d,hol)) g += `<line x1="${x(d,toMin(w.start))}" x2="${x(d,toMin(w.start))}" y1="${mid-6}" y2="${mid+6}" class="c-cut"/>`;
-    if (s.id==='lynx') notes.push(`<li><b>Lynx</b> settles each payment as it goes, so the whole bar is final. Business days only. The white mark is 18:00, when regular payments close.</li>`);
-    if (s.id==='fedwire-funds') notes.push(`<li><b>Fedwire</b> opens at 21:00 the evening before each business day. The white mark is the 18:45 third-party cutoff.</li>`);
-  });
-  const H = top + sysIn.length*rh + 8;
-  const nx = x(n.dow, n.mins);
-  g += `<line x1="${nx}" x2="${nx}" y1="${top-10}" y2="${H}" class="c-now"/><text x="${nx+4}" y="${H-2}" class="c-now-t">now</text>`;
-  return {g, H, notes}; };
-  const wide = build(1000,150), days = build(770,0); const notes = wide.notes, H = wide.H;
-  const hol = S.holiday;
-  return `<div class="section-h"><h2>When it's final</h2><p>This week in Toronto time. A long red bar means payments settle one by one all day. A short red mark means one daily total settles then, and its label says which day's payments it covers.</p></div>
-    <label class="toggle"><input type="checkbox" id="holiday" ${hol?'checked':''}> Monday is a statutory holiday</label>
-    <div class="clockwrap"><div class="clocklabels" aria-hidden="true" style="height:${H+6}px">${sysIn.map((s,i)=>`<div style="top:${top+i*rh}px;height:${rh}px"><b>${esc(s.short)}</b></div>`).join('')}</div>
-    <div class="clockbox" tabindex="0" role="img" aria-label="Weekly settlement clock for ${c.id}. ${esc(notes.map(n=>n.replace(/<[^>]+>/g,'')).join(' '))}"><svg class="clock-wide" viewBox="0 0 1000 ${H+6}">${wide.g}</svg><svg class="clock-days" width="770" height="${H+6}" viewBox="0 0 770 ${H+6}">${days.g}</svg></div></div>
-    <p class="scrollhint">Scroll sideways for the full week.</p>
-    <ul class="clock-notes">${notes.join('')}</ul>`;
+/* ---------- isometric glyphs ---------- */
+const ICON = {
+  'ca-rtr-payment':'M13 2 4 14h7l-1 8 9-12h-7z',
+  'ca-wire':'M3 7h14m0 0-4-4m4 4-4 4M21 17H7m0 0 4-4m-4 4 4 4',
+  'ca-direct-deposit':'M12 3v10m0 0-4-4m4 4 4-4M4 15v4h16v-4',
+  'ca-pad':'M4 6h16v14H4zM4 10h16M8 3v4m8-4v4m-6 9 2 2 4-4',
+  'ca-cheque':'M2 7h20v10H2zM5 13h7m3 0h4',
+  'ca-pos-debit':'M7 2h10v20H7zM9 6h6v4H9zm0 7h2m2 0h2m-6 3h2m2 0h2',
+  'ca-etransfer':'M7 2h10v20H7zM11 18h2M9 9h6m0 0-2-2m2 2-2 2',
+  'ca-credit-card':'M2 6h20v12H2zM2 10h20M6 15h4'
+};
+const G = {
+  cube: '<polygon class="f-l" points="5,15 23,24 23,40 5,31"/><polygon class="f-r" points="23,24 41,15 41,31 23,40"/><polygon class="f-t" points="23,6 41,15 23,24 5,15"/>',
+  slab: '<polygon class="f-l" points="2,20 23,30 23,38 2,28"/><polygon class="f-r" points="23,30 44,20 44,28 23,38"/><polygon class="f-t" points="23,10 44,20 23,30 2,20"/>',
+  tile: '<polygon class="f-l" points="5,27 23,36 23,39 5,30"/><polygon class="f-r" points="23,36 41,27 41,30 23,39"/><polygon class="f-t" points="23,18 41,27 23,36 5,27"/>',
+  bank: '<polygon class="f-l" points="7,18 23,26 23,40 7,32"/><polygon class="f-r" points="23,26 39,18 39,32 23,40"/><polygon class="f-t" points="23,10 39,18 23,26 7,18"/><path class="g-line" d="M11 22v10M15 24v10M27 32V22M31 30V20M35 28V18"/>'
+};
+function glyph(n, wide){
+  if (wide) return `<svg class="glyph wide" viewBox="0 0 200 22" preserveAspectRatio="none" aria-hidden="true"><polygon class="f-l" points="0,11 190,11 190,21 0,21"/><polygon class="f-r" points="190,11 200,1 200,11 190,21"/><polygon class="f-t" points="10,1 200,1 190,11 0,11"/></svg>`;
+  let inner;
+  if (n.kind==='product') inner = G.tile + `<g transform="translate(13 0) scale(.83)"><path d="${ICON[n.id]||''}" class="ic"/></g>`;
+  else if (n.kind==='access') inner = G.bank;
+  else if (n.layer==='4a') inner = G.cube;
+  else inner = G.slab;
+  return `<svg class="glyph" viewBox="0 0 46 42" aria-hidden="true">${inner}</svg>`;
 }
 
 /* ---------- timeline ---------- */
@@ -982,7 +979,7 @@ function vPanel(n, c){
       (r.funded_by ? f('Accounts funded by', esc(sys(r.funded_by).name)+' payments') : '') +
       f(r.status==='planned' ? 'Will settle in' : 'Settles in', r.settlement_mode==='none' ? 'Does not settle' : r.settles_in ? esc(sys(r.settles_in).name) : r.settlement_mode==='unknown' ? unk : 'Final here');
     explain = r.explainer; srcIds = r.field_sources.explainer; allSrc = [...new Set(Object.values(r.field_sources).flat())];
-    if (r.status==='live' && (r.windows||[]).some(w=>w.kind==='open')) { const nn = torontoNow(); today = `<div class="today"><div class="ph"><span>Today</span><span>${esc(openStatus(r).text)}</span></div>${day24(r, nn.dow, false, true)}<div class="hrs"><span>00:00</span><span>06</span><span>12</span><span>18</span><span>24:00</span></div></div>`; }
+    if (false) { const nn = torontoNow(); today = `<div class="today"><div class="ph"><span>Today</span><span>${esc(openStatus(r).text)}</span></div>${day24(r, nn.dow, false, true)}<div class="hrs"><span>00:00</span><span>06</span><span>12</span><span>18</span><span>24:00</span></div></div>`; }
   } else if (n.kind==='product'){
     kindLabel = 'Payment type';
     const targets = [r.runs_on].flat().map(t=>sys(t));
@@ -1058,8 +1055,7 @@ function vFlow(){
     </div>
     <p class="caption" aria-live="polite"><span class="mono">${S.step}. ${esc(lineName[st.type])}</span>${esc(st.caption)}</p>
     <div class="four">${[['messaging','Messaging'],['money','Money movement'],['settlement','Settlement'],['customer','Customer sees']].map(([k,l]) => `<div><h3${k==='settlement'?' class="acc"':''}>${l}</h3><p>${esc(sc.explainer[k].text)}</p><p class="src" style="margin:0">${esc(srcNames(sc.explainer[k].sources))}</p></div>`).join('')}</div>
-    <div class="ph"><span>Steps in text</span></div>
-    <ol class="steps-text">${sc.steps.map(x => `<li${x.n===S.step?' aria-current="step"':''}>${esc(x.caption)} <span class="mono">${esc(lineName[x.type])} · ${esc(x.timing)} · ${esc(srcNames(x.sources))}</span></li>`).join('')}</ol>
+    <details><summary>Read the steps as text</summary><div><ol class="steps-text">${sc.steps.map(x => `<li${x.n===S.step?' aria-current="step"':''}>${esc(x.caption)} <span class="mono">${esc(lineName[x.type])} · ${esc(x.timing)} · ${esc(srcNames(x.sources))}</span></li>`).join('')}</ol></div></details>
     <details><summary>Caveats</summary><div><ul>${sc.caveats.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></details>`;
 }
 function svgFlow(sc){
@@ -1095,7 +1091,6 @@ function openNode(id){
   go({view:'ccy', ccy:c.id, node:id, flow:null, type:null}, {focus:true});
 }
 function placeClockLabels(){
-  const cb = $('.clockbox'), cl = $('.clocklabels'); if (!cb || !cl) return;
   const svg = cb.querySelector('svg'); const sc = svg.getBoundingClientRect().width / 1000;
   const sync = () => { const on = cb.scrollWidth > cb.clientWidth + 2 && cb.scrollLeft > 20; cl.classList.toggle('on', on); };
   $$('div', cl).forEach(d => { d.style.top = (+d.dataset.y*sc)+'px'; d.style.height = (+d.dataset.h*sc)+'px'; d.style.width = Math.max(70, 110*sc)+'px'; });

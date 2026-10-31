@@ -112,3 +112,13 @@ Instrument Sans for reading and labels, using its narrow widths inside the map s
 - World map or globe. The currency rows do the job and work on a phone.
 - Logo walls. Logos appear at 16px next to a name, only where an open-source mark exists (Visa, Mastercard, Swift).
 - Rail-swap small multiples. They wait for a second sourced Canada flow.
+
+## Version 3 changes (31 Oct 2026)
+
+- **Isometric glyphs instead of boxes.** Payment types are iso tiles with a line icon. Networks are iso cubes. ACSS and Lynx are long iso slabs that lines land on. Seat holders are iso buildings, and the Bank of Canada is a slab across the bottom. A full isometric scene was tried and dropped, because the diagonal axis broke the left-to-right speed reading and the labels.
+- **High level first.** Payment types show only a name and a short speed. Timing labels on lines appear only when something is picked. Details live in the record.
+- **No live time.** The open-or-closed status, the "today" bars and the weekly clock with its now line are gone. They could not know statutory holidays and would need a yearly calendar. Timing is now five plain sourced sentences under "When it settles".
+- **Three line styles.** Runs on, settles in, and dotted for planned, account links or not confirmed.
+- **Home page.** Only currencies with content are listed. The rest are one line. USD stays inside the Canada to US flow.
+- **Railroom.** The steps-as-text list is behind a toggle.
+- **One review link.** The Render preview at /canada/.
