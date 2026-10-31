@@ -48,15 +48,15 @@ def skip_links():
 
 
 SEVEN = [  # same names and order as the homepage
-    ("7", "Customer interface", "Customer relationship and payment initiation", []),
-    ("6", "Last mile", "Delivery to the recipient", []),
-    ("5", "FX and liquidity", "Conversion, funding and treasury", []),
-    ("4", "Networks and processing", "Rules, routing and payment technology",
+    ("7", "Customer interface", "Who initiates the payment", []),
+    ("6", "Last mile", "Who delivers it to the recipient", []),
+    ("5", "FX and liquidity", "Who converts and funds it", []),
+    ("4", "Networks and processing", "Who sets the rules and runs the processing",
      [("4a", "Schemes and networks"), ("4b", "Processing")]),
-    ("3", "Multi-market accounts", "Accounts and balances across markets", []),
-    ("2", "Bank relationships and access", "Correspondents and sponsor banks",
+    ("3", "Multi-market accounts", "Who holds balances across markets", []),
+    ("2", "Bank relationships and access", "Who gives access to banks and rails",
      [("2a", "Correspondents"), ("2b", "Sponsor banks")]),
-    ("1", "Settlement systems", "Interbank settlement and finality", []),
+    ("1", "Settlement systems", "Who makes it final", []),
 ]
 
 
