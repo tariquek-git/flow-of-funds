@@ -784,6 +784,7 @@ function drawEdges(){
         // Bend around boxes the line does not connect to, so it never reads as passing through them.
         let c1 = x1, c2 = x2;
         const obst = $$('[data-node]', map).filter(el => el.dataset.node!==e.from && el.dataset.node!==e.to && !el.classList.contains('base') && (narrow || !el.classList.contains('k-product'))).map(el => { const r = el.getBoundingClientRect(); const tag = el.classList.contains('planned') ? 12 : 0; return {l:r.left-mb.left-12, r:r.right-mb.left+12, t:r.top-mb.top-8-tag, b:r.bottom-mb.top+8}; });
+        if (narrow) $$('.lhead b, .lhead .lid', map).forEach(el => { const r = el.getBoundingClientRect(); if (r.width) obst.push({l:r.left-mb.left-6, r:r.right-mb.left+6, t:r.top-mb.top-4, b:r.bottom-mb.top+4}); });
         const pt = (t) => { const u=1-t; return {x:u*u*u*x1+3*u*u*t*c1+3*u*t*t*c2+t*t*t*x2, y:u*u*u*y1+3*u*u*t*(y1+dy)+3*u*t*t*(y2-dy)+t*t*t*y2}; };
         const TS = Array.from({length:19}, (_,k) => 0.05 + k*0.05);
         for (let it=0; it<8; it++) {
