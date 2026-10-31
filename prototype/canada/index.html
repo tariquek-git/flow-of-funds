@@ -462,6 +462,9 @@ details li{margin:0 0 6px}
   .scrollhint{display:block}
   .narrow-hint{display:block}
   .map.sel-product .lrow[data-layer="7"] .node.k-product:not(.sel){display:none}
+  .map.sel-product .lrow[data-layer="4a"] .node:not(.lit){display:none}
+  .lrow[data-layer="4a"] .lnodes .node{max-width:calc(25% - 6px);min-width:72px}
+  .lrow[data-layer="4a"] .node .glyph.wide{min-width:0}
   .map.sel-product .sel-note{display:block}
   .lhead b{background:var(--paper);padding:0 4px 0 0}
   .lrow:nth-of-type(even) .lhead b{background:var(--band)}
@@ -498,14 +501,14 @@ const HASH_ONLY = !!INLINE;
 const ICONS = JSON.parse(document.getElementById('icons-inline').textContent);
 const TZ = 'America/Toronto';
 const LAYER_ORDER = ['7','6','5','4a','4b','3','2a','2b','1'];
-const STAGE = {'7':['Payment type',''], '4a':['Network and rules','4a'], '4b':['Clearing','4b'], '1':['Settlement','1']};
-const STAGE_DOES = {'7':'What the customer does.', '4a':'Who sets the rules and carries the messages.', '4b':'Where items are exchanged and netted.', '1':'Where banks pay each other in central bank money.'};
+const STAGE = {'7':['Payment type',''], '4a':['Networks','4a'], '4b':['Clearing','4b'], '1':['Settlement','1']};
+const STAGE_DOES = {'7':'What the customer does.', '4a':'Set the rules and carry the messages. They never hold the money.', '4b':'Where items are exchanged and netted.', '1':'Where banks pay each other in central bank money.'};
 const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-const MODE = {'rtgs':'Real-time gross','deferred-net':'Deferred net','real-time-funded':'Real time, funded account','central-bank-ledger':'Central bank ledger','pvp':'Payment versus payment','on-chain':'On-chain','none':'Does not settle','unknown':'Not confirmed'};
+const MODE = {'on-us':'On its own books','mixed':'Gross and net','rtgs':'Real-time gross','deferred-net':'Deferred net','real-time-funded':'Real time, funded account','central-bank-ledger':'Central bank ledger','pvp':'Payment versus payment','on-chain':'On-chain','none':'Does not settle','unknown':'Not confirmed'};
 // Column placement for the wide layer map. Presentation only, keyed by node id.
 const LAYOUT = {
-  CAD:{cols:9, pos:{'ca-rtr-payment':'1','ca-wire':'2','ca-direct-deposit':'3','ca-pad':'4','ca-cheque':'5','ca-pos-debit':'6','ca-etransfer':'7','ca-credit-card':'8 / span 2',
-        'interac-debit':'6','interac-e-transfer':'7','visanet-canada':'8','mastercard-canada':'9','acss':'3 / span 4','rtr':'1','lynx':'2 / span 6'}},
+  CAD:{cols:10, pos:{'ca-rtr-payment':'1','ca-wire':'2','ca-direct-deposit':'3','ca-pad':'4','ca-cheque':'5','ca-pos-debit':'6','ca-etransfer':'7','ca-credit-card':'8 / span 3',
+        'ca-interac':'6 / span 2','visanet-canada':'8','mastercard-canada':'9','amex-canada':'10','rtr':'1','ca-interbank':'2 / span 9'}},
   USD:{cols:9, pos:{'fedwire-funds':'1 / span 4'}}
 };
 
@@ -527,6 +530,34 @@ async function load(){
   return r.json();
 }
 
+/* ---------- rollups: show buckets on the map, keep the sourced records underneath ---------- */
+function applyRollups(raw){
+  const RU = raw.rollups || []; if (!RU.length) return raw;
+  const A = {}; RU.forEach(r => r.members.forEach(m => A[m] = r.id)); const a = id => id ? (A[id] || id) : id;
+  const byId = Object.fromEntries(raw.systems.map(s => [s.id, s]));
+  const synth = RU.map(r => { const ms = r.members.map(m => byId[m]);
+    const down = [...new Set(ms.map(m => a(m.settles_in)).filter(x => x && x !== r.id))];
+    const modes = [...new Set(ms.map(m => m.settlement_mode))];
+    const fs = {explainer: r.sources}; ms.forEach(m => Object.entries(m.field_sources).forEach(([k,v]) => fs['inside: '+m.short+' '+k] = v));
+    return {id:r.id, name:r.name, short:r.short, sub:r.sub, group:ms[0].group, region:r.region, status:'live', operator:r.operator, scheme_owner:r.operator,
+      roles:[...new Set(ms.flatMap(m => m.roles))], settlement_asset: ms.find(m => m.settlement_asset)?.settlement_asset || null,
+      settlement_mode: modes.length===1 ? modes[0] : 'mixed', settles_in: down[0] || null, settles_label: r.settles_label || '', settlement_timing:null, hours:null,
+      participants_summary: ms.map(m => m.participants_summary).find(Boolean) || null, explainer:r.explainer, caveats:[], unknowns: ms.flatMap(m => m.unknowns || []),
+      field_sources:fs, last_checked: ms.map(m => m.last_checked).sort()[0], layer:r.layer, windows:[], participants_count:null, members:ms, rollup:true};
+  });
+  const many = v => Array.isArray(v) ? [...new Set(v.map(a))] : a(v);
+  return {...raw,
+    systems: raw.systems.filter(s => !A[s.id]).map(s => ({...s, settles_in:a(s.settles_in), funded_by:a(s.funded_by)})).concat(synth),
+    products: raw.products.map(p => ({...p, runs_on: many(p.runs_on)})),
+    access: raw.access.map(x => ({...x, holds_account_at:a(x.holds_account_at), through:a(x.through), uses:many(x.uses)})),
+    scenarios: raw.scenarios.map(sc => ({...sc, rail:a(sc.rail), steps: sc.steps.map(st => ({...st, via:a(st.via)}))})),
+    timeline: raw.timeline.map(t => ({...t, system:a(t.system)}))};
+}
+function boot(raw){
+  D = raw; build(); IDX.rawSys = {...IDX.systems};
+  const fin = {}; D.products.forEach(p => fin[p.id] = finality(p.id));
+  D = applyRollups(raw); build(); IDX.rawSys = {...IDX.rawSys, ...IDX.systems}; IDX.fin = fin;
+}
 /* ---------- index ---------- */
 function build(){
   for (const k of ['groups','regions','parties','systems','scenarios','sources','layers','currencies','products','access']) IDX[k] = Object.fromEntries((D[k]||[]).map(x => [x.id, x]));
@@ -558,15 +589,16 @@ function pathDown(id){ // single primary chain: follow first outgoing edge until
 
 // How fast a payment type becomes final between banks, read off its settlement path.
 function finality(id){
+  if (IDX.fin && IDX.fin[id]) return IDX.fin[id];
   const n = node(id); if (!n) return null;
   if (n.rec.status==='planned') return {b:'rt', t:'real time, once live'};
   if (n.kind==='product' && Array.isArray(n.rec.runs_on) && n.rec.runs_on.length>1) {
-    const parts = n.rec.runs_on.map(t => ({s:sys(t), f:finality(t)}));
+    const parts = n.rec.runs_on.map(t => ({s:sys(t), f:finality(t)})).filter(p => p.s.settlement_mode!=='on-us');
     if (new Set(parts.map(p=>p.f.b)).size>1) return {b:'mix', t:parts.map(p=>p.f.b==='unk' ? `${p.s.short} not confirmed` : `${p.s.short} settles ${p.f.t}`).join('. ')};
     return parts[0].f;
   }
   const chain = pathDown(id).map(x=>node(x.id)).filter(x=>x.kind==='system');
-  if (chain.some(x=>x.rec.settlement_mode==='unknown')) return {b:'unk', t:'not confirmed'};
+  if (chain.some(x=>x.rec.settlement_mode==='unknown' || x.rec.settlement_mode==='on-us')) return {b:'unk', t:'not confirmed'};
   const custom = chain.find(x=>x.rec.final_label); if (custom) return {b: /^next business day/.test(custom.rec.final_label) ? 'nbd' : 'day', t:custom.rec.final_label};
   if (chain.some(x=>x.rec.settlement_mode==='deferred-net')) return {b:'nbd', t:'next business day'};
   return {b:'rt', t:'real time'};
@@ -767,7 +799,7 @@ function vCcy(){
 </section>
      <div class="section-h"><h2>Who does what</h2><p>Customer money stays in bank accounts. The lines show where the banks settle what they owe each other. Pick anything to trace it.</p></div>
      ${map}
-     <p class="hint">Wires, direct deposits, pre-authorized debits and cheques run on Payments Canada's own rules, so they go straight to ACSS or Lynx without a separate network. Networks never settle. Banks do, in Lynx, directly or through a bank that has a seat.</p>
+     <p class="hint">Wires, direct deposits, pre-authorized debits and cheques run on Payments Canada's own rules, so they skip the network row. Networks never settle. Banks do, at the Bank of Canada, directly or through a bank that has a seat.</p>
      <p class="hint">Settlement between banks is final, but some payments can still be undone afterwards. Cheques can be returned, pre-authorized debits disputed for 90 days, and card payments charged back. Pick one to see the rule and its source.</p>
      <p class="hint narrow-hint">Tap a payment type to draw its path to the central bank.</p>
      ${clock}
@@ -784,7 +816,7 @@ function nodeBtn(n, pos, lit){
   let fin = '';
   if (n.kind==='product') { sub = ''; const f = finality(n.id); const short = f.b==='rt' ? 'Real time' : f.b==='nbd' ? (f.t.charAt(0).toUpperCase()+f.t.slice(1)) : f.b==='day' ? 'Daily' : f.b==='mix' ? 'Visa daily, Mastercard not confirmed' : 'Not confirmed';
     fin = `<span class="fin fin-${f.b}">${esc(short)}</span>`; }
-  else if (n.kind==='system') { sub = party(r.operator).name.replace(/ Inc\.| International Inc\.| Corp\./g,''); lg = logo(party(r.operator).logo); }
+  else if (n.kind==='system') { sub = r.sub || (party(r.operator).name.toLowerCase().startsWith(n.short.toLowerCase()) ? '' : party(r.operator).name).replace(/ Inc\.| International Inc\.| Corp\./g,''); lg = logo(party(r.operator).logo); }
   else sub = r.through ? 'Over 50 institutions, through a seat holder' : 'Lynx participants and ACSS direct clearers';
   const dn = pathDown(n.id).slice(1).map(x=>node(x.id)?.short).filter(Boolean);
   const aria = `${n.name}${r.status==='planned'?', planned':''}. ${dn.length ? 'Settles through '+dn.join(', then ') : n.kind==='system' && r.settlement_mode==='unknown' ? 'Settlement path not confirmed' : ''}.`;
@@ -796,7 +828,7 @@ function drawEdges(){
   const map = $('#map'), svg = $('#edges'); if (!map || !svg) return;
   const draw = () => {
     const mb = map.getBoundingClientRect();
-    const box = id => { const el = map.querySelector(`[data-node="${CSS.escape(id)}"]`); if(!el) return null; const b = el.getBoundingClientRect(); return {x:b.left-mb.left, y:b.top-mb.top, w:b.width, h:b.height, base:el.classList.contains('base')}; };
+    const box = id => { const el = map.querySelector(`[data-node="${CSS.escape(id)}"]`); if(!el) return null; const b = el.getBoundingClientRect(); if (!b.width && !b.height) return null; return {x:b.left-mb.left, y:b.top-mb.top, w:b.width, h:b.height, base:el.classList.contains('base')}; };
     const lit = S.node ? new Set([S.node, ...reach(S.node,'down'), ...reach(S.node,'up')]) : null;
     const upS = S.node ? new Set([S.node, ...reach(S.node,'up')]) : null, dnS = S.node ? new Set([S.node, ...reach(S.node,'down')]) : null;
     const narrow = map.clientWidth < 860;
@@ -857,7 +889,7 @@ function drawEdges(){
           const ya = yTop, yb = yBot;
           d = `M${x1} ${y1} C${x1} ${(y1+ya)/2} ${rx} ${(y1+ya)/2} ${rx} ${ya} L${rx} ${yb} C${rx} ${(yb+y2)/2} ${x2b} ${(yb+y2)/2} ${x2b} ${y2}`;
         }
-        if (e.type==='settle' && e.label && lit && lit.has(e.from) && lit.has(e.to)) labels.push({x:(x1+x2)/2, y:(y1+y2)/2, t:e.label, e});
+        if (e.type==='settle' && e.label && lit && lit.has(e.from) && lit.has(e.to) && !labels.some(l => l.t===e.label && l.e.to===e.to)) labels.push({x:(x1+x2)/2, y:(y1+y2)/2, t:e.label, e});
       }
       const on = !lit || (upS.has(e.from) && upS.has(e.to)) || (dnS.has(e.from) && dnS.has(e.to));
       const L = on && lit ? ' lit' : '';
@@ -900,13 +932,13 @@ function drawEdges(){
 /* ---------- timing, as plain facts ---------- */
 function vTiming(c){
   if (c.id!=='CAD') return '';
-  const lynx = sys('lynx');
+  const lynx = IDX.rawSys.lynx;
   const items = [
-    {t:`Wires settle one by one on Lynx, on business days, ${lynx.hours.replace(/^Business days, /,'').replace(/\. .*/,'')}.`, src:lynx.field_sources.hours},
-    {t:'Cheques, direct deposits and pre-authorized debits clear through ACSS. The banks settle each day\'s totals the next business morning, through Lynx.', src:['pc_acss']},
-    {t:'Debit card payments are totalled the same day, cleared through ACSS the next day, and settled on Lynx after that.', src:['interac_imn_2023']},
+    {t:`Wires settle one by one, on business days, ${lynx.hours.replace(/^Business days, /,'').replace(/\. .*/,'')}.`, src:lynx.field_sources.hours},
+    {t:'Cheques, direct deposits and pre-authorized debits are settled as one daily total the next business morning.', src:['pc_acss']},
+    {t:'Debit card payments are totalled the same day and settled the next business day or later.', src:['interac_imn_2023']},
     {t:'An e-Transfer arrives in minutes, but the banks settle it the day after. One sent on a Friday evening settles on Monday, or on Tuesday if Monday is a holiday. Interac says weekends and holidays can stretch this to four days, and which day each lands on is our reading of that rule.', src:['interac_pps_2025']},
-    {t:'Visa settles each bank\'s net position once a business day through Lynx.', src:['visa_pps_2025']},
+    {t:'Visa settles each bank\'s net position once a business day through its settlement bank. Mastercard works the same way. Amex mostly pays merchants from its own books.', src:['visa_pps_2025','amex_ca_acceptance']},
     {t:'The Real-Time Rail will settle every payment the moment it is sent, around the clock, once it launches.', src:['pc_rtr_faq']}];
   return `<div class="section-h"><h2>When it settles</h2><p>The timing that matters, in plain terms.</p></div>
     <ul class="timing">${items.map(x=>`<li>${esc(x.t)}<span class="s">${esc(srcNames(x.src))}</span></li>`).join('')}</ul>`;
@@ -974,15 +1006,14 @@ function vPanel(n, c){
   let kindLabel, facts = '', explain = '', srcIds = [], allSrc = [], today = '';
   if (n.kind==='system'){
     kindLabel = `${IDX.groups[r.group].name} · layer ${r.layer} ${IDX.layers[r.layer].name}`;
-    const f = (k,v) => `<dt>${k}</dt><dd${k==='Settles in'?' class="acc"':''}>${v}</dd>`;
+    const f = (k,v) => `<dt>${k}</dt><dd${k==='Settles in' && (r.settles_in || r.settlement_mode==='central-bank-ledger')?' class="acc"':''}>${v}</dd>`;
     const unk = '<span class="unk">Not confirmed</span>';
-    facts = f('Operator', esc(party(r.operator).name)) +
+    facts = r.rollup ? f('Operator', esc(party(r.operator).name)) + f('Includes', esc(r.members.map(m=>m.short).join(' and '))) + f('Settles in', r.settles_in ? esc(sys(r.settles_in).name) : 'Final here') : f('Operator', esc(party(r.operator).name)) +
       f('Participants', esc(r.participants_count || r.participants_summary) || unk) +
-      f('Settlement asset', esc(r.settlement_asset) || unk) +
-      f('Hours', esc(r.hours) || unk) +
+      (r.settlement_mode==='on-us' ? '' : f('Settlement asset', esc(r.settlement_asset) || unk) + f('Hours', esc(r.hours) || unk)) +
       (r.settles_via ? f('Settles through', esc(r.settles_via)) : '') +
       (r.funded_by ? f('Accounts funded by', esc(sys(r.funded_by).name)+' payments') : '') +
-      f(r.status==='planned' ? 'Will settle in' : 'Settles in', r.settlement_mode==='none' ? 'Does not settle' : r.settles_in ? esc(sys(r.settles_in).name) : r.settlement_mode==='unknown' ? unk : 'Final here');
+      f(r.status==='planned' ? 'Will settle in' : 'Settles in', r.settlement_mode==='none' ? 'Does not settle' : r.settlement_mode==='on-us' ? esc(r.settlement_timing) : r.settles_in ? esc(sys(r.settles_in).name) : r.settlement_mode==='unknown' ? unk : 'Final here');
     explain = r.explainer; srcIds = r.field_sources.explainer; allSrc = [...new Set(Object.values(r.field_sources).flat())];
     if (false) { const nn = torontoNow(); today = `<div class="today"><div class="ph"><span>Today</span><span>${esc(openStatus(r).text)}</span></div>${day24(r, nn.dow, false, true)}<div class="hrs"><span>00:00</span><span>06</span><span>12</span><span>18</span><span>24:00</span></div></div>`; }
   } else if (n.kind==='product'){
@@ -1005,6 +1036,7 @@ function vPanel(n, c){
     if (next) { const e = next.via; how = e.type==='runs' ? 'runs on' : e.type==='access' ? 'holds an account at' : `settles ${e.label || MODE[nd.rec.settlement_mode].toLowerCase()}`; }
     else if (isRoot) how = `Final · ${root.settlement_asset}`;
     else if (nd.kind==='system' && nd.rec.settlement_mode==='unknown') how = 'settlement path not confirmed';
+    else if (nd.kind==='system' && nd.rec.settlement_mode==='on-us') how = 'stays on its own books';
     const kcls = next && next.via.type==='runs' ? ' k-runs' : next && nd.kind==='system' && nd.rec.status==='planned' ? ' k-plan' : '';
     const viaRung = next && next.via.type==='settle' && nd.kind==='system' && nd.rec.settles_via ? `<li class="rung via"><span class="rl" aria-hidden="true"></span><div class="rb"><b>${esc(nd.rec.settles_via)}</b><span class="how">pays and receives over ${esc(node(next.id).short)}</span></div></li>` : '';
     return `<li class="rung${i===0?' cur':''}${isRoot?' root':''}${kcls}"><span class="rl" aria-hidden="true"></span><div class="rb">${i===0?`<b>${esc(nd.name)}</b>`:`<button type="button" data-node="${x.id}">${esc(nd.name)}</button>`}<span class="how">${esc(how)}</span></div></li>` + viaRung;
@@ -1023,7 +1055,7 @@ function vPanel(n, c){
     <dl class="facts">${facts}</dl>
     <p class="explain">${esc(explain)}</p>
     <p class="src">Source: ${esc(srcNames(srcIds))}.${n.kind==='system'?' Checked '+fmtDate(r.last_checked)+'.':''}</p>
-    <div class="ph"><span>Settlement path</span><span>${n.id===root.id ? 'this is where it ends' : (chain.at(-1).id===root.id ? (()=>{const k=chain.length-1+chain.filter((x,i)=>i<chain.length-1&&node(x.id).kind==='system'&&node(x.id).rec.settles_via).length; return k+' step'+(k===1?'':'s')+' to the central bank';})() : 'path not confirmed')}</span></div>
+    <div class="ph"><span>Settlement path</span><span>${n.id===root.id ? 'this is where it ends' : (n.kind==='system' && r.settlement_mode==='on-us' ? 'no bank-to-bank step' : chain.at(-1).id===root.id ? (()=>{const k=chain.length-1+chain.filter((x,i)=>i<chain.length-1&&node(x.id).kind==='system'&&node(x.id).rec.settles_via).length; return k+' step'+(k===1?'':'s')+' to the central bank';})() : 'path not confirmed')}</span></div>
     <ol class="ladder">${ladder}</ol>${multi}
     <div class="drillrow">
       <button class="btn strong" type="button" data-node="${downId||''}" ${downId?'':'disabled'}>↓ Drill down</button>
@@ -1032,6 +1064,7 @@ function vPanel(n, c){
     <ul class="feeders" id="feeders" hidden>${upEdges.map(e => { const u = node(e.from); const how = e.type==='runs' ? 'runs on it' : e.type==='access' ? 'holds an account' : e.type==='funded' ? 'funds its accounts with it' : esc(e.label||MODE[u.rec.settlement_mode]); return `<li><button type="button" data-node="${u.id}"><b>${esc(u.name)}</b><span class="mono muted">${how}</span></button></li>`; }).join('')}</ul>
     ${today}
     ${flows.length ? `<a class="flowlink" href="${href({view:'flow',flow:flows[0],step:1,node:null})}" data-flow="${flows[0]}">Show the flow →</a>` : ''}
+    ${r.rollup ? `<details open><summary>What's inside</summary><div><ul>${r.members.map(m=>`<li><b>${esc(m.name)}</b>. ${esc(m.explainer)}${m.settlement_timing?` <span class="mono muted">${esc(m.settlement_timing)}</span>`:''}</li>`).join('')}</ul></div></details>` : ''}
     ${n.kind==='system' ? `<details><summary>Rulebook and operator</summary><div><p>Operated by ${esc(party(r.operator).name)}. Rules set by ${r.scheme_owner ? esc(party(r.scheme_owner).name) : 'no separate rule owner'}.</p><p class="mono muted">Roles: ${r.roles.map(esc).join(', ')} · ${esc(MODE[r.settlement_mode])}</p></div></details>
       <details><summary>Participants</summary><div><p>${esc(r.participants_summary||'Not confirmed.')}</p>${r.participants_count?`<p>${esc(r.participants_count)}</p>`:''}</div></details>` : ''}
     ${n.kind==='product' ? (() => { const steps = pathDown(n.id).map(x=>node(x.id)).filter(x=>x.kind==='system'); const lc = steps.map(x=>x.rec.last_checked).sort()[0];
@@ -1134,7 +1167,7 @@ document.addEventListener('keydown', e => {
 });
 $$('header [data-nav]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); if (a.dataset.nav==='flow') go({view:'flow', flow:D.scenarios[0].id, step:1, node:null}); else go({view:'home', ccy:null, node:null, type:null, flow:null}); }));
 
-load().then(d => { D=d; build(); S=fromURL(); render(); if (S.node) { $('#ptitle')?.focus({preventScroll:true}); bringSelectedIntoView(); } })
+load().then(d => { boot(d); S=fromURL(); render(); if (S.node) { $('#ptitle')?.focus({preventScroll:true}); bringSelectedIntoView(); } })
   .catch(err => { $('#app').innerHTML = `<div class="err"><strong>The atlas data did not load.</strong> ${esc(err.message)}. Serve the repo root with a local web server (for example <span class="mono">npx serve .</span>) and open /prototype/canada/.</div>`; console.error(err); });
 })();
 </script>

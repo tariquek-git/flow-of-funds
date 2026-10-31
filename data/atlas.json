@@ -239,6 +239,16 @@
       "country": "CA",
       "generic": true,
       "sources": []
+    },
+    {
+      "id": "amex",
+      "name": "American Express",
+      "kind": "scheme-owner",
+      "country": "US",
+      "sources": [
+        "amex_ca_acceptance"
+      ],
+      "logo": "amex"
     }
   ],
   "systems": [
@@ -792,19 +802,18 @@
         "netting",
         "rulebook"
       ],
-      "settlement_asset": null,
-      "settlement_mode": "unknown",
-      "settles_in": null,
-      "settlement_timing": null,
+      "settlement_asset": "Central bank money (CAD), paid over Lynx",
+      "settlement_mode": "deferred-net",
+      "settles_in": "lynx",
+      "settlement_timing": "Daily net, the way card networks settle",
       "hours": null,
       "participants_summary": "Issuers and acquirers licensed by Mastercard.",
-      "explainer": "Mastercard's GCMS and SMS are card systems the Bank of Canada oversees, and Mastercard sets their rules. Where the CAD net amounts finally settle is not stated in the primary sources checked.",
+      "explainer": "Mastercard's systems carry Mastercard card payments and work out what each issuer and acquirer owes. Like Visa, Mastercard does not settle in Lynx itself, and banks pay their net amounts through its settlement bank.",
       "caveats": [
         "GCMS handles clearing. SMS is Mastercard's single message system."
       ],
       "unknowns": [
-        "Mastercard's Canadian settlement path was not found in a public primary source.",
-        "Mastercard's general model uses a settlement bank it chooses, so Canada likely works like Visa, through a bank that pays over Lynx. Not confirmed."
+        "Mastercard's Canadian settlement bank is not named in a public source. The path shown is how card networks settle, read from Mastercard's own description of clearing and settlement and Visa's Canadian disclosure."
       ],
       "field_sources": {
         "operator": [
@@ -820,13 +829,34 @@
           "mastercard_switching"
         ],
         "explainer": [
-          "boc_oversight"
+          "boc_oversight",
+          "mastercard_switching"
+        ],
+        "settlement_asset": [
+          "mastercard_switching",
+          "visa_pps_2025"
+        ],
+        "settlement_mode": [
+          "mastercard_switching"
+        ],
+        "settles_in": [
+          "mastercard_switching",
+          "visa_pps_2025"
+        ],
+        "settles_via": [
+          "mastercard_switching"
+        ],
+        "settlement_timing": [
+          "mastercard_switching"
         ]
       },
       "last_checked": "2026-10-31",
       "layer": "4a",
       "windows": [],
-      "participants_count": null
+      "participants_count": null,
+      "settles_via": "Mastercard's settlement bank",
+      "settles_label": "daily · net · via bank",
+      "final_label": "daily, on the value date"
     },
     {
       "id": "swift",
@@ -1007,6 +1037,61 @@
       ],
       "participants_count": null,
       "settles_label": "immediate · gross"
+    },
+    {
+      "id": "amex-canada",
+      "name": "American Express in Canada",
+      "short": "Amex",
+      "group": "cards",
+      "region": "CA",
+      "status": "live",
+      "operator": "amex",
+      "scheme_owner": "amex",
+      "roles": [
+        "messaging",
+        "clearing",
+        "rulebook"
+      ],
+      "settlement_asset": null,
+      "settlement_mode": "on-us",
+      "settles_in": null,
+      "settlement_timing": "On Amex's own books when it issues the card and signs the merchant",
+      "hours": null,
+      "participants_summary": "Amex issues most of its cards and signs most merchants itself. Processors and payment facilitators can also sign merchants for it.",
+      "explainer": "Amex is a card issuer, a merchant acquirer and a card network in one. When it issues the card and signs the merchant, the payment stays on its own books and no bank-to-bank settlement is needed.",
+      "caveats": [
+        "Processors such as Moneris, Global Payments, Stripe and Square can sign merchants for Amex through OptBlue or as payment facilitators. They pay the merchant and settle with Amex."
+      ],
+      "unknowns": [
+        "How Amex settles with those processors, and with any bank that issues Amex cards, is not public."
+      ],
+      "field_sources": {
+        "operator": [
+          "amex_ca_acceptance"
+        ],
+        "scheme_owner": [
+          "amex_ca_acceptance"
+        ],
+        "roles": [
+          "amex_ca_acceptance"
+        ],
+        "settlement_mode": [
+          "amex_ca_acceptance"
+        ],
+        "settlement_timing": [
+          "amex_ca_acceptance"
+        ],
+        "participants_summary": [
+          "amex_ca_acceptance"
+        ],
+        "explainer": [
+          "amex_ca_acceptance"
+        ]
+      },
+      "last_checked": "2026-10-31",
+      "layer": "4a",
+      "windows": [],
+      "participants_count": null
     }
   ],
   "scenarios": [
@@ -1487,6 +1572,15 @@
       "tier": "operator",
       "published": "2022-11-29",
       "accessed": "2026-10-31"
+    },
+    {
+      "id": "amex_ca_acceptance",
+      "title": "American Express Canada · Card acceptance pricing",
+      "url": "https://www.americanexpress.com/ca/en/merchant/card-acceptance-pricing.html",
+      "publisher": "American Express Canada",
+      "tier": "operator",
+      "published": null,
+      "accessed": "2026-10-31"
     }
   ],
   "layers": [
@@ -1727,15 +1821,17 @@
     {
       "id": "ca-credit-card",
       "name": "Card purchase",
-      "plain": "Visa or Mastercard credit or debit card",
+      "plain": "Visa, Mastercard or Amex credit or debit card",
       "region": "CA",
       "runs_on": [
         "visanet-canada",
-        "mastercard-canada"
+        "mastercard-canada",
+        "amex-canada"
       ],
       "status": "live",
       "sources": [
-        "boc_oversight"
+        "boc_oversight",
+        "amex_ca_acceptance"
       ],
       "after_settlement": {
         "text": "Card payments can be disputed and charged back under the card network's rules after settlement.",
@@ -1822,6 +1918,46 @@
       "text": "Interac plans to move e-Transfer settlement to RTR, so it would clear and settle immediately. No date published.",
       "sources": [
         "interac_pps_2025"
+      ]
+    }
+  ],
+  "rollups": [
+    {
+      "id": "ca-interac",
+      "region": "CA",
+      "layer": "4a",
+      "name": "Interac (Debit and e-Transfer)",
+      "short": "Interac",
+      "sub": "Debit and e-Transfer",
+      "operator": "interac-corp",
+      "members": [
+        "interac-debit",
+        "interac-e-transfer"
+      ],
+      "settles_label": "next day or later · net",
+      "explainer": "Interac runs Canada's debit network and e-Transfer, and it is the only network here that does both. It carries the messages and sets the rules, and the banks settle what they owe each other the next business day or later.",
+      "sources": [
+        "interac_imn_2023",
+        "interac_pps_2025"
+      ]
+    },
+    {
+      "id": "ca-interbank",
+      "region": "CA",
+      "layer": "1",
+      "name": "Interbank settlement (Lynx and ACSS)",
+      "short": "Interbank settlement",
+      "sub": "Lynx and ACSS · Payments Canada",
+      "operator": "payments-canada",
+      "members": [
+        "lynx",
+        "acss"
+      ],
+      "settles_label": "in central bank money",
+      "explainer": "This is where banks pay each other, through Payments Canada's systems, wires one by one and everything else as daily totals. Either way the money lands in the banks' Bank of Canada settlement accounts.",
+      "sources": [
+        "pc_lynx",
+        "pc_acss"
       ]
     }
   ]

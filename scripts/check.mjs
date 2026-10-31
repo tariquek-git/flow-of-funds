@@ -107,6 +107,14 @@ const tests = {
       else if (sy[c.root].settlement_mode !== 'central-bank-ledger') errors.push(`currency ${c.id} root ${c.root} is not a central bank ledger`);
     }
     for (const t of d.timeline) if (t.system && !sy[t.system]) errors.push(`timeline ${t.date} system ${t.system} missing`);
+    const src = byId(d.sources);
+    for (const ru of d.rollups || []) {
+      if (sy[ru.id]) errors.push(`rollup ${ru.id} clashes with a system id`);
+      if (!p[ru.operator]) errors.push(`rollup ${ru.id} operator ${ru.operator} is not a party`);
+      if (!lay.has(ru.layer)) errors.push(`rollup ${ru.id} layer ${ru.layer} missing`);
+      for (const m of ru.members) { if (!sy[m]) errors.push(`rollup ${ru.id} member ${m} is not a system`); else if (sy[m].region !== ru.region) errors.push(`rollup ${ru.id} member ${m} is in another region`); }
+      for (const x of ru.sources) if (!src[x]) errors.push(`rollup ${ru.id} source ${x} missing`);
+    }
     for (const sc of d.scenarios) {
       if (!sy[sc.rail]) errors.push(`${sc.id}.rail ${sc.rail} is not a system`);
       if (!p[sc.settlement_lane]) errors.push(`${sc.id}.settlement_lane ${sc.settlement_lane} is not a party`);
@@ -134,7 +142,7 @@ const tests = {
         seen.push(cur.id);
       }
       if (cur && !cur.settles_in) {
-        const terminalOk = cur.settlement_mode === 'central-bank-ledger' || ['unknown', 'none', 'on-chain'].includes(cur.settlement_mode);
+        const terminalOk = cur.settlement_mode === 'central-bank-ledger' || ['unknown', 'none', 'on-chain', 'on-us'].includes(cur.settlement_mode);
         if (!terminalOk) errors.push(`${s.id} chain ends at ${cur.id}, which is neither a central bank ledger nor a declared unknown`);
       }
     }

@@ -56,7 +56,9 @@
         "pvp",
         "on-chain",
         "none",
-        "unknown"
+        "unknown",
+        "on-us",
+        "mixed"
       ]
     },
     "group": {
@@ -347,7 +349,10 @@
           "maxLength": 40
         },
         "settles_via": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "maxLength": 60
         },
         "funded_by": {
@@ -857,6 +862,67 @@
           "minItems": 1
         }
       }
+    },
+    "rollup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "region",
+        "layer",
+        "name",
+        "short",
+        "operator",
+        "members",
+        "explainer",
+        "sources"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "region": {
+          "type": "string"
+        },
+        "layer": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "short": {
+          "type": "string",
+          "maxLength": 24
+        },
+        "sub": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "operator": {
+          "$ref": "#/$defs/id"
+        },
+        "members": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "settles_label": {
+          "type": "string",
+          "maxLength": 24
+        },
+        "explainer": {
+          "type": "string"
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      }
     }
   },
   "properties": {
@@ -950,6 +1016,12 @@
       "type": "array",
       "items": {
         "$ref": "#/$defs/event"
+      }
+    },
+    "rollups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/rollup"
       }
     }
   }

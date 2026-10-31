@@ -122,3 +122,14 @@ Instrument Sans for reading and labels, using its narrow widths inside the map s
 - **Home page.** Only currencies with content are listed. The rest are one line. USD stays inside the Canada to US flow.
 - **Railroom.** The steps-as-text list is behind a toggle.
 - **One review link.** The Render preview at /canada/.
+
+## Version 4 changes (31 Oct 2026)
+
+- **Show what it is, not the brand, except where people know the brand.** The map works at the level a reader needs. The detailed, sourced records stay underneath and open from the bucket.
+  - **Interbank settlement** is one node for Lynx and ACSS. The clearing row is gone. Wire versus daily-total timing still shows on each payment type and in "What's inside".
+  - **Interac** is one node for Debit and e-Transfer. It is the only network that runs both.
+  - **Networks** is one row with the known brands named: Interac, Visa, Mastercard and Amex.
+- **Networks never settle. Banks do.** Visa and Mastercard settle through a settlement bank that pays over Lynx. Mastercard is shown that way because that is how card networks work, and the record says no Canadian source names its bank.
+- **Amex** is an issuer, acquirer and network in one (Amex Canada merchant pricing page). When it issues the card and signs the merchant, there is no bank-to-bank step, so its node has no line down.
+- **Data.** `rollups` in `data/atlas.json` defines the buckets. The view folds them in at load. Checks and sources still run on the detailed records.
+- **Rule for later.** Bucket anything a reader would not tell apart, and name a brand only when people already know it.
