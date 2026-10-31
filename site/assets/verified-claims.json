@@ -68,6 +68,45 @@
       "level": "primary-verified",
       "source_date": "checked 2026-10-30; page undated",
       "source_url": "https://www.bankofengland.co.uk/Payment%20and%20settlement/access-to-uk-payment-systems-for-non-bank-payment-service-providers"
+    },
+    {
+      "id": "us-chips-settlement-account",
+      "claim": "CHIPS payments settle against the CHIPS Prefunded Balance Account at the Federal Reserve Bank of New York, held for the joint benefit of funding participants; TCH operates CHIPS and instructs the account as their agent and does not own the balances.",
+      "level": "primary-verified",
+      "source_date": "rules effective 2026-06-04",
+      "source_url": "https://www.theclearinghouse.org/-/media/New/TCH/Documents/Payment-Systems/CHIPS/CHIPS-Rules-and-Administrative-Procedures-June-4-2026.pdf"
+    },
+    {
+      "id": "us-rtp-settlement-account",
+      "claim": "RTP settlement is final when the RTP system records the change in participants' positions, which are backed by a prefunded balance account at a Federal Reserve Bank funded through Fedwire or LMT; TCH is agent for funding participants and funding agents. The 2026 rules do not name the Reserve Bank; TCH's 2020 settlement note names FRBNY.",
+      "level": "primary-verified",
+      "source_date": "rules effective 2026-09-30; note 2020-11",
+      "source_url": "https://www.theclearinghouse.org/-/media/New/TCH/Documents/Payment-Systems/RTP/RTP-Operating-Rules-Effective-September-30-2026.pdf",
+      "secondary_url": "https://www.theclearinghouse.org/-/media/New/TCH/Documents/Payment-Systems/RTP_Settlement_Model_and_Reconciliation_for_Funding_Participants_November_2020.pdf"
+    },
+    {
+      "id": "usdc-reserve-roles",
+      "claim": "For USDC, Circle issues the token; the majority of reserves sit in the Circle Reserve Fund, a government money market fund managed by BlackRock, with The Bank of New York Mellon as fund custodian; the rest is cash at banks. Not a model for all stablecoins.",
+      "level": "primary-verified",
+      "source_date": "Circle reserves as of 2026-10-26; N-CSR period ended 2025-10-31",
+      "source_url": "https://www.circle.com/transparency",
+      "secondary_url": "https://www.sec.gov/Archives/edgar/data/844779/000119312526003784/d62473dncsrs.htm"
+    },
+    {
+      "id": "india-upi-settlement",
+      "claim": "NPCI is the UPI clearing and settlement agency; it calculates net positions, and RBI's RTGS posts them as a multilateral net settlement batch to members' RTGS accounts at RBI.",
+      "level": "primary-verified",
+      "source_date": "NPCI document undated; RBI report Dec 2024",
+      "source_url": "https://www.npci.org.in/PDF/npci/others/UPI-Settlement-Process.pdf",
+      "secondary_url": "https://www.rbi.org.in/scripts/PublicationsView.aspx?Id=23127",
+      "note": "Review cited NPCI uploads/ PDFs; those returned 403 on 2026-10-30."
+    },
+    {
+      "id": "uk-rtgs-scope",
+      "claim": "Bank of England RTGS settles CHAPS and the net positions of Faster Payments, Bacs, the Image Clearing System, Visa Europe, Mastercard, LINK and PEXA, plus CLS sterling legs and CREST.",
+      "level": "primary-verified",
+      "source_date": "assessed 2023-10-31; published 2024-09",
+      "source_url": "https://www.bankofengland.co.uk/payments/rtgs-and-chaps-2023-pfmi-self-assessment"
     }
   ]
 }

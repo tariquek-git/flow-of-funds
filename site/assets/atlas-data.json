@@ -964,7 +964,8 @@
         "local-collection",
         "fx-execution",
         "local-bank-credit"
-      ]
+      ],
+      "direct_layers": []
     },
     "visa": {
       "id": "visa",
@@ -989,7 +990,8 @@
         "card-schemes",
         "clearing-netting",
         "card-push-payout"
-      ]
+      ],
+      "direct_layers": []
     },
     "mastercard": {
       "id": "mastercard",
@@ -1013,7 +1015,8 @@
         "card-schemes",
         "clearing-netting",
         "card-push-payout"
-      ]
+      ],
+      "direct_layers": []
     },
     "swift": {
       "id": "swift",
@@ -1034,7 +1037,8 @@
       ],
       "functions": [
         "financial-messaging"
-      ]
+      ],
+      "direct_layers": []
     },
     "interac": {
       "id": "interac",
@@ -1054,7 +1058,8 @@
       "functions": [
         "domestic-schemes",
         "instant-links"
-      ]
+      ],
+      "direct_layers": []
     },
     "marqeta": {
       "id": "marqeta",
@@ -1074,14 +1079,16 @@
       "functions": [
         "issuer-processing",
         "core-ledgers"
-      ]
+      ],
+      "direct_layers": []
     },
     "clearbank": {
       "id": "clearbank",
       "name": "ClearBank",
       "desc": "Bank accounts and indirect access to UK and EU payment schemes for business and fintech clients, settled through ClearBank's own direct participation.",
       "layers": [
-        "2b"
+        "2b",
+        "1"
       ],
       "markets": [
         "UK"
@@ -1094,6 +1101,9 @@
         "banking-as-service",
         "scheme-sponsorship",
         "settlement-agency"
+      ],
+      "direct_layers": [
+        "1"
       ]
     },
     "circle": {
@@ -1108,7 +1118,8 @@
       "sources": [
         "circle"
       ],
-      "functions": []
+      "functions": [],
+      "direct_layers": []
     },
     "payments-canada": {
       "id": "payments-canada",
@@ -1133,7 +1144,8 @@
         "clearing-netting",
         "rtgs",
         "deferred-net"
-      ]
+      ],
+      "direct_layers": []
     },
     "bank-of-canada": {
       "id": "bank-of-canada",
@@ -1154,7 +1166,8 @@
       "functions": [
         "central-bank-accounts",
         "liquidity-provision"
-      ]
+      ],
+      "direct_layers": []
     },
     "federal-reserve": {
       "id": "federal-reserve",
@@ -1180,7 +1193,8 @@
         "instant-links",
         "clearing-netting",
         "liquidity-provision"
-      ]
+      ],
+      "direct_layers": []
     },
     "banco-central-do-brasil": {
       "id": "banco-central-do-brasil",
@@ -1202,7 +1216,8 @@
         "instant-links",
         "central-bank-accounts",
         "rtgs"
-      ]
+      ],
+      "direct_layers": []
     }
   },
   "markets": {
@@ -1908,7 +1923,7 @@
       "overview": "NPCI owns and operates the UPI network; banks act as PSPs and account providers, while customer-facing third-party apps can be separate.",
       "owns": "NPCI is a not-for-profit organization with a shareholder base including banks and other authorized payment-sector institutions; do not treat NPCI as the RBI.",
       "rules": "NPCI owns the UPI network and prescribes its participant operating arrangements.",
-      "settles": "NPCI is the clearing and settlement agency. It calculates each bank's net position and submits it to RBI's RTGS as a net settlement batch, which debits and credits members' settlement accounts at RBI. The customer sees the money instantly, while interbank settlement happens later, in cycles, on a net basis.",
+      "settles": "NPCI is the clearing and settlement agency. It calculates each bank's net position and submits it to RBI's RTGS as a multilateral net settlement batch, which debits and credits members' settlement accounts at RBI. The customer sees the money instantly, while interbank settlement happens later, in cycles, on a net basis.",
       "access": "TPAP, PSP bank, issuing bank, beneficiary bank and NPCI are distinct roles. App adoption is not direct central-bank account access.",
       "subjects": [
         "upi"

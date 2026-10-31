@@ -154,3 +154,4 @@ html{background:#fff}body{background:#fff;color:var(--ink);line-height:1.53}
 /* V10 */
 .skip-link{position:absolute;left:12px;top:-60px;background:#fff;color:#132b35;padding:8px 12px;border:2px solid #087f88;z-index:100}.skip-link:focus{top:12px}
 .fn-list{list-style:none;margin:0 0 28px;padding:0;border-top:1px solid #d9e0e3}.fn-list li{border-bottom:1px solid #d9e0e3;padding:14px 0}.fn-list a{font-weight:600;color:#132b35;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#b9c6cb}.fn-list a:hover{color:#08717d}.fn-list p{margin:4px 0 0;font-size:14px;color:#56686f;line-height:1.5}.fn-note{font-size:14px;color:#3f5862;line-height:1.55;margin:0 0 28px;max-width:720px}
+.flat-row.flat-sub{padding-left:28px}.flat-row.flat-sub .layer-number{font-size:12px}

@@ -64,8 +64,10 @@ REQUIRED = {
     "systems/us-clearing-house.html": ["TCH does not hold those balances"],
     "holding/stablecoin-reserves.html": ["BlackRock", "BNY Mellon", "Other stablecoins are set up differently"],
     "participants/circle.html": ["not shown as performing any layer function"],
-    "systems/india-npci.html": ["RTGS", "net position"],
+    "systems/india-npci.html": ["multilateral net settlement batch"],
     "systems/upi.html": ["RTGS accounts at RBI"],
+    "markets/india.html": ["multilateral net settlement batch"],
+    "systems/boe-rtgs.html": ["CLS", "CREST", "Visa Europe and Mastercard"],
     "participants/clearbank.html": ["CHAPS direct participant"],
     "participants/federal-reserve.html": ["Fedwire Funds"],
     "participants/swift.html": ["neither a payment system nor a settlement system"],
@@ -83,7 +85,7 @@ for pid, p in parts.items():
     if "functions" not in p:
         fail(f"{pid}: no explicit functions list")
         continue
-    derived = sorted({subs[f]["layer"] for f in p["functions"]}, reverse=True)
+    derived = sorted({subs[f]["layer"] for f in p["functions"]} | set(p.get("direct_layers", [])), reverse=True)
     if sorted(p["layers"], reverse=True) != derived:
         fail(f"{pid}: layers {p['layers']} do not match its functions {derived}")
     soup = BeautifulSoup((SITE / "participants" / f"{pid}.html").read_text(), "html.parser")
@@ -108,6 +110,16 @@ for f in (SITE / "layers").glob("*.html"):
         pid = pathlib.Path(a["href"]).stem
         if pid in parts and f.stem not in parts[pid]["layers"]:
             fail(f"layers/{f.name} lists {pid}, which has no function in that layer")
+
+# 3b. The review's high-stakes claims stay recorded with their sources.
+claims = {c["id"] for c in json.loads((SITE / "assets" / "verified-claims.json").read_text())["claims"]}
+for cid in ("us-chips-settlement-account", "us-rtp-settlement-account", "usdc-reserve-roles", "india-upi-settlement"):
+    if cid not in claims:
+        fail(f"verified-claims.json is missing {cid}")
+# Interior layer pages use the homepage's seven names.
+for f in (SITE / "layers").glob("*.html"):
+    if "Nine money movement functions" in f.read_text():
+        fail(f"layers/{f.name} still shows the nine-row index")
 
 # 4. Internal links resolve.
 for p in pages():

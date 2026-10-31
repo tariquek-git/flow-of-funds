@@ -24,11 +24,30 @@ USDC = ("Reserves are usually split across several institutions. For USDC, Circl
         "most reserves sit in a BlackRock-managed government money market fund whose custodian is "
         "BNY Mellon, and the rest is cash at banks. Other stablecoins are set up differently.")
 UPI_ROW = ("NPCI is the clearing and settlement agency. It calculates each bank's net position and "
-           "submits it to RBI's RTGS as a net settlement batch, which debits and credits members' "
+           "submits it to RBI's RTGS as a multilateral net settlement batch, which debits and credits members' "
            "settlement accounts at RBI. The customer sees the money instantly, while interbank "
            "settlement happens later, in cycles, on a net basis.")
 
+BOE_PFMI = "https://www.bankofengland.co.uk/payments/rtgs-and-chaps-2023-pfmi-self-assessment"
+
 FIXES = [
+    # wording upgrade for a sentence first written earlier in this release
+    ("systems/india-npci.html", "submits it to RBI's RTGS as a net settlement batch",
+     "submits it to RBI's RTGS as a multilateral net settlement batch"),
+    ("assets/atlas-data.json", "submits it to RBI's RTGS as a net settlement batch",
+     "submits it to RBI's RTGS as a multilateral net settlement batch"),
+    # India market page
+    ("markets/india.html",
+     "The Reserve Bank of India operates national central settlement systems.",
+     "The Reserve Bank of India operates the RTGS system. NPCI nets UPI obligations between banks and "
+     "RBI's RTGS posts them as a multilateral net settlement batch to members' RTGS accounts."),
+    # UK RTGS scope
+    ("systems/boe-rtgs.html",
+     "<p>Finality in central-bank money</p>",
+     "<p>Finality in central-bank money. Besides CHAPS, the same RTGS accounts settle the net positions of "
+     "Faster Payments, Bacs and the cheque Image Clearing System, card schemes including Visa Europe and "
+     "Mastercard, the sterling legs of CLS, and CREST, the UK securities settlement system run by Euroclear "
+     "UK and International.</p>"),
     # CHIPS
     ("systems/chips.html",
      "High-value interbank payment settlement under CHIPS rules",
@@ -95,6 +114,8 @@ SOURCES = {
                                          ("BlackRock Funds N-CSR, Circle Reserve Fund (custodian named)", CRF_NCSR, "Primary / SEC filing")],
     "systems/india-npci.html": [("NPCI, UPI settlement process", NPCI_SETTLE, "Primary / operator"),
                                 ("RBI Payment System Report, December 2024 (RTGS settles NPCI net batches)", RBI_PSR, "Primary / central bank")],
+    "systems/boe-rtgs.html": [("Bank of England, RTGS and CHAPS PFMI self-assessment (assessed 31 Oct 2023)", BOE_PFMI, "Primary / central bank")],
+    "markets/india.html": [("NPCI, UPI settlement process", NPCI_SETTLE, "Primary / operator")],
     "systems/upi.html": [("NPCI, UPI settlement process", NPCI_SETTLE, "Primary / operator"),
                          ("RBI Payment System Report, December 2024", RBI_PSR, "Primary / central bank")],
 }

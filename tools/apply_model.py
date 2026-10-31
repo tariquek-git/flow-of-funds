@@ -37,6 +37,10 @@ FUNCTIONS = {
     "banco-central-do-brasil": ["domestic-schemes", "instant-links", "central-bank-accounts", "rtgs"],
 }
 
+# Layers held by direct participation in a settlement system, without performing a layer-1 function.
+# ClearBank is a CHAPS direct participant (Bank of England), so it sits in layer 1 as a participant.
+DIRECT = {"clearbank": ["1"]}
+
 # Plain-language note shown under a participant's function list, where the bare list would mislead.
 NOTES = {
     "circle": ("Circle is not shown as performing any layer function in this map. It issues USDC. Most "
@@ -72,7 +76,8 @@ def load():
             sys.exit(f"{pid}: unknown function ids {unknown}")
         p = data["participants"][pid]
         p["functions"] = fns
-        p["layers"] = sorted({subs[f]["layer"] for f in fns}, reverse=True)
+        p["direct_layers"] = DIRECT.get(pid, [])
+        p["layers"] = sorted({subs[f]["layer"] for f in fns} | set(p["direct_layers"]), reverse=True)
         if pid in DESC:
             p["desc"] = DESC[pid]
     missing = set(data["participants"]) - set(FUNCTIONS)
