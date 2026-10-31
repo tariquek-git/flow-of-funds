@@ -166,6 +166,12 @@ No CAD interbank settlement happens in this flow, which surprises most readers. 
 
 ---
 
+### Second flow · Interac e-Transfer
+
+Added so Canadian payment types and systems get "Show the flow". Sourced to Interac's e-Transfer disclosure (as at 30 Apr 2025). The sender's institution debits the sender. Interac carries the instruction and does not touch funds. The recipient's institution credits the recipient. The day after the value date the institutions settle net through Lynx, final on Bank of Canada accounts. That the recipient is credited before interbank settlement is our reading of Interac's deferred net arrangement, and the flow says so in its caveats.
+
+---
+
 ## 6. Drift tests
 
 | Test | Fails when | Fixture that proves it |
