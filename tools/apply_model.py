@@ -24,17 +24,17 @@ DATA = SITE / "assets" / "atlas-data.json"
 FUNCTIONS = {
     "wise": ["consumer-apps", "business-apis", "multicurrency-balances", "local-collection",
              "fx-execution", "local-bank-credit"],
-    "visa": ["card-schemes", "card-push-payout"],
-    "mastercard": ["card-schemes"],
+    "visa": ["card-schemes", "clearing-netting", "card-push-payout"],
+    "mastercard": ["card-schemes", "clearing-netting", "card-push-payout"],
     "swift": ["financial-messaging"],
     "interac": ["domestic-schemes", "instant-links"],
-    "marqeta": ["issuer-processing"],
-    "clearbank": ["banking-as-service", "scheme-sponsorship"],
+    "marqeta": ["issuer-processing", "core-ledgers"],
+    "clearbank": ["banking-as-service", "scheme-sponsorship", "settlement-agency"],
     "circle": [],
-    "payments-canada": ["domestic-schemes", "clearing-netting", "rtgs"],
-    "bank-of-canada": ["central-bank-accounts"],
-    "federal-reserve": ["central-bank-accounts", "rtgs", "instant-links", "clearing-netting"],
-    "banco-central-do-brasil": ["domestic-schemes", "instant-links", "central-bank-accounts"],
+    "payments-canada": ["domestic-schemes", "clearing-netting", "rtgs", "deferred-net"],
+    "bank-of-canada": ["central-bank-accounts", "liquidity-provision"],
+    "federal-reserve": ["central-bank-accounts", "rtgs", "instant-links", "clearing-netting", "liquidity-provision"],
+    "banco-central-do-brasil": ["domestic-schemes", "instant-links", "central-bank-accounts", "rtgs"],
 }
 
 # Plain-language note shown under a participant's function list, where the bare list would mislead.
@@ -57,6 +57,8 @@ NOTES = {
 
 DESC = {
     "federal-reserve": "Operates Fedwire Funds, FedNow and FedACH, and holds master accounts for eligible institutions.",
+    "clearbank": "Bank accounts and indirect access to UK and EU payment schemes for business and fintech clients, settled through ClearBank's own direct participation.",
+    "banco-central-do-brasil": "Owns and operates Pix, including SPI settlement and DICT addressing, and runs the STR.",
     "interac": "Operator of Canadian payment services including Interac e-Transfer. Funds stay at participating institutions.",
 }
 

@@ -52,6 +52,9 @@ FIXES = [
      "Bank, funded through Fedwire or the Fed's liquidity management transfer service. TCH's settlement "
      "note names the Federal Reserve Bank of New York. The account is held for funding participants and "
      "funding agents, with TCH acting as their agent. RTP is not FedNow."),
+    ("systems/rtp.html",
+     "An eligible bank can participate",
+     "An eligible depository institution, including a credit union, can participate"),
     # The Clearing House
     ("systems/us-clearing-house.html",
      "RTP provides instant interbank settlement; CHIPS provides high-value clearing and settlement; EPN is an ACH operator under ACH rules.",
