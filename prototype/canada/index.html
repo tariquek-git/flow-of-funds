@@ -749,7 +749,7 @@ function drawEdges(){
     const upS = S.node ? new Set([S.node, ...reach(S.node,'up')]) : null, dnS = S.node ? new Set([S.node, ...reach(S.node,'down')]) : null;
     const narrow = map.clientWidth < 860;
     // On narrow screens the product lines only appear for the selected path, so the map stays legible.
-    const es = IDX.edges.filter(e => box(e.from) && box(e.to) && !(narrow && e.type==='runs' && (!lit || !lit.has(e.from) || !lit.has(e.to))));
+    const es = IDX.edges.filter(e => box(e.from) && box(e.to) && !(narrow && e.type==='runs' && !(S.node && (S.node===e.from || S.node===e.to))));
     map.classList.toggle('narrow', narrow);
     // spread attachment points along node edges
     const outs = {}, ins = {};
@@ -778,17 +778,30 @@ function drawEdges(){
         const dy = (upward ? -1 : 1) * Math.max(18, Math.abs(y2-y1)*0.5);
         // Bend around boxes the line does not connect to, so it never reads as passing through them.
         let c1 = x1, c2 = x2;
-        const obst = $$('[data-node]', map).filter(el => el.dataset.node!==e.from && el.dataset.node!==e.to && !el.classList.contains('base') && !el.classList.contains('k-product')).map(el => { const r = el.getBoundingClientRect(); return {l:r.left-mb.left-8, r:r.right-mb.left+8, t:r.top-mb.top-4, b:r.bottom-mb.top+4}; });
+        const obst = $$('[data-node]', map).filter(el => el.dataset.node!==e.from && el.dataset.node!==e.to && !el.classList.contains('base') && !el.classList.contains('k-product')).map(el => { const r = el.getBoundingClientRect(); return {l:r.left-mb.left-12, r:r.right-mb.left+12, t:r.top-mb.top-8, b:r.bottom-mb.top+8}; });
         const pt = (t) => { const u=1-t; return {x:u*u*u*x1+3*u*u*t*c1+3*u*t*t*c2+t*t*t*x2, y:u*u*u*y1+3*u*u*t*(y1+dy)+3*u*t*t*(y2-dy)+t*t*t*y2}; };
-        for (let it=0; it<4; it++) {
+        const TS = Array.from({length:19}, (_,k) => 0.05 + k*0.05);
+        for (let it=0; it<8; it++) {
           let hit = null, hp = null;
-          for (const t of [.15,.25,.35,.45,.55,.65,.75,.85]) { const q = pt(t); const o = obst.find(o => q.x>o.l && q.x<o.r && q.y>o.t && q.y<o.b); if (o) { hit = o; hp = q; break; } }
+          for (const t of TS) { const q = pt(t); const o = obst.find(o => q.x>o.l && q.x<o.r && q.y>o.t && q.y<o.b); if (o) { hit = o; hp = q; break; } }
           if (!hit) break;
           const goLeft = (hp.x - hit.l) < (hit.r - hp.x);
           const shift = (goLeft ? hit.l - hp.x : hit.r - hp.x) * 1.3;
           c1 = Math.min(Math.max(c1 + shift, 8), mb.width - 8); c2 = Math.min(Math.max(c2 + shift, 8), mb.width - 8);
         }
         d = `M${x1} ${y1} C${c1} ${y1+dy} ${c2} ${y2-dy} ${x2} ${y2}`;
+        // Fallback: if the curve still clips a box, drop down beside it, then come in.
+        let still = null; for (const t of TS) { const q = pt(t); const o = obst.find(o => q.x>o.l && q.x<o.r && q.y>o.t && q.y<o.b); if (o) { still = o; break; } }
+        if (still && !upward) {
+          // pick a vertical lane that clears every box between the two ends
+          const yTop = y1 + 14, yBot = y2 - 14;
+          const clear = v => !obst.some(o => v > o.l && v < o.r && o.b > yTop && o.t < yBot);
+          const cands = [x1, x2, ...obst.flatMap(o => [o.l - 2, o.r + 2])].filter(v => v > 6 && v < mb.width - 6 && clear(v));
+          const rx = cands.sort((p,q) => (Math.abs(p-x1)+Math.abs(p-x2)) - (Math.abs(q-x1)+Math.abs(q-x2)))[0] ?? still.r + 4;
+          const tb = box(e.to); const x2b = (tb.base || tb.w > 220) ? Math.min(Math.max(rx, tb.x+14), tb.x+tb.w-14) : x2;
+          const ya = yTop, yb = yBot;
+          d = `M${x1} ${y1} C${x1} ${(y1+ya)/2} ${rx} ${(y1+ya)/2} ${rx} ${ya} L${rx} ${yb} C${rx} ${(yb+y2)/2} ${x2b} ${(yb+y2)/2} ${x2b} ${y2}`;
+        }
         if (e.type==='settle' && e.label && (!narrow || (lit && lit.has(e.from) && lit.has(e.to)))) labels.push({x:(x1+x2)/2, y:(y1+y2)/2, t:e.label, e});
       }
       const on = !lit || (upS.has(e.from) && upS.has(e.to)) || (dnS.has(e.from) && dnS.has(e.to));
