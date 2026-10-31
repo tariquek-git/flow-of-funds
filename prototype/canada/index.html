@@ -224,7 +224,7 @@ main{padding-bottom:56px}
 .clockwrap{position:relative}
 .clocklabels{display:none;position:relative}
 .clocklabels div{position:absolute;left:0;right:6px;display:flex;align-items:center;font-size:11px;line-height:1.15;border-top:1px solid var(--rule)}
-.clock-days{display:none}
+.clockbox svg.clock-days{display:none}
 .toggle{display:inline-flex;align-items:center;gap:8px;font-size:var(--t-s);cursor:pointer;user-select:none;min-height:40px}
 .toggle input{width:18px;height:18px;accent-color:var(--ink);margin:0}
 .clock-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:4px 28px;margin:10px 0 0;padding:0;list-style:none;font-size:var(--t-s);color:var(--muted)}
@@ -403,8 +403,8 @@ details li{margin:0 0 6px}
   .clockwrap{display:grid;grid-template-columns:78px minmax(0,1fr);border-top:1px solid var(--ink)}
   .clocklabels{display:block}
   .clockbox{border-top:0}
-  .clock-wide{display:none!important}
-  .clock-days{display:block!important;min-width:770px;width:770px!important}
+  .clockbox svg.clock-wide{display:none!important}
+  .clockbox svg.clock-days{display:block!important;min-width:770px;width:770px!important}
   .scrollhint{display:block}
   .narrow-hint{display:block}
   .lhead b{background:var(--paper);padding:0 4px 0 0}
@@ -610,7 +610,7 @@ function render(){
   else if (S.view==='flow') app.innerHTML = vFlow();
   else app.innerHTML = vCcy();
   wire();
-  if (S.view==='ccy') { drawEdges(); const cb = $('.clockbox'); if (cb && cb.scrollWidth > cb.clientWidth + 2) { const n = torontoNow(); cb.scrollLeft = Math.max(0, (n.dow + n.mins/1440)*110 - cb.clientWidth*0.5); } }
+  if (S.view==='ccy') { drawEdges(); const cb = $('.clockbox'); if (cb && cb.scrollWidth > cb.clientWidth + 2 && window.matchMedia('(max-width: 600px)').matches) { const n = torontoNow(); cb.scrollLeft = Math.max(0, (n.dow + n.mins/1440)*110 - cb.clientWidth*0.5); } }
   const t = S.view==='ccy' ? (S.node ? `${node(S.node).short} · ${S.ccy}` : S.ccy) : S.view==='flow' ? 'Railroom' : S.view==='type' ? IDX.groups[S.type].name : '';
   document.title = t ? `${t} · Settlement Map` : 'Settlement Map';
   $('#foot').innerHTML = `<p>Data as of ${fmtDate(D.meta.as_of)}. ${esc(D.meta.scope)}</p><p>How this was made. Built by Fintech North with Claude, from central bank and operator documents first. Every number links to its source. Corrections by pull request.</p>`;
@@ -792,7 +792,7 @@ function drawEdges(){
       const b = box(s.id); const x = b.x + b.w/2, y = b.y + b.h; const L = lit && lit.has(s.id) ? ' lit' : '';
       out += `<path d="M${x} ${y} L${x} ${y+16}" class="e e-unknown${L}"/><text x="${x}" y="${y+28}" text-anchor="middle" class="e-q${L}">?</text>`;
     });
-    const placed = $$('.node, .base', map).map(el => { const b = el.getBoundingClientRect(); return {x:b.left-mb.left+b.width/2, y:b.top-mb.top+b.height/2, w:b.width, h:b.height}; });
+    const placed = $$('.node, .base', map).map(el => { const b = el.getBoundingClientRect(); const ext = el.classList.contains('planned') && !el.classList.contains('k-product') ? 12 : 0; return {x:b.left-mb.left+b.width/2, y:b.top-mb.top+b.height/2-ext/2, w:b.width, h:b.height+ext}; });
     labels.sort((p,q)=>p.y-q.y);
     for (const l of labels) {
       const w0 = l.t.length*6.3 + 10;
@@ -1045,7 +1045,7 @@ function svgFlow(sc){
     else if (st.type==='message') { g += `<line class="ln" x1="${fx}" x2="${tx-4}" y1="${y}" y2="${y}" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#m-open)"/>`; if (st.via) g += `<text class="lbl" x="${x(st.via)}" y="${y-7}" text-anchor="middle">${esc(party(st.via)?.name||sys(st.via)?.short)}</text>`; }
     else if (st.type==='money') g += `<line class="ln" x1="${fx}" x2="${tx+(tx>fx?-6:6)}" y1="${y}" y2="${y}" stroke-width="2.5" marker-end="url(#m-fill)"/><text class="lbl" x="${(fx+tx)/2}" y="${y-7}" text-anchor="middle">credit</text>`;
     else if (st.type==='settlement') { for (const off of [-2.5,2.5]) { g += `<line class="ln settle" x1="${fx}" x2="${settleX}" y1="${y-8+off}" y2="${y-8+off}" stroke-width="1.6"/><line class="ln settle" x1="${settleX}" x2="${tx}" y1="${y+10+off}" y2="${y+10+off}" stroke-width="1.6"/>`; }
-      g += `<line class="ln settle" x1="${settleX}" x2="${settleX}" y1="${y-14}" y2="${y+16}" stroke-width="2.5"/><text class="lbl" x="${(fx+settleX)/2}" y="${y-15}" text-anchor="middle">${esc(sys(st.via)?.short||'')}</text><text class="lbl final" x="${settleX+6}" y="${y+4}">final</text><text class="lbl" x="${fx+8}" y="${y+1}">debit</text><text class="lbl" x="${(tx+settleX)/2}" y="${y+30}" text-anchor="middle">credit</text>`; }
+      g += `<line class="ln settle" x1="${settleX}" x2="${settleX}" y1="${y-14}" y2="${y+16}" stroke-width="2.5"/><text class="lbl" x="${(fx+settleX)/2}" y="${y-15}" text-anchor="middle">${esc(sys(st.via)?.short||'')}</text><text class="lbl final" x="${settleX+6}" y="${y+4}">final</text><text class="lbl" x="${fx+8}" y="${y-14}">debit</text><text class="lbl" x="${(tx+settleX)/2}" y="${y+30}" text-anchor="middle">credit</text>`; }
     g += `</g>`; });
   return g + '</svg>';
 }
