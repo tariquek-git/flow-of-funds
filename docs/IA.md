@@ -38,7 +38,7 @@ Phones and desktop share the same URLs. The private review link uses `#cad`, `#c
 
 One row per currency. A row holds a flag, the code, the central bank, one sentence on how that market does it, a nine-cell layer strip (filled where the map has something), a 24-hour strip for the central settlement system with a "now" mark, and a count. Loaded currencies are full rows. Phase 2 currencies are a single compact line each, with flag and central bank only, so the scope is visible without pretending to coverage.
 
-Below the rows, two secondary indexes. **By system type** (the seven groups from the brief, with counts) and **Flows** (Railroom scenarios).
+Below the rows, one secondary index, **Flows** (Railroom scenarios). The seven system-type groups stay in the data and the `?type=` view, but are off the home page until there are about 40 systems. The nine-cell layer strip was cut after QA because readers could not decode it.
 
 **Not here.** No hero, no globe, no cards, no feature tiles.
 
@@ -47,13 +47,13 @@ Below the rows, two secondary indexes. **By system type** (the seven groups from
 Three bands, top to bottom.
 
 1. **Who does what (the settlement map).** It answers one question. For each kind of payment, who carries it, when is it final between banks, and who needs a seat to take part?
-   - **Across, left to right, is speed.** Payment types are ordered by how fast they become final between banks (real time, next business day, not confirmed). A scale above the row says so, and each payment type carries its own "Final ..." line. Wire and RTR are on the left, debit, cheque, direct deposit and e-Transfer in the middle, and cards on the right.
+   - **Across, left to right, is speed.** Payment types are ordered by how fast the banks settle them (real time, next business day, depends on the card network). A scale above the row says so, and each payment type carries its own "Settles ..." line. A note under the map says settlement between banks is final but some payments can still be undone, with the rule shown on cheques, pre-authorized debits and card purchases. Wire and RTR are on the left, debit, cheque, direct deposit and e-Transfer in the middle, and cards on the right.
    - **Down is the path.** The rows are payment type, then network and rules (4a), clearing (4b), settlement (1), and the central bank band. Plain names come first, and the layer code sits small beside each one. Empty rows are dropped.
    - **Banks are a side column, not a step.** "Who holds the accounts" lists seat holders (Lynx participants and ACSS direct clearers) and those who reach the seat through them, with dotted lines to the central bank. Banks take part in every system, so they sit beside the stack instead of inside it.
    - **The lines.** A thin ink line means runs on. A double accent line with a timing label means settles in. A dashed double line in the planned colour means will settle in once live. Dotted means holds an account at. A dashed stub ending in "?" means not confirmed.
    - The heading states what the lines are. Customer money stays in bank accounts, and the lines show where banks settle what they owe each other.
 2. **When it's final (the settlement clock).** A Monday to Sunday strip, one row per system. A long accent bar settles all day (Lynx). A short accent mark settles once (ACSS, Interac Debit, e-Transfer, each labelled with the days it covers). Planned is hatched, and a vertical line marks now in Toronto. A "Monday is a statutory holiday" box shows Friday to Monday settling on Tuesday, which is the four days in Interac's disclosure.
-3. **What's changing.** A dated line from 2020 to 2028. Done events are solid, planned ones hatched, undated ones sit at the right edge, and now is marked.
+3. **What's changing.** A dated list, done events solid and planned ones hatched. The axis graphic was cut after QA because it repeated the list.
 
 **Phones and narrow columns.** The map switches by the width of its column, not the screen, so it also adapts when the record panel is open on a laptop. Payment types wrap, and the speed scale moves into each node's "Final ..." line. Product lines appear only for the selected path, and the seats column moves under the central bank band.
 

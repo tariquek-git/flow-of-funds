@@ -53,11 +53,11 @@ const tests = {
   'every-claim-sourced': (d) => {
     const errors = [];
     const src = byId(d.sources);
-    const claimFields = ['operator', 'scheme_owner', 'roles', 'settlement_asset', 'settlement_mode', 'settles_in', 'settlement_timing', 'hours', 'participants_summary', 'participants_count', 'explainer'];
+    const claimFields = ['operator', 'scheme_owner', 'roles', 'settlement_asset', 'settlement_mode', 'settles_in', 'settlement_timing', 'hours', 'participants_summary', 'participants_count', 'funded_by', 'explainer'];
     for (const s of d.systems) {
       for (const f of claimFields) {
         const v = s[f];
-        const isClaim = v !== null && !(f === 'settlement_mode' && v === 'unknown');
+        const isClaim = v != null && !(f === 'settlement_mode' && v === 'unknown');
         const refs = s.field_sources[f];
         if (isClaim && (!refs || refs.length === 0)) errors.push(`${s.id}.${f} has a value but no source`);
         for (const r of refs || []) if (!src[r]) errors.push(`${s.id}.${f} cites missing source ${r}`);
@@ -70,6 +70,7 @@ const tests = {
     for (const p of d.parties) for (const r of p.sources) if (!src[r]) errors.push(`party ${p.id} cites missing source ${r}`);
     for (const s of d.systems) if (s.windows.length && !(s.field_sources.windows || []).length) errors.push(`${s.id} has opening or settlement windows but no source`);
     for (const k of ['products', 'access', 'timeline']) for (const x of d[k]) for (const r of x.sources) if (!src[r]) errors.push(`${k} ${x.id || x.date} cites missing source ${r}`);
+    for (const pr of d.products) for (const r of pr.after_settlement?.sources || []) if (!src[r]) errors.push(`product ${pr.id} after_settlement cites missing source ${r}`);
     for (const c of d.currencies) for (const r of c.how_sources || []) if (!src[r]) errors.push(`currency ${c.id} cites missing source ${r}`);
     return { errors };
   },
@@ -87,6 +88,7 @@ const tests = {
       if (!p[s.operator]) errors.push(`${s.id}.operator ${s.operator} is not a party`);
       if (s.scheme_owner && !p[s.scheme_owner]) errors.push(`${s.id}.scheme_owner ${s.scheme_owner} is not a party`);
       if (s.settles_in && !sy[s.settles_in]) errors.push(`${s.id}.settles_in ${s.settles_in} is not a system`);
+      if (s.funded_by && !sy[s.funded_by]) errors.push(`${s.id}.funded_by ${s.funded_by} is not a system`);
     }
     const lay = new Set(d.layers.map((l) => l.id));
     for (const s of d.systems) if (!lay.has(s.layer)) errors.push(`${s.id}.layer ${s.layer} is not a layer`);

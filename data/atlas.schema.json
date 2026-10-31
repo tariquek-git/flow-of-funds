@@ -305,7 +305,8 @@
               "participants_summary",
               "explainer",
               "windows",
-              "participants_count"
+              "participants_count",
+              "funded_by"
             ]
           },
           "patternProperties": {
@@ -343,6 +344,16 @@
         "final_label": {
           "type": "string",
           "maxLength": 40
+        },
+        "funded_by": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       }
     },
@@ -724,6 +735,24 @@
         "sources": {
           "$ref": "#/$defs/sourceRefs",
           "minItems": 1
+        },
+        "after_settlement": {
+          "type": "object",
+          "required": [
+            "text",
+            "sources"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "text": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "sources": {
+              "$ref": "#/$defs/sourceRefs",
+              "minItems": 1
+            }
+          }
         }
       }
     },

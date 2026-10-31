@@ -81,7 +81,7 @@ main{padding-bottom:56px}
 
 /* L1 currency ledger */
 .ledger{border-top:1px solid var(--ink)}
-.ccy{display:grid;grid-template-columns:132px minmax(0,1fr) 220px 260px;gap:6px 24px;align-items:center;padding:16px 0;border-bottom:1px solid var(--rule);text-decoration:none}
+.ccy{display:grid;grid-template-columns:132px minmax(0,1fr) 260px;gap:6px 24px;align-items:center;padding:16px 0;border-bottom:1px solid var(--rule);text-decoration:none}
 .ccy:hover .ccy-code{color:var(--accent)}
 .ccy-id{display:flex;align-items:center;gap:10px}
 .ccy-code{font-family:var(--mono);font-size:var(--t-l);font-weight:600;font-variation-settings:"wdth" 90}
@@ -160,6 +160,7 @@ main{padding-bottom:56px}
 .e-settle-out{stroke:var(--accent);stroke-width:5}
 .e-settle-in{stroke:var(--paper);stroke-width:1.6}
 .e-access{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:1.5 3.5;stroke-linecap:round}
+.e-funded{stroke:var(--planned);stroke-width:1.4;stroke-dasharray:2 3}
 .e-plan-out{stroke:var(--planned);stroke-width:5;stroke-dasharray:7 4}
 .e-plan-in{stroke:var(--paper);stroke-width:1.6}
 .e-lab.plan text{fill:var(--planned)}
@@ -485,6 +486,7 @@ function build(){
   IDX.edges = [];
   D.products.forEach(p => [p.runs_on].flat().forEach(t => IDX.edges.push({from:p.id, to:t, type:'runs'})));
   D.systems.forEach(s => { if (s.settles_in) IDX.edges.push({from:s.id, to:s.settles_in, type:'settle', label:s.settles_label||''}); });
+  D.systems.forEach(s => { if (s.funded_by) IDX.edges.push({from:s.id, to:s.funded_by, type:'funded', label:'funded by Lynx payments'}); });
   D.access.forEach(a => { if (a.holds_account_at) IDX.edges.push({from:a.id, to:a.holds_account_at, type:'access'}); if (a.through) IDX.edges.push({from:a.id, to:a.through, type:'access'}); });
   IDX.down = {}; IDX.up = {};
   IDX.edges.forEach(e => { (IDX.down[e.from] ||= []).push(e); (IDX.up[e.to] ||= []).push(e); });
@@ -498,7 +500,7 @@ const party = id => IDX.parties[id];
 function reach(id, dir){ const out = new Set(); const st=[id]; while(st.length){ const c=st.pop(); for (const e of (dir==='down'?IDX.down[c]:IDX.up[c])||[]){ const n = dir==='down'?e.to:e.from; if(!out.has(n)){ out.add(n); st.push(n);} } } return out; }
 function pathDown(id){ // single primary chain: follow first outgoing edge until root
   const out=[{id, via:null}]; const seen=new Set([id]); let c=id;
-  while(true){ const es=(IDX.down[c]||[]).filter(e=>e.type!=='access' || node(c).kind==='access'); if(!es.length) break; const e=es[0]; if(seen.has(e.to)) break; out.push({id:e.to, via:e}); seen.add(e.to); c=e.to; }
+  while(true){ const es=(IDX.down[c]||[]).filter(e=>e.type!=='funded' && (e.type!=='access' || node(c).kind==='access')); if(!es.length) break; const e=es[0]; if(seen.has(e.to)) break; out.push({id:e.to, via:e}); seen.add(e.to); c=e.to; }
   return out;
 }
 
@@ -508,7 +510,7 @@ function finality(id){
   if (n.rec.status==='planned') return {b:'rt', t:'real time, once live'};
   if (n.kind==='product' && Array.isArray(n.rec.runs_on) && n.rec.runs_on.length>1) {
     const parts = n.rec.runs_on.map(t => ({s:sys(t), f:finality(t)}));
-    if (new Set(parts.map(p=>p.f.b)).size>1) return {b:'mix', t:parts.map(p=>`${p.s.short} ${p.f.t}`).join(', ')};
+    if (new Set(parts.map(p=>p.f.b)).size>1) return {b:'mix', t:parts.map(p=>p.f.b==='unk' ? `${p.s.short} not confirmed` : `${p.s.short} settles ${p.f.t}`).join('. ')};
     return parts[0].f;
   }
   const chain = pathDown(id).map(x=>node(x.id)).filter(x=>x.kind==='system');
@@ -517,6 +519,7 @@ function finality(id){
   if (chain.some(x=>x.rec.settlement_mode==='deferred-net')) return {b:'nbd', t:'next business day'};
   return {b:'rt', t:'real time'};
 }
+const finText = f => f.b==='mix' ? f.t : f.b==='unk' ? 'Settlement not confirmed' : `Settles ${f.t}`;
 const FIN_LABEL = {rt:'Real time', nbd:'Next business day', day:'Daily, on the value date', mix:'Depends on the card network', unk:'Not confirmed'};
 
 /* ---------- time ---------- */
@@ -643,8 +646,6 @@ function vHome(){
     return `<a class="ccy" href="${href({view:'ccy',ccy:c.id,node:null})}" data-go='{"view":"ccy","ccy":"${c.id}","node":null}'>
       <div class="ccy-id">${flag(c.flag)}<span class="ccy-code">${c.id}</span></div>
       <div class="ccy-main"><div class="ccy-cb">${esc(c.central_bank)}</div><div class="ccy-how">${esc(c.how)}</div></div>
-      <div><div class="strip-label"><span>Layers 7 to 1</span><span>${count} records</span></div>
-        <div class="layerstrip" aria-label="Layers with records">${LAYER_ORDER.map(l=>`<i class="${l==='1'?'root':used.has(l)?'on':''}" title="${esc(IDX.layers[l].name)}">${l}</i>`).join('')}</div></div>
       <div>${rs ? `<div class="strip-label"><span>${esc(rs.short)} today</span><span class="${st.open?'status-open':'status-closed'}"><span class="dot ${st.open?'on':'off'}"></span>${st.open?'open':'closed'}</span></div>${day24(rs, n.dow, false, true)}<div class="strip-label" style="margin-top:3px"><span>00</span><span>12</span><span>24</span></div>` : ''}</div>
     </a>`;
   }).join('');
@@ -657,8 +658,7 @@ function vHome(){
     <div class="ledger">${rows}</div>
     <div class="ccy-later" aria-label="Coming in Phase 2">${later.map(c=>`<div>${flag(c.flag)}<b>${c.id}</b><span>${esc(c.central_bank)}</span></div>`).join('')}</div>
     <div class="idx" style="margin-top:34px">
-      <div><div class="section-h" style="margin-top:0"><h2>By system type</h2></div><ul>${types}</ul></div>
-      <div><div class="section-h" style="margin-top:0"><h2>Flows</h2><p>Step through one payment.</p></div><ul>${flows}</ul></div>
+      <div><div class="section-h" style="margin-top:0"><h2>Flows</h2><p>Step through one payment, message by message.</p></div><ul>${flows}</ul></div>
     </div>`;
 }
 
@@ -690,7 +690,7 @@ function vCcy(){
   // finality scale: contiguous runs of payment types with the same speed
   const prods = D.products.filter(p=>p.region===region).map(p => ({p, col: parseInt((lay.pos[p.id]||'0')), span: /span (\d+)/.test(lay.pos[p.id]||'') ? +RegExp.$1 : 1, f: finality(p.id)})).filter(x=>x.col).sort((a,b)=>a.col-b.col);
   const segs = []; prods.forEach(x => { const last = segs.at(-1); if (last && last.b===x.f.b && last.end===x.col) { last.end = x.col + x.span; } else segs.push({b:x.f.b, start:x.col, end:x.col+x.span}); });
-  const scale = segs.length ? `<div class="finrow"><div class="lhead"><b>Final between banks</b><span></span><span>Left is faster.</span></div><div class="finscale" style="--cols:${lay.cols}">${segs.map(sg => `<span class="fin-${sg.b}" style="grid-column:${sg.start} / ${sg.end}">${FIN_LABEL[sg.b]}</span>`).join('')}</div></div>` : '';
+  const scale = segs.length ? `<div class="finrow"><div class="lhead"><b>When banks settle</b><span></span><span>Left is faster.</span></div><div class="finscale" style="--cols:${lay.cols}">${segs.map(sg => `<span class="fin-${sg.b}" style="grid-column:${sg.start} / ${sg.end}">${FIN_LABEL[sg.b]}</span>`).join('')}</div></div>` : '';
   const seatCol = seats.length ? `<aside class="seats" aria-label="Who holds the accounts"><div class="seats-h"><b>Who holds the accounts</b><span>Banks and others with a settlement seat, and those who reach it through them. They take part in every system on the left.</span></div>${seats.map(n => nodeBtn(n, null, lit)).join('')}</aside>` : '';
   const selProduct = S.node && node(S.node)?.kind==='product';
   const map = `<div class="map${S.node?' has-sel':''}${selProduct?' sel-product':''}${seats.length?' with-seats':''}" id="map">
@@ -710,6 +710,7 @@ function vCcy(){
       <span><svg width="34" height="10"><path d="M0 5H34" class="e e-runs"/></svg>runs on</span>
       <span><svg width="34" height="10"><path d="M0 5H34" class="e e-settle-out"/><path d="M0 5H34" class="e e-settle-in"/></svg>settles in, with timing</span>
       <span><svg width="34" height="10"><path d="M0 5H34" class="e e-plan-out"/><path d="M0 5H34" class="e e-plan-in"/></svg>will settle in, once live</span>
+      <span><svg width="34" height="10"><path d="M0 5H34" class="e e-funded"/></svg>accounts funded by</span>
       <span><svg width="34" height="10"><path d="M0 5H34" class="e e-access"/></svg>holds an account at</span>
       <span><svg width="34" height="10"><path d="M0 5H22" class="e e-unknown"/><text x="25" y="9" class="e-q">?</text></svg>not confirmed</span>
       <span><svg width="22" height="12"><rect width="22" height="12" fill="url(#hatch-l)" stroke="currentColor" stroke-width=".8"/><defs><pattern id="hatch-l" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="6" fill="currentColor" opacity=".35"/></pattern></defs></svg>planned</span>
@@ -723,6 +724,7 @@ function vCcy(){
        ${rs ? `<div class="now">Toronto <b>${n.label}</b><br><span class="dot ${st.open?'on':'off'}"></span>${esc(rs.short)} ${st.open?'open':'closed'}, ${esc(st.text)}</div>` : ''}</section>
      <div class="section-h"><h2>Who does what</h2><p>Customer money stays in bank accounts. The lines show where the banks settle what they owe each other for each kind of payment. Pick anything to trace it.</p></div>
      ${map}
+     <p class="hint">Settlement between banks is final, but some payments can still be undone afterwards. Cheques can be returned, pre-authorized debits disputed for 90 days, and card payments charged back. Pick one to see the rule and its source.</p>
      <p class="hint narrow-hint">Tap a payment type to draw its path to the central bank.</p>
      ${clock}
      ${tl}
@@ -736,7 +738,7 @@ function nodeBtn(n, pos, lit){
   if (lit && lit.has(n.id)) cls.push('lit');
   let sub = '', lg = '';
   let fin = '';
-  if (n.kind==='product') { sub = r.plain; const f = finality(n.id); fin = `<span class="fin fin-${f.b}">Final ${esc(f.t)}</span>`; }
+  if (n.kind==='product') { sub = r.plain; const f = finality(n.id); fin = `<span class="fin fin-${f.b}">${esc(finText(f))}</span>`; }
   else if (n.kind==='system') { sub = party(r.operator).name.replace(/ Inc\.| International Inc\.| Corp\./g,''); lg = logo(party(r.operator).logo); }
   else sub = r.through ? 'Over 50 institutions, through a seat holder' : 'Lynx participants and ACSS direct clearers';
   const dn = pathDown(n.id).slice(1).map(x=>node(x.id)?.short).filter(Boolean);
@@ -775,7 +777,8 @@ function drawEdges(){
       const a = box(e.from), b = box(e.to);
       const horiz = Math.abs((a.y+a.h/2)-(b.y+b.h/2)) < 8;
       let d;
-      if (horiz) { const y = a.y + a.h/2; const x1 = a.x + (b.x>a.x ? a.w : 0), x2 = b.x + (b.x>a.x ? 0 : b.w); d = `M${x1} ${y} L${x2} ${y}`; }
+      if (horiz) { const y = a.y + a.h/2; const x1 = a.x + (b.x>a.x ? a.w : 0), x2 = b.x + (b.x>a.x ? 0 : b.w); d = `M${x1} ${y} L${x2} ${y}`;
+        if (e.type==='funded' && Math.abs(x2-x1) > 150) labels.push({x:(x1+x2)/2, y:y-11, t:'funded by Lynx', e}); }
       else {
         const upward = b.y + b.h <= a.y + 2;
         const x1 = attach(a, outs[e.from], e, false, 'out'), y1 = upward ? a.y : a.y + a.h;
@@ -817,6 +820,7 @@ function drawEdges(){
       if (planned) out += `<path ${ft} d="${d}" class="e e-plan-out${L}"/><path d="${d}" class="e e-plan-in${L}"/>`;
       else if (e.type==='settle') out += `<path ${ft} d="${d}" class="e e-settle-out${L}"/><path d="${d}" class="e e-settle-in${L}"/>`;
       else if (e.type==='access') out += `<path d="${d}" class="e e-access${L}"/>`;
+      else if (e.type==='funded') out += `<path ${ft} d="${d}" class="e e-funded${L}"/>`;
       else out += `<path ${ft} d="${d}" class="e e-runs${L}"/>`;
     }
     // stubs for systems with no confirmed settlement path
@@ -837,7 +841,7 @@ function drawEdges(){
     for (const l of labels.filter(l => !l.skip)) {
       const on = !lit || (upS.has(l.e.from) && upS.has(l.e.to)) || (dnS.has(l.e.from) && dnS.has(l.e.to));
       const w = l.t.length*6.3 + 10;
-      out += `<g class="e-lab${on&&lit?' lit':''}${sys(l.e.from)?.status==='planned'?' plan':''}"><rect x="${l.x-w/2}" y="${l.y-8}" width="${w}" height="16" rx="1"/><text x="${l.x}" y="${l.y+3.5}" text-anchor="middle">${esc(l.t)}</text></g>`;
+      out += `<g class="e-lab${on&&lit?' lit':''}${sys(l.e.from)?.status==='planned' || l.e.type==='funded'?' plan':''}"><rect x="${l.x-w/2}" y="${l.y-8}" width="${w}" height="16" rx="1"/><text x="${l.x}" y="${l.y+3.5}" text-anchor="middle">${esc(l.t)}</text></g>`;
     }
     svg.setAttribute('viewBox', `0 0 ${mb.width} ${mb.height}`);
     svg.innerHTML = out;
@@ -876,7 +880,7 @@ function vClock(c){
     const y = top + i*rh, mid = y + rh/2;
     g += `<line x1="0" x2="${W}" y1="${y+rh}" y2="${y+rh}" class="c-grid"/>`;
     if (LW) g += `<text x="0" y="${mid-2}" class="c-row">${esc(s.short)}${s.status==='planned'?' ':''}</text>`;
-    let sub = s.status==='planned' ? 'planned' : s.settlement_mode==='unknown' ? 'not confirmed' : s.id==='interac-e-transfer' ? 'deferred net, daily cycle' : MODE[s.settlement_mode].toLowerCase();
+    let sub = s.status==='planned' ? 'planned' : s.settlement_mode==='unknown' ? 'not confirmed' : s.settlement_mode==='rtgs' ? 'each payment, as it goes' : 'once a day, in one total';
     if (LW) g += `<text x="0" y="${mid+12}" class="c-sub">${esc(sub)}</text>`;
     if (s.settlement_mode==='unknown') { g += `<rect x="${LW+4}" y="${mid-9}" width="430" height="16" fill="var(--paper)"/><text x="${LW+8}" y="${mid+4}" class="c-unk">Where ${esc(s.names.join(' and '))} net amounts settle in ${c.id} is not confirmed in the sources checked.</text>`; return; }
     if (s.status==='planned') {
@@ -885,18 +889,18 @@ function vClock(c){
       return;
     }
     if (s.id==='visanet-canada') {
-      for (let d=0; d<7; d++) if (isBiz(d,hol)) g += `<rect x="${x(d,9*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,9*60)}" y="${mid-11}" class="c-settle-t">daily net</text>`;
+      for (let d=0; d<7; d++) if (isBiz(d,hol)) g += `<rect x="${x(d,9*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,9*60)}" y="${mid-11}" class="c-settle-t">once a day</text>`;
       notes.push(`<li><b>Visa</b> settles each member's net position once a business day through Lynx, final on the value date. Visa Canada guarantees it. Time of day is not published, so the mark's position is indicative.</li>`);
       return;
     }
     if (s.id==='interac-debit') {
-      for (let d=0; d<7; d++) if (isBiz(d,hol)) g += `<rect x="${x(d,6*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,6*60)}" y="${mid-11}" class="c-settle-t">via ACSS</text>`;
+      for (let d=0; d<7; d++) if (isBiz(d,hol)) g += `<rect x="${x(d,6*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,6*60)}" y="${mid-11}" class="c-settle-t">yesterday's</text>`;
       notes.push(`<li><b>Interac Debit</b> payments are totalled the same day, cleared through ACSS the next day and settled on Lynx.</li>`);
       return;
     }
     if (s.id==='acss') {
       for (let d=0; d<7; d++) if (isBiz(d,hol)) { const prev = (()=>{ let k=d-1; const list=[]; while(k>=-1){ const dd=(k+7)%7; list.unshift(DAYS[dd]); if (isBiz(dd,hol) || k===d-1 && false) break; k--; if (list.length>3) break; } return list; })();
-        g += `<rect x="${x(d,6*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,6*60)}" y="${mid-11}" class="c-settle-t">morning</text>`; }
+        g += `<rect x="${x(d,6*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,6*60)}" y="${mid-11}" class="c-settle-t">yesterday's</text>`; }
       notes.push(`<li><b>ACSS</b> settles the previous business day's net balances each business morning, through Lynx.</li>`);
       return;
     }
@@ -909,7 +913,7 @@ function vClock(c){
       for (const v of Object.values(settleOn)) v.sort((a,b)=>b.k-a.k);
       for (let d=0; d<7; d++) if (isBiz(d,hol) && settleOn[d]) {
         const fromDays = settleOn[d].map(o=>DAYS[o.d]);
-        g += `<rect x="${x(d,30)}" y="${mid-4}" width="${dayW*0.3}" height="12" class="c-settle"/><text x="${x(d,30)}" y="${mid+20}" class="c-settle-t">${fromDays.length>1 ? fromDays[0]+'–'+fromDays.at(-1) : fromDays[0]} items</text>`;
+        g += `<rect x="${x(d,30)}" y="${mid-4}" width="${dayW*0.3}" height="12" class="c-settle"/><text x="${x(d,30)}" y="${mid+20}" class="c-settle-t">${fromDays.length>1 ? fromDays[0]+'–'+fromDays.at(-1) : fromDays[0]}</text>`;
       }
       notes.push(`<li><b>e-Transfer</b> feels instant to customers. Between banks it settles net the day after the value date, through Lynx. Interac says weekends and holidays can stretch this to four days. Which day each weekend cycle lands on is our reading of that rule. ${hol ? 'With Monday off, Friday to Monday all settle on Tuesday.' : 'Tick the holiday box to see the four-day gap.'}</li>`);
       return;
@@ -926,7 +930,7 @@ function vClock(c){
   return {g, H, notes}; };
   const wide = build(1000,150), days = build(770,0); const notes = wide.notes, H = wide.H;
   const hol = S.holiday;
-  return `<div class="section-h"><h2>When it's final</h2><p>This week in Toronto time. Accent means money is settling between institutions. A long bar settles all day, a short mark settles once.</p></div>
+  return `<div class="section-h"><h2>When it's final</h2><p>This week in Toronto time. A long red bar means payments settle one by one all day. A short red mark means one daily total settles then, and its label says which day's payments it covers.</p></div>
     <label class="toggle"><input type="checkbox" id="holiday" ${hol?'checked':''}> Monday is a statutory holiday</label>
     <div class="clockwrap"><div class="clocklabels" aria-hidden="true" style="height:${H+6}px">${sysIn.map((s,i)=>`<div style="top:${top+i*rh}px;height:${rh}px"><b>${esc(s.short)}</b></div>`).join('')}</div>
     <div class="clockbox" tabindex="0" role="img" aria-label="Weekly settlement clock for ${c.id}. ${esc(notes.map(n=>n.replace(/<[^>]+>/g,'')).join(' '))}"><svg class="clock-wide" viewBox="0 0 1000 ${H+6}">${wide.g}</svg><svg class="clock-days" width="770" height="${H+6}" viewBox="0 0 770 ${H+6}">${days.g}</svg></div></div>
@@ -955,7 +959,6 @@ function vTimeline(c){
   g += `<line x1="${nx}" x2="${nx}" y1="56" y2="76" class="t-now"/><text x="${nx}" y="88" text-anchor="middle" class="t-now-t">now</text>`;
   const fmt = t => t.precision==='quarter' ? `Q${Math.floor((+t.date.slice(5,7)-1)/3)+1} ${t.date.slice(0,4)}` : t.precision==='undated' ? 'No date' : fmtDate(t.date);
   return `<div class="section-h"><h2>What's changing</h2><p>Solid is done. Hatched is planned.</p></div>
-    <div class="tlbox" aria-hidden="true"><svg viewBox="0 0 ${W} ${H+4}">${g}</svg></div>
     <ol class="tl-list">${ev.map((t,i) => `<li><span class="n${t.status==='planned'?' p':''}">${i+1}</span><span class="d">${fmt(t)}</span><span>${esc(t.text)}<span class="s">${esc(srcNames(t.sources))}</span></span></li>`).join('')}</ol>`;
 }
 
@@ -964,7 +967,8 @@ function srcNames(ids){ return [...new Set((ids||[]).map(i=>IDX.sources[i]?.publ
 function vPanel(n, c){
   const r = n.rec; const root = sys(c.root);
   const chain = pathDown(n.id);
-  const ups = (IDX.up[n.id]||[]).map(e=>node(e.from)).filter(Boolean);
+  const upEdges = (IDX.up[n.id]||[]).filter(e=>node(e.from));
+  const ups = upEdges.map(e=>node(e.from));
   const downId = (IDX.down[n.id]||[])[0]?.to;
   let kindLabel, facts = '', explain = '', srcIds = [], allSrc = [], today = '';
   if (n.kind==='system'){
@@ -975,18 +979,19 @@ function vPanel(n, c){
       f('Participants', esc(r.participants_count || r.participants_summary) || unk) +
       f('Settlement asset', esc(r.settlement_asset) || unk) +
       f('Hours', esc(r.hours) || unk) +
+      (r.funded_by ? f('Accounts funded by', esc(sys(r.funded_by).name)+' payments') : '') +
       f(r.status==='planned' ? 'Will settle in' : 'Settles in', r.settlement_mode==='none' ? 'Does not settle' : r.settles_in ? esc(sys(r.settles_in).name) : r.settlement_mode==='unknown' ? unk : 'Final here');
     explain = r.explainer; srcIds = r.field_sources.explainer; allSrc = [...new Set(Object.values(r.field_sources).flat())];
-    if ((r.windows||[]).some(w=>w.kind==='open')) { const nn = torontoNow(); today = `<div class="today"><div class="ph"><span>Today</span><span>${esc(openStatus(r).text)}</span></div>${day24(r, nn.dow, false, true)}<div class="hrs"><span>00:00</span><span>06</span><span>12</span><span>18</span><span>24:00</span></div></div>`; }
+    if (r.status==='live' && (r.windows||[]).some(w=>w.kind==='open')) { const nn = torontoNow(); today = `<div class="today"><div class="ph"><span>Today</span><span>${esc(openStatus(r).text)}</span></div>${day24(r, nn.dow, false, true)}<div class="hrs"><span>00:00</span><span>06</span><span>12</span><span>18</span><span>24:00</span></div></div>`; }
   } else if (n.kind==='product'){
     kindLabel = 'Payment type';
     const targets = [r.runs_on].flat().map(t=>sys(t));
     const fin = finality(n.id); const endsAt = pathDown(n.id).at(-1).id===root.id;
     const via = pathDown(n.id).slice(2,-1).map(x=>node(x.id).short);
-    facts = `<dt>What it is</dt><dd>${esc(r.plain)}</dd><dt>Runs on</dt><dd>${targets.map(t=>esc(t.name)).join(', ')}</dd><dt>Final between banks</dt><dd>${esc(fin.t.charAt(0).toUpperCase()+fin.t.slice(1))}</dd><dt>Settles in</dt><dd${endsAt?' class="acc"':''}>${endsAt ? esc(root.name)+(via.length?` <span class="muted" style="font-weight:400">via ${esc(via.join(' and '))}</span>`:'') : '<span class="unk">Not confirmed</span>'}</dd>`;
+    facts = `<dt>What it is</dt><dd>${esc(r.plain)}</dd><dt>Runs on</dt><dd>${targets.map(t=>esc(t.name)).join(', ')}</dd><dt>Banks settle</dt><dd>${esc(finText(fin).replace(/^Settles /,'').replace(/^./,c=>c.toUpperCase()))}</dd>${r.after_settlement ? `<dt>After settlement</dt><dd>${esc(r.after_settlement.text)}</dd>` : ''}<dt>Settles in</dt><dd${endsAt?' class="acc"':''}>${endsAt ? esc(root.name)+(via.length?` <span class="muted" style="font-weight:400">via ${esc(via.join(' and '))}</span>`:'') : '<span class="unk">Not confirmed</span>'}</dd>`;
     const ch = pathDown(n.id); const ends = ch.at(-1).id===root.id;
     explain = `${r.name} runs on ${targets.map(t=>t.name).join(' and ')}. ${ends ? `The banks involved settle what they owe each other in ${root.name}.` : 'Where the banks settle what they owe each other is not confirmed in the sources checked.'}`;
-    srcIds = r.sources; allSrc = r.sources;
+    srcIds = r.sources; allSrc = [...new Set([...r.sources, ...(r.after_settlement?.sources||[])])];
   } else {
     kindLabel = `Layer ${r.layer} · ${IDX.layers[r.layer].name}`;
     facts = `<dt>Who</dt><dd>${esc(party(r.party).name)}</dd>${r.holds_account_at?`<dt>Account at</dt><dd class="acc">${esc(sys(r.holds_account_at).name)}</dd>`:''}${r.through?`<dt>Access</dt><dd>Through ${esc(node(r.through).name.toLowerCase())}</dd>`:''}<dt>Uses</dt><dd>${r.uses.map(u=>esc(sys(u).short)).join(', ')}</dd>`;
@@ -1019,9 +1024,9 @@ function vPanel(n, c){
     <ol class="ladder">${ladder}</ol>${multi}
     <div class="drillrow">
       <button class="btn strong" type="button" data-node="${downId||''}" ${downId?'':'disabled'}>↓ Drill down</button>
-      <button class="btn" type="button" id="drillup" ${ups.length?'':'disabled'} aria-expanded="false" aria-controls="feeders">↑ Settles here (${ups.length})</button>
+      <button class="btn" type="button" id="drillup" ${ups.length?'':'disabled'} aria-expanded="false" aria-controls="feeders">↑ Depends on this (${ups.length})</button>
     </div>
-    <ul class="feeders" id="feeders" hidden>${ups.map(u => `<li><button type="button" data-node="${u.id}"><b>${esc(u.name)}</b><span class="mono muted">${u.kind==='product'?'runs on':u.kind==='access'?'account':esc(u.rec.settles_label||MODE[u.rec.settlement_mode])}</span></button></li>`).join('')}</ul>
+    <ul class="feeders" id="feeders" hidden>${upEdges.map(e => { const u = node(e.from); const how = e.type==='runs' ? 'runs on it' : e.type==='access' ? 'holds an account' : e.type==='funded' ? 'funds its accounts with it' : esc(e.label||MODE[u.rec.settlement_mode]); return `<li><button type="button" data-node="${u.id}"><b>${esc(u.name)}</b><span class="mono muted">${how}</span></button></li>`; }).join('')}</ul>
     ${today}
     ${flows.length ? `<a class="flowlink" href="${href({view:'flow',flow:flows[0],step:1,node:null})}" data-flow="${flows[0]}">Show the flow →</a>` : ''}
     ${n.kind==='system' ? `<details><summary>Rulebook and operator</summary><div><p>Operated by ${esc(party(r.operator).name)}. Rules set by ${r.scheme_owner ? esc(party(r.scheme_owner).name) : 'no separate rule owner'}.</p><p class="mono muted">Roles: ${r.roles.map(esc).join(', ')} · ${esc(MODE[r.settlement_mode])}</p></div></details>

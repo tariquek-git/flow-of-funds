@@ -538,6 +538,9 @@
         ],
         "windows": [
           "pc_rtr_faq"
+        ],
+        "funded_by": [
+          "boc_rtr"
         ]
       },
       "last_checked": "2026-10-31",
@@ -553,7 +556,8 @@
         }
       ],
       "participants_count": null,
-      "settles_label": "real time · planned"
+      "settles_label": "real time · planned",
+      "funded_by": "lynx"
     },
     {
       "id": "interac-e-transfer",
@@ -1467,6 +1471,15 @@
       "tier": "regulator",
       "published": "2023-10-13",
       "accessed": "2026-10-31"
+    },
+    {
+      "id": "pc_pad_90",
+      "title": "Payments Canada · Knowing the ins and outs of automatic withdrawals from your bank account",
+      "url": "https://www.payments.ca/protecting-yourself-knowing-ins-and-outs-automatic-withdrawals-your-bank-account",
+      "publisher": "Payments Canada",
+      "tier": "operator",
+      "published": "2022-11-29",
+      "accessed": "2026-10-31"
     }
   ],
   "layers": [
@@ -1656,7 +1669,13 @@
       "status": "live",
       "sources": [
         "pc_acss"
-      ]
+      ],
+      "after_settlement": {
+        "text": "The payer has 90 days to report an incorrect or unauthorized pre-authorized debit to their institution.",
+        "sources": [
+          "pc_pad_90"
+        ]
+      }
     },
     {
       "id": "ca-cheque",
@@ -1667,7 +1686,13 @@
       "status": "live",
       "sources": [
         "pc_acss"
-      ]
+      ],
+      "after_settlement": {
+        "text": "A cheque can still be returned unpaid. The paying institution usually decides pay or no pay by the next business day.",
+        "sources": [
+          "pc_acss"
+        ]
+      }
     },
     {
       "id": "ca-pos-debit",
@@ -1704,7 +1729,13 @@
       "status": "live",
       "sources": [
         "boc_oversight"
-      ]
+      ],
+      "after_settlement": {
+        "text": "Card payments can be disputed and charged back under the card network's rules after settlement.",
+        "sources": [
+          "visa_rules"
+        ]
+      }
     },
     {
       "id": "ca-rtr-payment",

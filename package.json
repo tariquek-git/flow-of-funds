@@ -6,7 +6,9 @@
     "check": "node scripts/check.mjs",
     "check:self": "node scripts/check.mjs --self-test",
     "check:links": "node scripts/check.mjs --links",
-    "mermaid": "node scripts/check.mjs --mermaid"
+    "mermaid": "node scripts/check.mjs --mermaid",
+    "build:overlay": "node scripts/build-overlay.mjs",
+    "build:preview": "node scripts/build-preview.mjs"
   },
   "devDependencies": {
     "ajv": "^8.17.1"
