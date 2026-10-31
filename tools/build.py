@@ -89,6 +89,38 @@ def seven_index():
         path.write_text(pat.sub(lambda m: nav, text, count=1))
 
 
+TABS = [  # bottom tab bar on phones: (label, target, sections it covers, accessible name)
+    ("Layers", "index.html", {"", "layers", "subfunctions"}, "Layers"),
+    ("Systems", "systems/index.html", {"systems"}, "National systems"),
+    ("Markets", "markets/index.html", {"markets"}, "Markets"),
+    ("Participants", "participants/index.html", {"participants"}, "Participants"),
+    ("Money", "holding/index.html", {"holding"}, "Where money sits"),
+]
+
+
+def mobile_shell():
+    """Add the phone app shell (shared stylesheet, theme colour, bottom tab bar) to every page."""
+    for path in SITE.rglob("*.html"):
+        rel = path.relative_to(SITE)
+        prefix = "../" * (len(rel.parts) - 1)
+        section = rel.parts[0] if len(rel.parts) > 1 else ""
+        text = path.read_text()
+        text = re.sub(r'<link data-gen="shell"[^>]*>|<meta data-gen="shell"[^>]*>', "", text)
+        text = re.sub(r'<nav data-gen="shell".*?</nav>', "", text, flags=re.S)
+        head = (f'<meta data-gen="shell" name="theme-color" content="#ffffff">'
+                f'<link data-gen="shell" rel="stylesheet" href="{prefix}assets/shell.css">')
+        text = text.replace("</head>", head + "</head>", 1)
+        links = []
+        for label, target, sections, name in TABS:
+            here = section in sections and rel.as_posix() != "methodology.html"
+            cur = ' aria-current="page"' if rel.as_posix() == target else (' class="here"' if here else "")
+            aria = f' aria-label="{name}"' if name != label else ""
+            links.append(f'<a href="{prefix}{target}"{cur}{aria}>{label}</a>')
+        nav = '<nav data-gen="shell" class="tabbar" aria-label="Sections">' + "".join(links) + "</nav>"
+        text = text.replace("</body>", nav + "</body>", 1)
+        path.write_text(text)
+
+
 def pack():
     with tarfile.open(TARBALL, "w:gz") as tar:
         for path in sorted(SITE.rglob("*")):
@@ -107,5 +139,6 @@ if __name__ == "__main__":
     layers_index()
     seven_index()
     skip_links()
+    mobile_shell()
     pack()
     print("built:", sum(1 for _ in SITE.rglob("*.html")), "pages")

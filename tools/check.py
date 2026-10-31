@@ -160,10 +160,19 @@ for gone in ("corridors", "markets/uk.html", "markets/mexico.html", "markets/ecu
     if (SITE / gone).exists():
         fail(f"{gone} is archived but still published")
 
+# 5c. Every page carries the phone app shell.
+for p in pages():
+    t = p.read_text()
+    if 'class="tabbar"' not in t or "assets/shell.css" not in t:
+        fail(f"no mobile app shell on {p.relative_to(SITE)}")
+
 # 6. Generated outputs match the source.
 home = (SITE / "index.html").read_text()
 layers_index = (SITE / "layers" / "index.html").read_text()
-if re.sub(r'(href|src)="[^"]*"', "", home) != re.sub(r'(href|src)="[^"]*"', "", layers_index):
+def _norm(h):
+    h = re.sub(r'<nav data-gen="shell".*?</nav>', "", h, flags=re.S)  # tab bar marks a different page
+    return re.sub(r'(href|src)="[^"]*"', "", h)
+if _norm(home) != _norm(layers_index):
     fail("layers/index.html has drifted from index.html; run tools/build.py")
 with tarfile.open(ROOT / "settlement-map-site.tar.gz") as tar:
     for m in tar.getmembers():
