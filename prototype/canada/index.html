@@ -173,6 +173,7 @@ main{padding-bottom:56px}
 .maplegend svg{flex:none}
 .hint{font-size:var(--t-s);color:var(--muted);margin:8px 0 0}
 .narrow-hint{display:none}
+.sel-note{display:none;font-style:normal;font-size:var(--t-xs);color:var(--muted);grid-column:1/-1}
 
 /* finality scale and seats column */
 .map.with-seats{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:0}
@@ -407,6 +408,8 @@ details li{margin:0 0 6px}
   .clockbox svg.clock-days{display:block!important;min-width:770px;width:770px!important}
   .scrollhint{display:block}
   .narrow-hint{display:block}
+  .map.sel-product .lrow[data-layer="7"] .node.k-product:not(.sel){display:none}
+  .map.sel-product .sel-note{display:block}
   .lhead b{background:var(--paper);padding:0 4px 0 0}
   .lrow:nth-of-type(even) .lhead b{background:var(--band)}
 }
@@ -680,7 +683,7 @@ function vCcy(){
   const rows = LAYER_ORDER.filter(l => nodesIn.some(n=>n.layer===l)).map(l => {
     const L = IDX.layers[l]; const colOf = id => parseInt(lay.pos[id]||'99'); const ns = nodesIn.filter(n=>n.layer===l).sort((a,b)=>colOf(a.id)-colOf(b.id));
     const [nm, code] = STAGE[l] || [L.name, l];
-    return `<div class="lrow" data-layer="${l}"><div class="lhead"><b>${esc(nm)}</b>${code?`<span class="lid" title="Layer ${l}, ${esc(L.name)}">${l}</span>`:'<span></span>'}<span>${esc(STAGE_DOES[l] || L.does)}</span></div>
+    return `<div class="lrow" data-layer="${l}"><div class="lhead"><b>${esc(nm)}</b>${code?`<span class="lid" title="Layer ${l}, ${esc(L.name)}">${l}</span>`:'<span></span>'}<span>${esc(STAGE_DOES[l] || L.does)}</span>${l==='7'?'<em class="sel-note">Showing the one you picked. Close the record to see all.</em>':''}</div>
       <div class="lnodes" style="--cols:${lay.cols}">${ns.map(n => nodeBtn(n, lay.pos[n.id], lit)).join('')}</div></div>`;
   }).join('');
   const rs = rootMainSystem(c); const st = rs ? openStatus(rs) : null; const n = torontoNow();
@@ -689,7 +692,8 @@ function vCcy(){
   const segs = []; prods.forEach(x => { const last = segs.at(-1); if (last && last.b===x.f.b && last.end===x.col) { last.end = x.col + x.span; } else segs.push({b:x.f.b, start:x.col, end:x.col+x.span}); });
   const scale = segs.length ? `<div class="finrow"><div class="lhead"><b>Final between banks</b><span></span><span>Left is faster.</span></div><div class="finscale" style="--cols:${lay.cols}">${segs.map(sg => `<span class="fin-${sg.b}" style="grid-column:${sg.start} / ${sg.end}">${FIN_LABEL[sg.b]}</span>`).join('')}</div></div>` : '';
   const seatCol = seats.length ? `<aside class="seats" aria-label="Who holds the accounts"><div class="seats-h"><b>Who holds the accounts</b><span>Banks and others with a settlement seat, and those who reach it through them. They take part in every system on the left.</span></div>${seats.map(n => nodeBtn(n, null, lit)).join('')}</aside>` : '';
-  const map = `<div class="map${S.node?' has-sel':''}${seats.length?' with-seats':''}" id="map">
+  const selProduct = S.node && node(S.node)?.kind==='product';
+  const map = `<div class="map${S.node?' has-sel':''}${selProduct?' sel-product':''}${seats.length?' with-seats':''}" id="map">
       <svg class="edges" id="edges" aria-hidden="true"></svg>
       <div class="stack">
       ${scale}
@@ -749,7 +753,7 @@ function drawEdges(){
     const upS = S.node ? new Set([S.node, ...reach(S.node,'up')]) : null, dnS = S.node ? new Set([S.node, ...reach(S.node,'down')]) : null;
     const narrow = map.clientWidth < 860;
     // On narrow screens the product lines only appear for the selected path, so the map stays legible.
-    const es = IDX.edges.filter(e => box(e.from) && box(e.to) && !(narrow && e.type==='runs' && !(S.node && (S.node===e.from || S.node===e.to))));
+    const es = IDX.edges.filter(e => box(e.from) && box(e.to) && !(narrow && e.type==='runs' && S.node!==e.from));
     map.classList.toggle('narrow', narrow);
     // spread attachment points along node edges
     const outs = {}, ins = {};
@@ -762,7 +766,8 @@ function drawEdges(){
       const other = box(side==='in' ? e.from : e.to);
       if ((base || b.w > 220) && !(side==='out' && other.w > 220)) { const fb = other; const same = list.filter(o => { const ob = box(side==='in' ? o.from : o.to); return Math.abs((ob.x+ob.w/2)-(fb.x+fb.w/2)) < 30; }); const j = same.indexOf(e);
         return Math.min(Math.max(fb.x+fb.w/2 + (j - (same.length-1)/2)*8, b.x+14), b.x+b.w-14); }
-      const span = Math.min(b.w*0.7, k*14); return b.x + b.w/2 - span/2 + (k===1 ? span/2 : span*i/(k-1));
+      const tgt = $(`[data-node="${CSS.escape(side==='in'?e.to:e.from)}"]`, map); const off = side==='in' && tgt && tgt.classList.contains('planned') && !tgt.classList.contains('k-product') ? -b.w*0.25 : 0;
+      const span = Math.min(b.w*0.7, k*14); return off + b.x + b.w/2 - span/2 + (k===1 ? span/2 : span*i/(k-1));
     };
     let out = `<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="6" fill="var(--planned)" opacity=".35"/></pattern></defs>`;
     const labels = [];
@@ -778,7 +783,7 @@ function drawEdges(){
         const dy = (upward ? -1 : 1) * Math.max(18, Math.abs(y2-y1)*0.5);
         // Bend around boxes the line does not connect to, so it never reads as passing through them.
         let c1 = x1, c2 = x2;
-        const obst = $$('[data-node]', map).filter(el => el.dataset.node!==e.from && el.dataset.node!==e.to && !el.classList.contains('base') && !el.classList.contains('k-product')).map(el => { const r = el.getBoundingClientRect(); return {l:r.left-mb.left-12, r:r.right-mb.left+12, t:r.top-mb.top-8, b:r.bottom-mb.top+8}; });
+        const obst = $$('[data-node]', map).filter(el => el.dataset.node!==e.from && el.dataset.node!==e.to && !el.classList.contains('base') && (narrow || !el.classList.contains('k-product'))).map(el => { const r = el.getBoundingClientRect(); const tag = el.classList.contains('planned') ? 12 : 0; return {l:r.left-mb.left-12, r:r.right-mb.left+12, t:r.top-mb.top-8-tag, b:r.bottom-mb.top+8}; });
         const pt = (t) => { const u=1-t; return {x:u*u*u*x1+3*u*u*t*c1+3*u*t*t*c2+t*t*t*x2, y:u*u*u*y1+3*u*u*t*(y1+dy)+3*u*t*t*(y2-dy)+t*t*t*y2}; };
         const TS = Array.from({length:19}, (_,k) => 0.05 + k*0.05);
         for (let it=0; it<8; it++) {
@@ -807,10 +812,11 @@ function drawEdges(){
       const on = !lit || (upS.has(e.from) && upS.has(e.to)) || (dnS.has(e.from) && dnS.has(e.to));
       const L = on && lit ? ' lit' : '';
       const planned = e.type==='settle' && sys(e.from)?.status==='planned';
-      if (planned) out += `<path d="${d}" class="e e-plan-out${L}"/><path d="${d}" class="e e-plan-in${L}"/>`;
-      else if (e.type==='settle') out += `<path d="${d}" class="e e-settle-out${L}"/><path d="${d}" class="e e-settle-in${L}"/>`;
+      const ft = `data-f="${e.from}" data-t="${e.to}"`;
+      if (planned) out += `<path ${ft} d="${d}" class="e e-plan-out${L}"/><path d="${d}" class="e e-plan-in${L}"/>`;
+      else if (e.type==='settle') out += `<path ${ft} d="${d}" class="e e-settle-out${L}"/><path d="${d}" class="e e-settle-in${L}"/>`;
       else if (e.type==='access') out += `<path d="${d}" class="e e-access${L}"/>`;
-      else out += `<path d="${d}" class="e e-runs${L}"/>`;
+      else out += `<path ${ft} d="${d}" class="e e-runs${L}"/>`;
     }
     // stubs for systems with no confirmed settlement path
     D.systems.filter(s => s.settlement_mode==='unknown' && box(s.id)).forEach(s => {
