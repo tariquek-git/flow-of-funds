@@ -203,6 +203,42 @@
         "pc_acss",
         "pc_lynx_explainer"
       ]
+    },
+    {
+      "id": "ca-sender",
+      "name": "Sender",
+      "kind": "customer",
+      "country": "CA",
+      "generic": true,
+      "sources": []
+    },
+    {
+      "id": "ca-sender-fi",
+      "name": "Sender's institution",
+      "kind": "participant",
+      "country": "CA",
+      "generic": true,
+      "sources": [
+        "interac_disclosure"
+      ]
+    },
+    {
+      "id": "ca-recipient-fi",
+      "name": "Recipient's institution",
+      "kind": "participant",
+      "country": "CA",
+      "generic": true,
+      "sources": [
+        "interac_disclosure"
+      ]
+    },
+    {
+      "id": "ca-recipient",
+      "name": "Recipient",
+      "kind": "customer",
+      "country": "CA",
+      "generic": true,
+      "sources": []
     }
   ],
   "systems": [
@@ -1098,6 +1134,128 @@
         "If the payee banks with the correspondent itself, step 5 becomes a book transfer and no Fedwire payment happens.",
         "The Canadian bank funds its USD account separately, through its own treasury. Interbank FX can settle in CLS, which is added in Phase 2.",
         "Timing is same day only if both banks act within Fedwire hours."
+      ],
+      "last_checked": "2026-10-31"
+    },
+    {
+      "id": "ca-etransfer",
+      "title": "Interac e-Transfer between two Canadian banks",
+      "rail": "interac-e-transfer",
+      "summary": "One person sends money from their banking app to someone at a different institution.",
+      "lanes": [
+        "ca-sender",
+        "ca-sender-fi",
+        "interac-corp",
+        "ca-recipient-fi",
+        "ca-recipient"
+      ],
+      "settlement_lane": "bank-of-canada",
+      "steps": [
+        {
+          "n": 1,
+          "from": "ca-sender",
+          "to": "ca-sender",
+          "type": "customer",
+          "phase": "authorization",
+          "timing": "T+0",
+          "caption": "The sender starts an e-Transfer in their banking app.",
+          "sources": [
+            "interac_pps_2025"
+          ]
+        },
+        {
+          "n": 2,
+          "from": "ca-sender-fi",
+          "to": "ca-sender-fi",
+          "type": "money",
+          "phase": "authorization",
+          "timing": "T+0",
+          "caption": "The sender's institution debits the sender's account. This is a book entry at that institution.",
+          "sources": [
+            "interac_pps_2025"
+          ]
+        },
+        {
+          "n": 3,
+          "from": "ca-sender-fi",
+          "to": "ca-recipient-fi",
+          "via": "interac-corp",
+          "type": "message",
+          "phase": "clearing",
+          "timing": "T+0",
+          "caption": "The payment instruction goes to the recipient's institution over Interac's network. Interac carries the message and does not touch the funds.",
+          "sources": [
+            "interac_pps_2025"
+          ]
+        },
+        {
+          "n": 4,
+          "from": "ca-recipient-fi",
+          "to": "ca-recipient-fi",
+          "type": "money",
+          "phase": "clearing",
+          "timing": "T+0",
+          "caption": "The recipient's institution credits the recipient's account, before the two institutions have settled with each other.",
+          "sources": [
+            "interac_pps_2025"
+          ]
+        },
+        {
+          "n": 5,
+          "from": "ca-recipient",
+          "to": "ca-recipient",
+          "type": "customer",
+          "phase": "clearing",
+          "timing": "T+0",
+          "caption": "The recipient sees the money.",
+          "sources": [
+            "interac_pps_2025"
+          ]
+        },
+        {
+          "n": 6,
+          "from": "ca-sender-fi",
+          "to": "ca-recipient-fi",
+          "via": "lynx",
+          "type": "settlement",
+          "phase": "settlement",
+          "timing": "T+1",
+          "caption": "The day after the value date, the institutions settle their net positions for the whole cycle through Lynx. That is final, on Bank of Canada accounts.",
+          "sources": [
+            "interac_pps_2025",
+            "pc_lynx"
+          ]
+        }
+      ],
+      "explainer": {
+        "messaging": {
+          "text": "Interac's e-Transfer network carries the instruction between the two institutions.",
+          "sources": [
+            "interac_pps_2025"
+          ]
+        },
+        "money": {
+          "text": "Book entries at each institution, a debit for the sender and a credit for the recipient.",
+          "sources": [
+            "interac_pps_2025"
+          ]
+        },
+        "settlement": {
+          "text": "Deferred net, the day after the value date, through Lynx. Weekends and holidays can stretch it to four days.",
+          "sources": [
+            "interac_pps_2025"
+          ]
+        },
+        "customer": {
+          "text": "The sender and recipient see the transfer complete long before the banks settle.",
+          "sources": [
+            "interac_pps_2025"
+          ]
+        }
+      },
+      "caveats": [
+        "Interac's disclosure says the service relies on participants' deferred net settlement and does not yet support real-time settlement. That the recipient is credited before settlement is our reading of that arrangement.",
+        "Interac plans to move e-Transfer settlement to RTR, which would make step 6 immediate."
       ],
       "last_checked": "2026-10-31"
     }

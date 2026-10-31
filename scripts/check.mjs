@@ -233,7 +233,7 @@ export function mermaid(d, sc) {
     if (st.type === 'customer') { lines.push(`  Note over ${alias(st.from)}: ${st.n}. customer. ${st.caption}`); continue; }
     if (st.type === 'settlement') {
       lines.push(`  ${alias(st.from)}${arrow.settlement}${alias(sc.settlement_lane)}: ${st.n}. settlement${via} [final]`);
-      lines.push(`  ${alias(sc.settlement_lane)}${arrow.settlement}${alias(st.to)}: ${st.n}. credit to master account [final]`);
+      lines.push(`  ${alias(sc.settlement_lane)}${arrow.settlement}${alias(st.to)}: ${st.n}. credit to settlement account [final]`);
       continue;
     }
     if (st.from === st.to) lines.push(`  Note over ${alias(st.from)}: ${st.n}. ${st.type}. ${st.caption}`);

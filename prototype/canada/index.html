@@ -320,6 +320,9 @@ details li{margin:0 0 6px}
 .srcs .mono{display:block;color:var(--muted)}
 
 /* Railroom */
+.flowtabs{display:flex;flex-wrap:wrap;gap:4px 18px;padding-top:12px;font-size:var(--t-s)}
+.flowtabs a{text-decoration:none;color:var(--muted);padding:6px 0;border-bottom:2px solid transparent}
+.flowtabs a[aria-current]{color:var(--ink);font-weight:700;border-bottom-color:var(--ink)}
 .flow-head{display:flex;flex-wrap:wrap;gap:6px 24px;align-items:baseline;justify-content:space-between;padding-block:18px 6px}
 .flow-head h1{margin:0;font-size:var(--t-xxl);line-height:1.08;font-weight:700;letter-spacing:-.02em;font-variation-settings:"wdth" 85}
 .lede{max-width:70ch;color:var(--muted);margin:4px 0 14px}
@@ -967,7 +970,7 @@ function vPanel(n, c){
     return `<li class="rung${i===0?' cur':''}${isRoot?' root':''}${kcls}"><span class="rl" aria-hidden="true"></span><div class="rb">${i===0?`<b>${esc(nd.name)}</b>`:`<button type="button" data-node="${x.id}">${esc(nd.name)}</button>`}<span class="how">${esc(how)}</span></div></li>`;
   }).join('');
   const multi = n.kind==='product' && [r.runs_on].flat().length>1 ? `<p class="src">Also runs on ${[r.runs_on].flat().slice(1).map(t=>esc(sys(t).name)).join(', ')}.</p>` : '';
-  const flows = IDX.flowsFor[n.id]||[];
+  const flows = IDX.flowsFor[n.id] || (n.kind==='product' ? [r.runs_on].flat().flatMap(t => IDX.flowsFor[t]||[]) : []);
   const srcRows = D.sources.filter(s=>allSrc.includes(s.id)).map(s => {
     const fields = n.kind==='system' ? Object.entries(r.field_sources).filter(([,v])=>v.includes(s.id)).map(([k])=>k.replace(/_/g,' ')).join(', ') : 'this record';
     return `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a><span class="mono">${esc(s.tier)} · ${s.published?'dated '+esc(s.published)+' · ':''}checked ${esc(s.accessed)} · supports ${esc(fields)}</span></li>`; }).join('');
@@ -1005,7 +1008,8 @@ function vFlow(){
   const lineName = {message:'Message', money:'Money movement', settlement:'Settlement', customer:'Customer'};
   const ccy = IDX.ccyByRegion[rail.region];
   return crumbs([HOME, {label:'Railroom'}, {label:esc(sc.title)}]) +
-   `<div class="flow-head"><h1>${esc(sc.title)}</h1><span class="mono muted">Rail <a style="font-weight:700" href="${href({view:'ccy',ccy:ccy.id,node:rail.id})}" data-go='{"view":"ccy","ccy":"${ccy.id}","node":"${rail.id}"}'>${esc(rail.name)}</a></span></div>
+   `${D.scenarios.length>1 ? `<nav class="flowtabs" aria-label="Flows">${D.scenarios.map(x => `<a href="${href({flow:x.id,step:1})}" data-flow="${x.id}"${x.id===sc.id?' aria-current="page"':''}>${esc(x.title)}</a>`).join('')}</nav>` : ''}
+    <div class="flow-head"><h1>${esc(sc.title)}</h1><span class="mono muted">Rail <a style="font-weight:700" href="${href({view:'ccy',ccy:ccy.id,node:rail.id})}" data-go='{"view":"ccy","ccy":"${ccy.id}","node":"${rail.id}"}'>${esc(rail.name)}</a></span></div>
     <p class="lede">${esc(sc.summary)} Dashed line is a message. Solid line is money moving on a bank's books. Double line into the last column is final settlement in central bank money.</p>
     <div class="diagram" role="img" aria-label="Sequence diagram with ${sc.steps.length} steps. The steps are listed in text below.">${svgFlow(sc)}</div>
     <div class="controls">
@@ -1013,7 +1017,7 @@ function vFlow(){
       <button class="btn strong" type="button" id="next" ${S.step===sc.steps.length?'disabled':''}>Next →</button>
       <label class="scrub"><span class="mono muted">Step ${S.step} of ${sc.steps.length} · ${esc(st.phase)} · ${esc(st.timing)}</span>
         <input type="range" id="scrub" min="1" max="${sc.steps.length}" value="${S.step}" aria-label="Step">
-        <span class="marks" aria-hidden="true">${['authorization','clearing','settlement'].map(ph => { const i = sc.steps.findIndex(x=>x.phase===ph); return i<0 ? '' : `<span style="left:${i/(sc.steps.length-1)*100}%">${ph}</span>`; }).join('')}</span></label>
+        <span class="marks" aria-hidden="true">${['authorization','clearing','settlement'].map(ph => { const i = sc.steps.findIndex(x=>x.phase===ph); const pct = i/(sc.steps.length-1)*100; return i<0 ? '' : `<span style="left:${pct}%;${pct>85?'transform:translateX(-100%)':''}">${ph}</span>`; }).join('')}</span></label>
     </div>
     <p class="caption" aria-live="polite"><span class="mono">${S.step}. ${esc(lineName[st.type])}</span>${esc(st.caption)}</p>
     <div class="four">${[['messaging','Messaging'],['money','Money movement'],['settlement','Settlement'],['customer','Customer sees']].map(([k,l]) => `<div><h3${k==='settlement'?' class="acc"':''}>${l}</h3><p>${esc(sc.explainer[k].text)}</p><p class="src" style="margin:0">${esc(srcNames(sc.explainer[k].sources))}</p></div>`).join('')}</div>
@@ -1041,7 +1045,7 @@ function svgFlow(sc){
     else if (st.type==='message') { g += `<line class="ln" x1="${fx}" x2="${tx-4}" y1="${y}" y2="${y}" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#m-open)"/>`; if (st.via) g += `<text class="lbl" x="${x(st.via)}" y="${y-7}" text-anchor="middle">${esc(party(st.via)?.name||sys(st.via)?.short)}</text>`; }
     else if (st.type==='money') g += `<line class="ln" x1="${fx}" x2="${tx+(tx>fx?-6:6)}" y1="${y}" y2="${y}" stroke-width="2.5" marker-end="url(#m-fill)"/><text class="lbl" x="${(fx+tx)/2}" y="${y-7}" text-anchor="middle">credit</text>`;
     else if (st.type==='settlement') { for (const off of [-2.5,2.5]) { g += `<line class="ln settle" x1="${fx}" x2="${settleX}" y1="${y-8+off}" y2="${y-8+off}" stroke-width="1.6"/><line class="ln settle" x1="${settleX}" x2="${tx}" y1="${y+10+off}" y2="${y+10+off}" stroke-width="1.6"/>`; }
-      g += `<line class="ln settle" x1="${settleX}" x2="${settleX}" y1="${y-14}" y2="${y+16}" stroke-width="2.5"/><text class="lbl" x="${(fx+settleX)/2}" y="${y-15}" text-anchor="middle">${esc(sys(st.via)?.short||'')}</text><text class="lbl final" x="${settleX+6}" y="${y+4}">final</text><text class="lbl" x="${(fx+settleX)/2}" y="${y+1}" text-anchor="middle">debit</text><text class="lbl" x="${(tx+settleX)/2}" y="${y+30}" text-anchor="middle">credit</text>`; }
+      g += `<line class="ln settle" x1="${settleX}" x2="${settleX}" y1="${y-14}" y2="${y+16}" stroke-width="2.5"/><text class="lbl" x="${(fx+settleX)/2}" y="${y-15}" text-anchor="middle">${esc(sys(st.via)?.short||'')}</text><text class="lbl final" x="${settleX+6}" y="${y+4}">final</text><text class="lbl" x="${fx+8}" y="${y+1}">debit</text><text class="lbl" x="${(tx+settleX)/2}" y="${y+30}" text-anchor="middle">credit</text>`; }
     g += `</g>`; });
   return g + '</svg>';
 }
