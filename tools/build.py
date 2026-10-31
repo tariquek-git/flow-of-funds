@@ -136,6 +136,7 @@ def pack():
 if __name__ == "__main__":
     runpy.run_path(str(ROOT / "tools" / "apply_model.py"), run_name="__main__")
     runpy.run_path(str(ROOT / "tools" / "copy_fixes.py"), run_name="__main__")
+    runpy.run_path(str(ROOT / "tools" / "roles.py"), run_name="__main__")
     layers_index()
     seven_index()
     skip_links()

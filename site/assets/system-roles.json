@@ -1,0 +1,292 @@
+{
+  "as_of": "2026-10-30",
+  "note": "One row per payment system. Each field is a role, not a route. 'Not covered here' means the atlas has not verified it.",
+  "fields": [
+    [
+      "owner",
+      "Owned by"
+    ],
+    [
+      "rules",
+      "Rules set by"
+    ],
+    [
+      "operator",
+      "Operated by"
+    ],
+    [
+      "account",
+      "Settlement account held at"
+    ],
+    [
+      "finality",
+      "How it becomes final"
+    ],
+    [
+      "direct",
+      "Who connects directly"
+    ],
+    [
+      "nonbank",
+      "Non-banks"
+    ]
+  ],
+  "systems": [
+    {
+      "id": "lynx",
+      "name": "Lynx",
+      "market": "Canada",
+      "kind": "High-value RTGS",
+      "page": "lynx.html",
+      "final": "Bank of Canada accounts, in real time",
+      "owner": "Payments Canada",
+      "rules": "Payments Canada",
+      "operator": "Payments Canada",
+      "account": "Bank of Canada",
+      "finality": "Each payment settles individually and is final when posted to participants' Bank of Canada settlement accounts.",
+      "direct": "Direct participants that hold a Bank of Canada settlement account.",
+      "nonbank": "Not covered here.",
+      "depends": [
+        [
+          "Bank of Canada settlement accounts",
+          null
+        ],
+        [
+          "Swift for payment messages, per Payments Canada",
+          null
+        ]
+      ]
+    },
+    {
+      "id": "acss",
+      "name": "ACSS",
+      "market": "Canada",
+      "kind": "Retail batch, deferred net",
+      "page": "acss.html",
+      "final": "Bank of Canada accounts, net, later",
+      "owner": "Payments Canada",
+      "rules": "Payments Canada",
+      "operator": "Payments Canada",
+      "account": "Bank of Canada",
+      "finality": "Obligations are netted. Net interbank positions settle using Bank of Canada accounts.",
+      "direct": "Direct clearers. Indirect participants rely on a direct clearer.",
+      "nonbank": "Not covered here.",
+      "depends": [
+        [
+          "Bank of Canada settlement accounts",
+          null
+        ]
+      ]
+    },
+    {
+      "id": "rtr",
+      "name": "Real-Time Rail",
+      "market": "Canada",
+      "kind": "Instant, planned",
+      "page": "rtr.html",
+      "status": "Planned",
+      "final": "Planned. Bank of Canada accounts",
+      "owner": "Payments Canada",
+      "rules": "Payments Canada",
+      "operator": "Payments Canada",
+      "account": "Bank of Canada, under its RTR settlement-account policy",
+      "finality": "Not live. Payments Canada targets a phased launch from Q4 2026, with Interac e-Transfer clearing and settlement migrating in 2027.",
+      "direct": "Initial direct participants first, per the launch plan.",
+      "nonbank": "The Bank of Canada has an eligibility policy for RTR settlement accounts. Eligibility is not proof of a live account.",
+      "depends": [
+        [
+          "Bank of Canada settlement accounts",
+          null
+        ]
+      ]
+    },
+    {
+      "id": "interac-e-transfer",
+      "name": "Interac e-Transfer",
+      "market": "Canada",
+      "kind": "Instant transfer service",
+      "page": "interac-e-transfer.html",
+      "final": "Between institutions, not at Interac",
+      "owner": "Interac Corp., owned by banks, credit unions, caisses and acquirers",
+      "rules": "Interac",
+      "operator": "Interac",
+      "account": "Interac does not hold customer funds. The sending institution holds them until deposit.",
+      "finality": "The Interac message and funds availability are separate from interbank settlement. That settlement is planned to move to RTR from 2027.",
+      "direct": "Direct connectors, indirect connectors and downstream entities have different roles.",
+      "nonbank": "Not covered here.",
+      "depends": [
+        [
+          "Real-Time Rail for interbank clearing and settlement, planned from 2027",
+          "rtr"
+        ],
+        [
+          "Participating institutions' own accounts",
+          null
+        ]
+      ]
+    },
+    {
+      "id": "fedwire",
+      "name": "Fedwire Funds",
+      "market": "United States",
+      "kind": "High-value RTGS",
+      "page": "fedwire.html",
+      "final": "Reserve Bank master accounts, in real time",
+      "owner": "Federal Reserve Banks",
+      "rules": "Federal Reserve",
+      "operator": "Federal Reserve Banks",
+      "account": "Federal Reserve Bank master accounts",
+      "finality": "Each payment is final when credited to the receiving institution's master account.",
+      "direct": "Institutions with a Reserve Bank master account.",
+      "nonbank": "Not covered here.",
+      "depends": [
+        [
+          "Reserve Bank master accounts",
+          null
+        ]
+      ]
+    },
+    {
+      "id": "fednow",
+      "name": "FedNow",
+      "market": "United States",
+      "kind": "Instant, 24/7",
+      "page": "fednow.html",
+      "final": "Reserve Bank master accounts, in real time",
+      "owner": "Federal Reserve Banks",
+      "rules": "Federal Reserve",
+      "operator": "Federal Reserve Banks",
+      "account": "Federal Reserve Bank master accounts",
+      "finality": "Each payment settles through the Federal Reserve service in master accounts. It is a separate service from Fedwire.",
+      "direct": "Eligible institutions send and receive. Other institutions can act as liquidity providers or settlement agents.",
+      "nonbank": "Certified technology providers can connect participants. Certification does not give them a settlement account.",
+      "depends": [
+        [
+          "Reserve Bank master accounts",
+          null
+        ]
+      ]
+    },
+    {
+      "id": "ach",
+      "name": "ACH",
+      "market": "United States",
+      "kind": "Batch, deferred net",
+      "page": "us-ach.html",
+      "final": "Reserve Bank master accounts, net",
+      "owner": "Two operators: FedACH (Federal Reserve) and EPN (The Clearing House)",
+      "rules": "Nacha",
+      "operator": "FedACH and EPN",
+      "account": "Federal Reserve Bank master accounts",
+      "finality": "Batches are netted and settled in master accounts on set schedules.",
+      "direct": "Depository institutions, through either operator.",
+      "nonbank": "Not covered here.",
+      "depends": [
+        [
+          "Reserve Bank master accounts",
+          null
+        ]
+      ]
+    },
+    {
+      "id": "rtp",
+      "name": "RTP",
+      "market": "United States",
+      "kind": "Instant, private",
+      "page": "rtp.html",
+      "final": "RTP ledger, backed at a Federal Reserve Bank",
+      "owner": "The Clearing House, owned by large commercial banks",
+      "rules": "The Clearing House",
+      "operator": "The Clearing House",
+      "account": "A prefunded balance account at a Federal Reserve Bank, held for funding participants. TCH's settlement note names the New York Fed.",
+      "finality": "Final when the RTP system records the debit and credit to participants' positions. TCH acts as agent on the account and does not hold the balances.",
+      "direct": "Eligible depository institutions, including credit unions. TCH ownership is not required.",
+      "nonbank": "Not covered here.",
+      "depends": [
+        [
+          "Fedwire, or the Fed's liquidity management transfer service, to fund the prefunded account",
+          "fedwire"
+        ],
+        [
+          "A prefunded account at a Federal Reserve Bank",
+          null
+        ]
+      ]
+    },
+    {
+      "id": "chips",
+      "name": "CHIPS",
+      "market": "United States",
+      "kind": "High-value, private",
+      "page": "chips.html",
+      "final": "CHIPS records, backed at the New York Fed",
+      "owner": "The Clearing House, owned by large commercial banks",
+      "rules": "The Clearing House",
+      "operator": "The Clearing House",
+      "account": "The CHIPS prefunded balance account at the Federal Reserve Bank of New York, held for funding participants.",
+      "finality": "Final when CHIPS releases and settles the payment on its own records. TCH acts as agent on the account and does not own the balances.",
+      "direct": "CHIPS participants, which are banking institutions with funding obligations.",
+      "nonbank": "Not covered here.",
+      "depends": [
+        [
+          "Fedwire to fund the prefunded account",
+          "fedwire"
+        ],
+        [
+          "The prefunded account at the Federal Reserve Bank of New York",
+          null
+        ]
+      ]
+    },
+    {
+      "id": "pix",
+      "name": "Pix",
+      "market": "Brazil",
+      "kind": "Instant, central-bank run",
+      "page": "pix.html",
+      "final": "Banco Central do Brasil accounts, in real time",
+      "owner": "Banco Central do Brasil",
+      "rules": "Banco Central do Brasil",
+      "operator": "Banco Central do Brasil, which runs SPI for settlement and DICT for keys",
+      "account": "Direct participants hold dedicated accounts at Banco Central do Brasil, used by SPI.",
+      "finality": "Payments between different direct participants settle in SPI on the central bank's books. Payments between customers of the same participant can settle on its own systems.",
+      "direct": "Direct participants hold a settlement account in SPI. Indirect participants settle through one.",
+      "nonbank": "Eligible payment institutions can take part. Offering Pix is not proof of direct SPI access.",
+      "depends": [
+        [
+          "SPI for settlement and DICT for keys, both run by the central bank",
+          null
+        ],
+        [
+          "Banco Central do Brasil accounts",
+          null
+        ]
+      ]
+    },
+    {
+      "id": "upi",
+      "name": "UPI",
+      "market": "India",
+      "kind": "Instant customer, deferred net settlement",
+      "page": "upi.html",
+      "final": "RBI's RTGS, net, in batches",
+      "owner": "NPCI, a not-for-profit owned by banks and other payment institutions",
+      "rules": "NPCI",
+      "operator": "NPCI",
+      "account": "Members' RTGS accounts at the Reserve Bank of India",
+      "finality": "Customers see the money instantly. NPCI nets obligations between banks and RBI's RTGS posts them as a multilateral net settlement batch.",
+      "direct": "Banks, as payment service providers and account holders.",
+      "nonbank": "Third-party apps can run the customer interface. They do not hold the account or settle.",
+      "depends": [
+        [
+          "RBI's RTGS for net settlement",
+          null
+        ],
+        [
+          "Banks' own accounts for customer balances",
+          null
+        ]
+      ]
+    }
+  ]
+}

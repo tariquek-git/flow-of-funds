@@ -166,6 +166,22 @@ for p in pages():
     if 'class="tabbar"' not in t or "assets/shell.css" not in t:
         fail(f"no mobile app shell on {p.relative_to(SITE)}")
 
+# 5d. Role matrix: one row per system in the data, every field present, every dependency resolves.
+roles = json.loads((SITE / "assets" / "system-roles.json").read_text())
+ids = {r["id"] for r in roles["systems"]}
+sysindex = (SITE / "systems" / "index.html").read_text()
+for r in roles["systems"]:
+    for key, _ in roles["fields"]:
+        if not r.get(key):
+            fail(f"system-roles: {r['id']} has no {key}")
+    if f'id="role-{r["id"]}"' not in sysindex:
+        fail(f"systems/index.html is missing the role row for {r['id']}")
+    if not (SITE / "systems" / r["page"]).exists():
+        fail(f"system-roles: {r['id']} links to missing page {r['page']}")
+    for _, target in r.get("depends", []):
+        if target and target not in ids:
+            fail(f"system-roles: {r['id']} depends on unknown system {target}")
+
 # 6. Generated outputs match the source.
 home = (SITE / "index.html").read_text()
 layers_index = (SITE / "layers" / "index.html").read_text()

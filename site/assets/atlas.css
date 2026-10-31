@@ -155,3 +155,26 @@ html{background:#fff}body{background:#fff;color:var(--ink);line-height:1.53}
 .skip-link{position:absolute;left:12px;top:-60px;background:#fff;color:#132b35;padding:8px 12px;border:2px solid #087f88;z-index:100}.skip-link:focus{top:12px}
 .fn-list{list-style:none;margin:0 0 28px;padding:0;border-top:1px solid #d9e0e3}.fn-list li{border-bottom:1px solid #d9e0e3;padding:14px 0}.fn-list a{font-weight:600;color:#132b35;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#b9c6cb}.fn-list a:hover{color:#08717d}.fn-list p{margin:4px 0 0;font-size:14px;color:#56686f;line-height:1.5}.fn-note{font-size:14px;color:#3f5862;line-height:1.55;margin:0 0 28px;max-width:720px}
 .flat-row.flat-sub{padding-left:28px}.flat-row.flat-sub .layer-number{font-size:12px}
+/* V10 roles */
+.roles{margin:44px 0 8px}.roles-intro{font-size:15px;color:#3f5862;max-width:640px;line-height:1.6;margin:8px 0 0}
+.roles-tools{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 14px}.roles-tools[hidden]{display:none}
+.roles-tools button{font:inherit;font-size:13px;border:1px solid #c3cfd3;background:#fff;color:#132b35;padding:7px 13px;border-radius:999px;min-height:36px;cursor:pointer}
+.roles-tools button[aria-pressed="true"]{background:#132b35;border-color:#132b35;color:#fff}.roles-tools .roles-all{margin-left:auto}
+.roles-tools button:focus-visible,.role summary:focus-visible,.r-link:focus-visible{outline:2px solid #087f88;outline-offset:2px}
+.roles-list{border-top:1px solid #bdc9ce}.role{border-bottom:1px solid #d9e0e3}.role[hidden]{display:none}
+.role summary{list-style:none;display:grid;grid-template-columns:minmax(160px,1.1fr) minmax(0,1fr) minmax(0,1.3fr) 18px;gap:18px;align-items:center;padding:15px 4px;cursor:pointer;min-height:56px}
+.role summary::-webkit-details-marker{display:none}.role summary:hover .r-name{color:#08717d}
+.r-name{font-size:17px;font-weight:600;color:#132b35;line-height:1.3}.r-name small{display:block;font-size:12px;font-weight:400;color:#56686f;margin-top:3px}
+.r-op,.r-final{font-size:14px;color:#132b35;line-height:1.4;min-width:0}
+.r-op em,.r-final em,.r-grid dt{display:block;font:500 10.5px/1.4 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:#56686f;font-style:normal;margin-bottom:2px}
+.r-chev{width:9px;height:9px;border-right:1.5px solid #56686f;border-bottom:1.5px solid #56686f;transform:rotate(45deg);justify-self:center;transition:transform .15s ease}
+.role[open] .r-chev{transform:rotate(225deg)}
+.r-pill{display:inline-block;margin-left:8px;font-size:11px;font-weight:500;padding:1px 8px;border:1px dashed #8a5d12;color:#6f4a0d;border-radius:999px;vertical-align:2px}
+.r-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 32px;margin:0;padding:6px 4px 14px}.r-grid div{min-width:0}.r-grid .r-wide{grid-column:1/-1}
+.r-grid dd{margin:0;font-size:14px;line-height:1.55;color:#132b35}.r-grid dd.na{color:#56686f;font-style:italic}
+.r-deps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}.r-deps li::before{content:"\2192\00a0";color:#56686f}
+.r-link{color:#08717d;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#9fc4c8}
+.r-more{margin:0 4px 18px;font-size:13px}.r-more a{color:#08717d}
+@media(max-width:700px){.role summary{grid-template-columns:minmax(0,1fr) 18px;gap:6px 12px}.r-name{grid-column:1}.r-op{display:none}.r-final{grid-column:1;grid-row:2}.r-chev{grid-column:2;grid-row:1/3}.r-grid{grid-template-columns:1fr}.roles-tools .roles-all{margin-left:0}}
+@media(prefers-reduced-motion:reduce){.r-chev{transition:none}}
+.role{scroll-margin-top:88px}
