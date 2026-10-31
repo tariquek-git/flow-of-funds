@@ -1,0 +1,1 @@
+{"name":"Muted text lightened to about 3.7:1, the failure the brief found","expect_fail":"contrast","patch":[{"path":"tokens.themes.light.muted","value":"#7D7A74"}]}

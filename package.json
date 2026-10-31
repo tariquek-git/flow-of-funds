@@ -1,0 +1,14 @@
+{
+  "name": "settlement-map",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "check:self": "node scripts/check.mjs --self-test",
+    "check:links": "node scripts/check.mjs --links",
+    "mermaid": "node scripts/check.mjs --mermaid"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1"
+  }
+}

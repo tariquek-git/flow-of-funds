@@ -1,0 +1,1 @@
+{"name":"Swift tagged as settlement","expect_fail":"role-tags","patch":[{"path":"systems[id=swift].roles","value":["messaging","settlement"]}]}

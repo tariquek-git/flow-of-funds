@@ -1,0 +1,1 @@
+{"name":"Hours added with no source","expect_fail":"every-claim-sourced","patch":[{"path":"systems[id=interac-e-transfer].hours","value":"24/7"}]}

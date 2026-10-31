@@ -1,0 +1,1 @@
+{"name":"Explainer grows to three sentences","expect_fail":"explainer-two-sentences","patch":[{"path":"systems[id=lynx].explainer","value":"Lynx is high value. It settles in real time. It is run by Payments Canada."}]}

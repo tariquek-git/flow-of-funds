@@ -1,0 +1,1 @@
+{"name":"Step cites a source id that does not exist","expect_fail":"every-claim-sourced","patch":[{"path":"scenarios[id=ca-us-wire].steps","value":[{"n":1,"from":"payer","to":"payer","type":"customer","phase":"authorization","timing":"T+0","caption":"x","sources":["made_up"]}]}]}

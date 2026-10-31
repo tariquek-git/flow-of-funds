@@ -1,0 +1,1 @@
+{"name":"Interac settles in RTR before RTR is live","expect_fail":"live-never-depends-on-planned","patch":[{"path":"systems[id=interac-e-transfer].settles_in","value":"rtr"}]}

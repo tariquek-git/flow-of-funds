@@ -1,0 +1,1 @@
+{"name":"Lynx settles in ACSS, ACSS settles in Lynx","expect_fail":"settlement-chain-terminates","patch":[{"path":"systems[id=lynx].settles_in","value":"acss"}]}
