@@ -99,7 +99,7 @@ main{padding-bottom:56px}
 .ccy-later{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0;border-bottom:1px solid var(--rule)}
 .ccy-later div{display:flex;align-items:center;gap:10px;padding:10px 16px 10px 0;font-size:var(--t-s);color:var(--muted);border-top:1px solid var(--rule)}
 .ccy-later b{font-family:var(--mono);font-size:var(--t-xs);color:var(--ink);font-weight:600}
-.idx{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:0 40px}
+.idx{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:32px 40px}
 .idx ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
 .idx li a{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule);text-decoration:none}
 .idx li a:hover span:first-child{text-decoration:underline}
@@ -128,7 +128,8 @@ main{padding-bottom:56px}
 .node .nm{font-weight:700;font-size:var(--t-s);line-height:1.15;font-variation-settings:"wdth" 80;display:flex;gap:6px;align-items:center}
 .node .sb{font-size:var(--t-xs);color:var(--muted);line-height:1.25;font-variation-settings:"wdth" 85}
 .node.k-product{border:0;border-top:2px solid var(--ink);border-radius:0;background:var(--rowbg);padding:6px 2px 2px}
-.node.k-product.planned{border-top-color:var(--planned)}
+.node.k-product.planned{border-top-color:var(--planned);border-top-style:dashed;background-image:none}
+.node.k-product.planned::after{position:static;align-self:flex-start;margin-top:4px}
 .node.k-product .nm{font-variation-settings:"wdth" 85}
 .node.k-system{border:1.5px solid var(--ink)}
 .node.l-1{border:2px solid var(--accent)}
@@ -221,9 +222,9 @@ main{padding-bottom:56px}
 .c-hol-t{font:600 9.5px var(--mono);fill:var(--muted)}
 .c-cut{stroke:var(--paper);stroke-width:1.5}
 .clockwrap{position:relative}
-.clocklabels{display:none;position:absolute;left:0;top:0;bottom:0;z-index:2;pointer-events:none}
-.clocklabels div{position:absolute;left:0;display:flex;align-items:center;padding-right:8px;background:var(--paper);box-shadow:4px 0 6px -4px color-mix(in srgb,var(--ink) 25%,transparent);font-size:11px;line-height:1.1}
-.clocklabels.on{display:block}
+.clocklabels{display:none;position:relative}
+.clocklabels div{position:absolute;left:0;right:6px;display:flex;align-items:center;font-size:11px;line-height:1.15;border-top:1px solid var(--rule)}
+.clock-days{display:none}
 .toggle{display:inline-flex;align-items:center;gap:8px;font-size:var(--t-s);cursor:pointer;user-select:none;min-height:40px}
 .toggle input{width:18px;height:18px;accent-color:var(--ink);margin:0}
 .clock-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:4px 28px;margin:10px 0 0;padding:0;list-style:none;font-size:var(--t-s);color:var(--muted)}
@@ -396,7 +397,11 @@ details li{margin:0 0 6px}
   .base{grid-template-columns:minmax(0,1fr);gap:4px;padding:12px}
   .base .lhead{display:none}
   .base .bsub{text-align:left;padding-left:4px}
-  .clockbox svg{min-width:900px}
+  .clockwrap{display:grid;grid-template-columns:78px minmax(0,1fr);border-top:1px solid var(--ink)}
+  .clocklabels{display:block}
+  .clockbox{border-top:0}
+  .clock-wide{display:none!important}
+  .clock-days{display:block!important;min-width:770px;width:770px!important}
   .scrollhint{display:block}
   .narrow-hint{display:block}
   .lhead b{background:var(--paper);padding:0 4px 0 0}
@@ -602,7 +607,7 @@ function render(){
   else if (S.view==='flow') app.innerHTML = vFlow();
   else app.innerHTML = vCcy();
   wire();
-  if (S.view==='ccy') { drawEdges(); placeClockLabels(); const cb = $('.clockbox'); if (cb && cb.scrollWidth > cb.clientWidth) { const n = torontoNow(); const frac = (150 + (n.dow + n.mins/1440)*(850/7))/1000; cb.scrollLeft = Math.max(0, frac*cb.scrollWidth - cb.clientWidth*0.6); } }
+  if (S.view==='ccy') { drawEdges(); const cb = $('.clockbox'); if (cb && cb.scrollWidth > cb.clientWidth + 2) { const n = torontoNow(); cb.scrollLeft = Math.max(0, (n.dow + n.mins/1440)*110 - cb.clientWidth*0.5); } }
   const t = S.view==='ccy' ? (S.node ? `${node(S.node).short} · ${S.ccy}` : S.ccy) : S.view==='flow' ? 'Railroom' : S.view==='type' ? IDX.groups[S.type].name : '';
   document.title = t ? `${t} · Settlement Map` : 'Settlement Map';
   $('#foot').innerHTML = `<p>Data as of ${fmtDate(D.meta.as_of)}. ${esc(D.meta.scope)}</p><p>How this was made. Built by Fintech North with Claude, from central bank and operator documents first. Every number links to its source. Corrections by pull request.</p>`;
@@ -655,7 +660,7 @@ function vHome(){
 function vType(){
   const g = IDX.groups[S.type]; const list = D.systems.filter(s=>s.group===g.id);
   const rows = list.map(s => { const c = IDX.ccyByRegion[s.region];
-    return `<li><button type="button" data-open-ccy="${c?c.id:''}" data-node="${s.id}" ${c?'':'disabled'}>${flag(c?.flag)||'<span class="mono">GL</span>'}<b>${esc(s.name)}${s.status==='planned'?' <span class="mono" style="color:var(--planned)">planned</span>':''}</b><span class="muted">${esc(party(s.operator).name)}</span><span class="${s.settles_in && s.status!=='planned'?'set':'muted'}">${s.settles_in ? esc(sys(s.settles_in).short) : s.settlement_mode==='unknown' ? 'Not confirmed' : s.settlement_mode==='none' ? 'Does not settle' : 'Final here'}</span><span class="muted">${esc(s.settlement_timing || s.hours || 'Not confirmed')}</span></button></li>`; }).join('');
+    return `<li><button type="button" data-open-ccy="${c?c.id:''}" data-node="${s.id}" ${c?'':'disabled'}>${flag(c?.flag)||'<span class="mono">GL</span>'}<b>${esc(s.name)}${s.status==='planned'?' <span class="mono" style="color:var(--planned)">planned</span>':''}</b><span class="muted">${esc(party(s.operator).name)}</span><span class="${s.settles_in && s.status!=='planned'?'set':'muted'}">${s.settles_in ? esc(sys(s.settles_in).short) + (s.status==='planned' ? ' (once live)' : '') : s.settlement_mode==='unknown' ? 'Not confirmed' : s.settlement_mode==='none' ? 'Does not settle' : 'Final here'}</span><span class="muted">${esc(s.settlement_timing || s.hours || 'Not confirmed')}</span></button></li>`; }).join('');
   return crumbs([HOME, {label:'By system type'}, {label:esc(g.name)}]) +
     `<section class="pagehead"><div><h1>${esc(g.name)}</h1><p>${esc(g.definition)}</p></div></section>
      ${list.length ? `<div class="typehead" style="margin-top:18px" aria-hidden="true"><span></span><span>System</span><span>Operator</span><span>Settles in</span><span>Timing</span></div><ul class="typelist" style="border-top:1px solid var(--rule)">${rows}</ul>` : `<p class="muted">Nothing loaded for this type yet. It arrives in Phase 2.</p>`}`;
@@ -817,7 +822,8 @@ function vClock(c){
   if (unknownCards.length) sysIn.push({id:'cards-unknown', short:unknownCards.length>1?'Card networks':unknownCards[0].short, settlement_mode:'unknown', windows:[], names:unknownCards.map(x=>x.short)});
   const order = ['lynx','acss','interac-debit','interac-e-transfer','visanet-canada','rtr','fedwire-funds','cards-unknown'];
   sysIn.sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));
-  const W=1000, LW=150, dayW=(W-LW)/7, top=40, rh=52;
+  const top=40, rh=52;
+  const build = (W, LW) => { const dayW=(W-LW)/7;
   const n = torontoNow(); const hol = S.holiday;
   const x = (dow, min) => LW + dow*dayW + min/1440*dayW;
   let g = `<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="6" fill="var(--planned)" opacity=".4"/></pattern></defs>`;
@@ -834,9 +840,9 @@ function vClock(c){
   sysIn.forEach((s,i) => {
     const y = top + i*rh, mid = y + rh/2;
     g += `<line x1="0" x2="${W}" y1="${y+rh}" y2="${y+rh}" class="c-grid"/>`;
-    g += `<text x="0" y="${mid-2}" class="c-row">${esc(s.short)}${s.status==='planned'?' ':''}</text>`;
+    if (LW) g += `<text x="0" y="${mid-2}" class="c-row">${esc(s.short)}${s.status==='planned'?' ':''}</text>`;
     let sub = s.status==='planned' ? 'planned' : s.settlement_mode==='unknown' ? 'not confirmed' : s.id==='interac-e-transfer' ? 'deferred net, daily cycle' : MODE[s.settlement_mode].toLowerCase();
-    g += `<text x="0" y="${mid+12}" class="c-sub">${esc(sub)}</text>`;
+    if (LW) g += `<text x="0" y="${mid+12}" class="c-sub">${esc(sub)}</text>`;
     if (s.settlement_mode==='unknown') { g += `<rect x="${LW+4}" y="${mid-9}" width="430" height="16" fill="var(--paper)"/><text x="${LW+8}" y="${mid+4}" class="c-unk">Where ${esc(s.names.join(' and '))} net amounts settle in ${c.id} is not confirmed in the sources checked.</text>`; return; }
     if (s.status==='planned') {
       g += `<rect x="${x(0,0)}" y="${mid-8}" width="${7*dayW}" height="16" class="c-plan"/><rect x="${x(0,0)}" y="${mid-8}" width="${7*dayW}" height="16" class="c-plan-edge"/>`;
@@ -882,10 +888,13 @@ function vClock(c){
   const H = top + sysIn.length*rh + 8;
   const nx = x(n.dow, n.mins);
   g += `<line x1="${nx}" x2="${nx}" y1="${top-10}" y2="${H}" class="c-now"/><text x="${nx+4}" y="${H-2}" class="c-now-t">now</text>`;
+  return {g, H, notes}; };
+  const wide = build(1000,150), days = build(770,0); const notes = wide.notes, H = wide.H;
+  const hol = S.holiday;
   return `<div class="section-h"><h2>When it's final</h2><p>This week in Toronto time. Accent means money is settling between institutions. A long bar settles all day, a short mark settles once.</p></div>
     <label class="toggle"><input type="checkbox" id="holiday" ${hol?'checked':''}> Monday is a statutory holiday</label>
-    <div class="clockwrap"><div class="clocklabels" aria-hidden="true">${sysIn.map((s,i)=>`<div data-y="${top+i*rh}" data-h="${rh}"><b>${esc(s.short)}</b></div>`).join('')}</div>
-    <div class="clockbox" tabindex="0" role="img" aria-label="Weekly settlement clock for ${c.id}. ${esc(notes.map(n=>n.replace(/<[^>]+>/g,'')).join(' '))}"><svg viewBox="0 0 ${W} ${H+6}">${g}</svg></div></div>
+    <div class="clockwrap"><div class="clocklabels" aria-hidden="true" style="height:${H+6}px">${sysIn.map((s,i)=>`<div style="top:${top+i*rh}px;height:${rh}px"><b>${esc(s.short)}</b></div>`).join('')}</div>
+    <div class="clockbox" tabindex="0" role="img" aria-label="Weekly settlement clock for ${c.id}. ${esc(notes.map(n=>n.replace(/<[^>]+>/g,'')).join(' '))}"><svg class="clock-wide" viewBox="0 0 1000 ${H+6}">${wide.g}</svg><svg class="clock-days" width="770" height="${H+6}" viewBox="0 0 770 ${H+6}">${days.g}</svg></div></div>
     <p class="scrollhint">Scroll sideways for the full week.</p>
     <ul class="clock-notes">${notes.join('')}</ul>`;
 }
@@ -982,6 +991,8 @@ function vPanel(n, c){
     ${flows.length ? `<a class="flowlink" href="${href({view:'flow',flow:flows[0],step:1,node:null})}" data-flow="${flows[0]}">Show the flow →</a>` : ''}
     ${n.kind==='system' ? `<details><summary>Rulebook and operator</summary><div><p>Operated by ${esc(party(r.operator).name)}. Rules set by ${r.scheme_owner ? esc(party(r.scheme_owner).name) : 'no separate rule owner'}.</p><p class="mono muted">Roles: ${r.roles.map(esc).join(', ')} · ${esc(MODE[r.settlement_mode])}</p></div></details>
       <details><summary>Participants</summary><div><p>${esc(r.participants_summary||'Not confirmed.')}</p>${r.participants_count?`<p>${esc(r.participants_count)}</p>`:''}</div></details>` : ''}
+    ${n.kind==='product' ? (() => { const steps = pathDown(n.id).map(x=>node(x.id)).filter(x=>x.kind==='system'); const lc = steps.map(x=>x.rec.last_checked).sort()[0];
+      return `<details><summary>Who runs each step</summary><div><ul>${steps.map(x=>`<li><b>${esc(x.rec.short)}</b>. Operated by ${esc(party(x.rec.operator).name)}${x.rec.scheme_owner && x.rec.scheme_owner!==x.rec.operator ? ', rules by '+esc(party(x.rec.scheme_owner).name) : ''}. ${esc(MODE[x.rec.settlement_mode])}${x.rec.settlement_timing?', '+esc(x.rec.settlement_timing.charAt(0).toLowerCase()+x.rec.settlement_timing.slice(1)):''}.</li>`).join('')}</ul><p class="mono muted">Path last checked ${esc(lc||'')}</p></div></details>`; })() : ''}
     ${caveats.length ? `<details><summary>Caveats</summary><div><ul>${caveats.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></details>` : ''}
     ${unknowns.length ? `<details><summary>Not known yet</summary><div><ul>${unknowns.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></details>` : ''}
     <details><summary>All sources</summary><div><ul class="srcs">${srcRows}</ul></div></details>
@@ -1030,7 +1041,7 @@ function svgFlow(sc){
     else if (st.type==='message') { g += `<line class="ln" x1="${fx}" x2="${tx-4}" y1="${y}" y2="${y}" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#m-open)"/>`; if (st.via) g += `<text class="lbl" x="${x(st.via)}" y="${y-7}" text-anchor="middle">${esc(party(st.via)?.name||sys(st.via)?.short)}</text>`; }
     else if (st.type==='money') g += `<line class="ln" x1="${fx}" x2="${tx+(tx>fx?-6:6)}" y1="${y}" y2="${y}" stroke-width="2.5" marker-end="url(#m-fill)"/><text class="lbl" x="${(fx+tx)/2}" y="${y-7}" text-anchor="middle">credit</text>`;
     else if (st.type==='settlement') { for (const off of [-2.5,2.5]) { g += `<line class="ln settle" x1="${fx}" x2="${settleX}" y1="${y-8+off}" y2="${y-8+off}" stroke-width="1.6"/><line class="ln settle" x1="${settleX}" x2="${tx}" y1="${y+10+off}" y2="${y+10+off}" stroke-width="1.6"/>`; }
-      g += `<line class="ln settle" x1="${settleX}" x2="${settleX}" y1="${y-14}" y2="${y+16}" stroke-width="2.5"/><text class="lbl" x="${(fx+settleX)/2}" y="${y-15}" text-anchor="middle">${esc(sys(st.via)?.short||'')}</text><text class="lbl final" x="${settleX+6}" y="${y+4}">final</text>`; }
+      g += `<line class="ln settle" x1="${settleX}" x2="${settleX}" y1="${y-14}" y2="${y+16}" stroke-width="2.5"/><text class="lbl" x="${(fx+settleX)/2}" y="${y-15}" text-anchor="middle">${esc(sys(st.via)?.short||'')}</text><text class="lbl final" x="${settleX+6}" y="${y+4}">final</text><text class="lbl" x="${(fx+settleX)/2}" y="${y+1}" text-anchor="middle">debit</text><text class="lbl" x="${(tx+settleX)/2}" y="${y+30}" text-anchor="middle">credit</text>`; }
     g += `</g>`; });
   return g + '</svg>';
 }
