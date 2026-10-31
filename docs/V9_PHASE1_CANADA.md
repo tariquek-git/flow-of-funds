@@ -197,7 +197,9 @@ UPI, CHIPS, RTP and USDC tests report "pending" until Phase 2 loads those record
 - **UPI.** Confirmed. NPCI calculates each member's net position and settlement runs through members' RTGS accounts with RBI, inside the existing IMPS settlement file. Source is NPCI's UPI settlement process note (undated).
 - **RTR.** Not live as of 31 Oct 2026. The by-law and rules took effect 24 Aug 2026 and launch is planned for Q4 2026.
 - **USDC.** Not reverified this pass. The three-party split stands, but the reserve also holds cash at banks outside the BlackRock fund, so "BlackRock manages the reserve" should read "manages the Circle Reserve Fund portion".
-- **Card settlement in Canada.** I could not find a primary source for where Visa and Mastercard CAD net amounts finally settle. Shown as "Not confirmed" rather than guessed.
+- **Card settlement in Canada.** Visa's own Bank of Canada disclosure (as at 14 Oct 2025) says Canadian transactions settle net once a day through Lynx, final on the value date, and that Visa Canada guarantees settlement. That is now in the data. Mastercard's Canadian path is still not confirmed from a primary source and shows as "Not confirmed".
+- **Interac Debit.** Interac's network disclosure says point-of-sale debit is totalled the same day, cleared through ACSS the next day and settled on Lynx. Added as its own network.
+- **RTR by-law.** In force 24 August 2026, per the Canada Gazette (SOR/2026-133).
 
 ---
 

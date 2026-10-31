@@ -339,6 +339,10 @@
         "settles_label": {
           "type": "string",
           "maxLength": 24
+        },
+        "final_label": {
+          "type": "string",
+          "maxLength": 40
         }
       }
     },

@@ -619,18 +619,18 @@
         "netting",
         "rulebook"
       ],
-      "settlement_asset": null,
-      "settlement_mode": "unknown",
-      "settles_in": null,
-      "settlement_timing": null,
+      "settlement_asset": "Central bank money (CAD), via Lynx",
+      "settlement_mode": "deferred-net",
+      "settles_in": "lynx",
+      "settlement_timing": "Daily net settlement through Lynx, final on the value date",
       "hours": null,
       "participants_summary": "Issuers and acquirers licensed by Visa.",
-      "explainer": "VisaNet is a card network the Bank of Canada oversees, and Visa sets its rules. Where the CAD net amounts finally settle is not stated in the primary sources checked.",
+      "explainer": "VisaNet carries Visa card payments and works out each member's net position, which settles once a day through Lynx and is final on the value date. Visa Canada guarantees settlement, so acquirers are paid if an issuer defaults.",
       "caveats": [
-        "Card authorization, clearing and settlement happen at different times. Settlement is not instant even when authorization is."
+        "Members in a net debit position pay into a designated Visa Canada account by a daily cutoff. The disclosure says commercial banks are used in Canada and also that daily settlement uses Lynx."
       ],
       "unknowns": [
-        "CAD settlement path (settlement bank, timing, whether it ends in Lynx) not confirmed from a primary source."
+        "The settlement banks are not named in the disclosure."
       ],
       "field_sources": {
         "operator": [
@@ -641,19 +641,33 @@
           "visa_rules"
         ],
         "roles": [
-          "visa_rules"
+          "visa_pps_2025"
         ],
         "participants_summary": [
           "visa_rules"
         ],
         "explainer": [
-          "boc_oversight"
+          "visa_pps_2025"
+        ],
+        "settlement_asset": [
+          "visa_pps_2025"
+        ],
+        "settlement_mode": [
+          "visa_pps_2025"
+        ],
+        "settles_in": [
+          "visa_pps_2025"
+        ],
+        "settlement_timing": [
+          "visa_pps_2025"
         ]
       },
       "last_checked": "2026-10-31",
       "layer": "4a",
       "windows": [],
-      "participants_count": null
+      "participants_count": null,
+      "settles_label": "daily · net",
+      "final_label": "daily, on the value date"
     },
     {
       "id": "interac-debit",
@@ -743,7 +757,7 @@
         "GCMS handles clearing. SMS is Mastercard's single message system."
       ],
       "unknowns": [
-        "CAD settlement path not confirmed from a primary source."
+        "Mastercard's Canadian settlement path was not found in a primary source. Its Bank of Canada disclosure would be the place to check."
       ],
       "field_sources": {
         "operator": [
@@ -1268,6 +1282,24 @@
       "tier": "operator",
       "published": "2023-12-31",
       "accessed": "2026-10-31"
+    },
+    {
+      "id": "visa_pps_2025",
+      "title": "Visa · VisaNet disclosure against Bank of Canada PPS standards (as at 2025-10-14)",
+      "url": "https://www.visa.ca/content/dam/VCOM/download/about-visa/visa-self-assessment.pdf",
+      "publisher": "Visa Canada",
+      "tier": "operator",
+      "published": "2025-10-14",
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "gazette_rtr_bylaw",
+      "title": "Canada Gazette · Canadian Payments Association By-law No. 10, RTR (SOR/2026-133)",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2026/2026-07-01/html/sor-dors133-eng.html",
+      "publisher": "Government of Canada",
+      "tier": "regulator",
+      "published": "2026-07-01",
+      "accessed": "2026-10-31"
     }
   ],
   "layers": [
@@ -1548,9 +1580,9 @@
       "region": "CA",
       "system": "rtr",
       "status": "done",
-      "text": "RTR by-law and rules take effect.",
+      "text": "RTR by-law comes into force.",
       "sources": [
-        "press_rtr_aug2026"
+        "gazette_rtr_bylaw"
       ]
     },
     {

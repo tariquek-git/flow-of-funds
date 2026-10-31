@@ -181,9 +181,10 @@ main{padding-bottom:56px}
 .finscale span{font:600 10px var(--mono);padding:4px 6px;border-top:3px solid currentColor}
 .finscale .fin-rt{color:var(--accent)}
 .finscale .fin-nbd{color:var(--ink)}
-.finscale .fin-unk{color:var(--muted);border-top-style:dashed}
+.finscale .fin-unk,.finscale .fin-mix{color:var(--muted);border-top-style:dashed}
+.finscale .fin-day{color:var(--ink)}
 .node .fin{font:600 9.5px/1.3 var(--mono);margin-top:3px}
-.node .fin-rt{color:var(--accent)} .node .fin-nbd{color:var(--ink)} .node .fin-unk{color:var(--muted)}
+.node .fin-rt{color:var(--accent)} .node .fin-nbd,.node .fin-day{color:var(--ink)} .node .fin-unk,.node .fin-mix{color:var(--muted)}
 .node.planned .fin-rt{color:var(--planned)}
 .node.sel .fin{color:var(--paper)}
 .map.has-sel .node:not(.lit) .fin{color:var(--muted)}
@@ -488,12 +489,18 @@ function pathDown(id){ // single primary chain: follow first outgoing edge until
 function finality(id){
   const n = node(id); if (!n) return null;
   if (n.rec.status==='planned') return {b:'rt', t:'real time, once live'};
+  if (n.kind==='product' && Array.isArray(n.rec.runs_on) && n.rec.runs_on.length>1) {
+    const parts = n.rec.runs_on.map(t => ({s:sys(t), f:finality(t)}));
+    if (new Set(parts.map(p=>p.f.b)).size>1) return {b:'mix', t:parts.map(p=>`${p.s.short} ${p.f.t}`).join(', ')};
+    return parts[0].f;
+  }
   const chain = pathDown(id).map(x=>node(x.id)).filter(x=>x.kind==='system');
   if (chain.some(x=>x.rec.settlement_mode==='unknown')) return {b:'unk', t:'not confirmed'};
+  const custom = chain.find(x=>x.rec.final_label); if (custom) return {b:'day', t:custom.rec.final_label};
   if (chain.some(x=>x.rec.settlement_mode==='deferred-net')) return {b:'nbd', t:'next business day'};
   return {b:'rt', t:'real time'};
 }
-const FIN_LABEL = {rt:'Real time', nbd:'Next business day', unk:'Not confirmed'};
+const FIN_LABEL = {rt:'Real time', nbd:'Next business day', day:'Daily, on the value date', mix:'Depends on the card network', unk:'Not confirmed'};
 
 /* ---------- time ---------- */
 function torontoNow(){
@@ -738,7 +745,8 @@ function drawEdges(){
     Object.values(ins).forEach(a => a.sort((p,q)=>cx(p.from)-cx(q.from)));
     const attach = (b, list, e, base, side) => {
       const i = list.indexOf(e), k = list.length;
-      if (base || b.w > 220) { const fb = box(side==='in' ? e.from : e.to); const same = list.filter(o => { const ob = box(side==='in' ? o.from : o.to); return Math.abs((ob.x+ob.w/2)-(fb.x+fb.w/2)) < 30; }); const j = same.indexOf(e);
+      const other = box(side==='in' ? e.from : e.to);
+      if ((base || b.w > 220) && !(side==='out' && other.w > 220)) { const fb = other; const same = list.filter(o => { const ob = box(side==='in' ? o.from : o.to); return Math.abs((ob.x+ob.w/2)-(fb.x+fb.w/2)) < 30; }); const j = same.indexOf(e);
         return Math.min(Math.max(fb.x+fb.w/2 + (j - (same.length-1)/2)*8, b.x+14), b.x+b.w-14); }
       const span = Math.min(b.w*0.7, k*14); return b.x + b.w/2 - span/2 + (k===1 ? span/2 : span*i/(k-1));
     };
@@ -800,8 +808,8 @@ function vClock(c){
   const all = D.systems.filter(s => s.region===region && s.id!==c.root);
   const unknownCards = all.filter(s => s.settlement_mode==='unknown');
   const sysIn = all.filter(s => s.settlement_mode!=='unknown');
-  if (unknownCards.length) sysIn.push({id:'cards-unknown', short:'Card networks', settlement_mode:'unknown', windows:[], names:unknownCards.map(x=>x.short)});
-  const order = ['lynx','acss','interac-debit','interac-e-transfer','rtr','fedwire-funds','cards-unknown'];
+  if (unknownCards.length) sysIn.push({id:'cards-unknown', short:unknownCards.length>1?'Card networks':unknownCards[0].short, settlement_mode:'unknown', windows:[], names:unknownCards.map(x=>x.short)});
+  const order = ['lynx','acss','interac-debit','interac-e-transfer','visanet-canada','rtr','fedwire-funds','cards-unknown'];
   sysIn.sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));
   const W=1000, LW=150, dayW=(W-LW)/7, top=40, rh=52;
   const n = torontoNow(); const hol = S.holiday;
@@ -823,10 +831,15 @@ function vClock(c){
     g += `<text x="0" y="${mid-2}" class="c-row">${esc(s.short)}${s.status==='planned'?' ':''}</text>`;
     let sub = s.status==='planned' ? 'planned' : s.settlement_mode==='unknown' ? 'not confirmed' : MODE[s.settlement_mode].toLowerCase();
     g += `<text x="0" y="${mid+12}" class="c-sub">${esc(sub)}</text>`;
-    if (s.settlement_mode==='unknown') { g += `<text x="${LW+8}" y="${mid+4}" class="c-unk">${esc(s.names.join(' and '))}. Where net amounts settle in ${c.id} is not confirmed in the sources checked.</text>`; return; }
+    if (s.settlement_mode==='unknown') { g += `<text x="${LW+8}" y="${mid+4}" class="c-unk">Where ${esc(s.names.join(' and '))} net amounts settle in ${c.id} is not confirmed in the sources checked.</text>`; return; }
     if (s.status==='planned') {
       g += `<rect x="${x(0,0)}" y="${mid-8}" width="${7*dayW}" height="16" class="c-plan"/><rect x="${x(0,0)}" y="${mid-8}" width="${7*dayW}" height="16" class="c-plan-edge"/>`;
       g += `<rect x="${x(0,0)+4}" y="${mid-6}" width="280" height="12" fill="var(--paper)"/><text x="${x(0,0)+8}" y="${mid+3.5}" class="c-plan-t">24/7/365 exchange and settlement, once live</text>`;
+      return;
+    }
+    if (s.id==='visanet-canada') {
+      for (let d=0; d<7; d++) if (isBiz(d,hol)) g += `<rect x="${x(d,9*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,9*60)}" y="${mid-11}" class="c-settle-t">daily net</text>`;
+      notes.push(`<li><b>Visa</b> settles each member's net position once a business day through Lynx, final on the value date. Visa Canada guarantees it. Time of day is not published, so the mark's position is indicative.</li>`);
       return;
     }
     if (s.id==='interac-debit') {
