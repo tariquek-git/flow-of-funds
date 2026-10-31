@@ -116,7 +116,8 @@ main{padding-bottom:56px}
 .map svg.edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
 .lrow{display:grid;grid-template-columns:168px minmax(0,1fr);min-height:76px;border-top:1px solid var(--rule)}
 .lrow:first-of-type{border-top:0}
-.lrow:nth-of-type(even){background:var(--band)}
+.lrow{--rowbg:var(--paper)}
+.lrow:nth-of-type(even){background:var(--band);--rowbg:var(--band)}
 .lhead{padding:12px 14px 12px 0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;align-content:center}
 .lhead{position:relative;z-index:3}
 .lhead .lid{font-family:var(--mono);font-size:10px;color:var(--muted);align-self:start;padding-top:2px}
@@ -126,7 +127,7 @@ main{padding-bottom:56px}
 .node{all:unset;position:relative;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:1px;min-height:44px;justify-content:center;padding:7px 9px;background:var(--paper);border:1px solid var(--rule-strong);border-radius:2px;transition:opacity .15s}
 .node .nm{font-weight:700;font-size:var(--t-s);line-height:1.15;font-variation-settings:"wdth" 80;display:flex;gap:6px;align-items:center}
 .node .sb{font-size:var(--t-xs);color:var(--muted);line-height:1.25;font-variation-settings:"wdth" 85}
-.node.k-product{border:0;border-top:2px solid var(--ink);border-radius:0;background:transparent;padding:6px 2px 2px}
+.node.k-product{border:0;border-top:2px solid var(--ink);border-radius:0;background:var(--rowbg);padding:6px 2px 2px}
 .node.k-product.planned{border-top-color:var(--planned)}
 .node.k-product .nm{font-variation-settings:"wdth" 85}
 .node.k-system{border:1.5px solid var(--ink)}
@@ -219,6 +220,10 @@ main{padding-bottom:56px}
 .c-hol{fill:var(--band)}
 .c-hol-t{font:600 9.5px var(--mono);fill:var(--muted)}
 .c-cut{stroke:var(--paper);stroke-width:1.5}
+.clockwrap{position:relative}
+.clocklabels{display:none;position:absolute;left:0;top:0;bottom:0;z-index:2;pointer-events:none}
+.clocklabels div{position:absolute;left:0;display:flex;align-items:center;padding-right:8px;background:var(--paper);box-shadow:4px 0 6px -4px color-mix(in srgb,var(--ink) 25%,transparent);font-size:11px;line-height:1.1}
+.clocklabels.on{display:block}
 .toggle{display:inline-flex;align-items:center;gap:8px;font-size:var(--t-s);cursor:pointer;user-select:none;min-height:40px}
 .toggle input{width:18px;height:18px;accent-color:var(--ink);margin:0}
 .clock-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:4px 28px;margin:10px 0 0;padding:0;list-style:none;font-size:var(--t-s);color:var(--muted)}
@@ -282,6 +287,7 @@ dl.facts .acc{color:var(--accent);font-weight:700}
 .rung .rl::after{content:"";position:absolute;left:4px;top:7px;width:12px;height:12px;background:var(--paper);border:2px solid var(--ink);border-radius:2px}
 .rung.root .rl::after{border-color:var(--accent);background:var(--accent)}
 .rung.cur .rl::after{background:var(--ink)}
+.rung.root .rl::after{border-color:var(--accent);background:var(--accent)}
 .rung .rb{padding:3px 0 14px;font-size:var(--t-s)}
 .rung .rb button{all:unset;cursor:pointer;font-weight:700}
 .rung .rb button:hover{text-decoration:underline}
@@ -293,7 +299,7 @@ dl.facts .acc{color:var(--accent);font-weight:700}
 .feeders li{border-bottom:1px solid var(--rule)}
 .feeders button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;justify-content:space-between;gap:10px;width:100%;padding:9px 0}
 .feeders button:hover b{text-decoration:underline}
-.feeders button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.feeders button:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
 .today{margin:18px 0 6px}
 .today .day24{height:22px}
 .today .hrs{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-top:3px}
@@ -359,13 +365,13 @@ details li{margin:0 0 6px}
 }
 @media (max-width: 900px){
   .split.has-panel{grid-template-columns:minmax(0,1fr)}
-  .panel{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:15;height:50vh;height:50svh;max-height:none;border-left:0;border-top:1px solid var(--ink);background:var(--paper);
+  .panel{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:15;height:40vh;height:40svh;max-height:none;border-left:0;border-top:1px solid var(--ink);background:var(--paper);
     padding:0 max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));box-shadow:0 -8px 24px color-mix(in srgb,var(--ink) 12%,transparent)}
   .panel.full{height:calc(100vh - 52px - env(safe-area-inset-top,0px))}
   .pbar{position:sticky;top:0;background:var(--paper);padding:10px 0 8px;z-index:2}
   .pbar .grip{display:inline-flex;align-items:center}
-  .split.has-panel .main-col{padding-bottom:52vh}
-  html:has(.panel){scroll-padding-bottom:52vh}
+  .split.has-panel .main-col{padding-bottom:42vh}
+  html:has(.panel){scroll-padding-bottom:42vh}
   .pagehead{grid-template-columns:minmax(0,1fr)}
   .pagehead .now{text-align:left}
   .pagehead h1{font-size:28px}
@@ -596,7 +602,7 @@ function render(){
   else if (S.view==='flow') app.innerHTML = vFlow();
   else app.innerHTML = vCcy();
   wire();
-  if (S.view==='ccy') { drawEdges(); const cb = $('.clockbox'); if (cb && cb.scrollWidth > cb.clientWidth) { const n = torontoNow(); const frac = (150 + (n.dow + n.mins/1440)*(850/7))/1000; cb.scrollLeft = Math.max(0, frac*cb.scrollWidth - cb.clientWidth*0.6); } }
+  if (S.view==='ccy') { drawEdges(); placeClockLabels(); const cb = $('.clockbox'); if (cb && cb.scrollWidth > cb.clientWidth) { const n = torontoNow(); const frac = (150 + (n.dow + n.mins/1440)*(850/7))/1000; cb.scrollLeft = Math.max(0, frac*cb.scrollWidth - cb.clientWidth*0.6); } }
   const t = S.view==='ccy' ? (S.node ? `${node(S.node).short} · ${S.ccy}` : S.ccy) : S.view==='flow' ? 'Railroom' : S.view==='type' ? IDX.groups[S.type].name : '';
   document.title = t ? `${t} · Settlement Map` : 'Settlement Map';
   $('#foot').innerHTML = `<p>Data as of ${fmtDate(D.meta.as_of)}. ${esc(D.meta.scope)}</p><p>How this was made. Built by Fintech North with Claude, from central bank and operator documents first. Every number links to its source. Corrections by pull request.</p>`;
@@ -829,9 +835,9 @@ function vClock(c){
     const y = top + i*rh, mid = y + rh/2;
     g += `<line x1="0" x2="${W}" y1="${y+rh}" y2="${y+rh}" class="c-grid"/>`;
     g += `<text x="0" y="${mid-2}" class="c-row">${esc(s.short)}${s.status==='planned'?' ':''}</text>`;
-    let sub = s.status==='planned' ? 'planned' : s.settlement_mode==='unknown' ? 'not confirmed' : MODE[s.settlement_mode].toLowerCase();
+    let sub = s.status==='planned' ? 'planned' : s.settlement_mode==='unknown' ? 'not confirmed' : s.id==='interac-e-transfer' ? 'deferred net, daily cycle' : MODE[s.settlement_mode].toLowerCase();
     g += `<text x="0" y="${mid+12}" class="c-sub">${esc(sub)}</text>`;
-    if (s.settlement_mode==='unknown') { g += `<text x="${LW+8}" y="${mid+4}" class="c-unk">Where ${esc(s.names.join(' and '))} net amounts settle in ${c.id} is not confirmed in the sources checked.</text>`; return; }
+    if (s.settlement_mode==='unknown') { g += `<rect x="${LW+4}" y="${mid-9}" width="430" height="16" fill="var(--paper)"/><text x="${LW+8}" y="${mid+4}" class="c-unk">Where ${esc(s.names.join(' and '))} net amounts settle in ${c.id} is not confirmed in the sources checked.</text>`; return; }
     if (s.status==='planned') {
       g += `<rect x="${x(0,0)}" y="${mid-8}" width="${7*dayW}" height="16" class="c-plan"/><rect x="${x(0,0)}" y="${mid-8}" width="${7*dayW}" height="16" class="c-plan-edge"/>`;
       g += `<rect x="${x(0,0)+4}" y="${mid-6}" width="280" height="12" fill="var(--paper)"/><text x="${x(0,0)+8}" y="${mid+3.5}" class="c-plan-t">24/7/365 exchange and settlement, once live</text>`;
@@ -855,7 +861,7 @@ function vClock(c){
     }
     if (s.id==='interac-e-transfer') {
       for (let d=0; d<7; d++) g += `<line x1="${x(d,0)+3}" x2="${x(d,1440)-3}" y1="${mid-12}" y2="${mid-12}" class="c-cycle"/>`;
-      g += `<text x="${x(5,0)+4}" y="${mid-16}" class="c-sub">one cycle per day, 00:00 to 23:59</text>`;
+
       // settlement days: each cycle settles on the next business day after its value date
       const settleOn = {};
       for (let d=0; d<7; d++){ let k=1; while(k<6 && !isBiz((d+k)%7,hol)) k++; const sd=(d+k)%7; (settleOn[sd] ||= []).push({d, k}); }
@@ -878,7 +884,8 @@ function vClock(c){
   g += `<line x1="${nx}" x2="${nx}" y1="${top-10}" y2="${H}" class="c-now"/><text x="${nx+4}" y="${H-2}" class="c-now-t">now</text>`;
   return `<div class="section-h"><h2>When it's final</h2><p>This week in Toronto time. Accent means money is settling between institutions. A long bar settles all day, a short mark settles once.</p></div>
     <label class="toggle"><input type="checkbox" id="holiday" ${hol?'checked':''}> Monday is a statutory holiday</label>
-    <div class="clockbox" tabindex="0" role="img" aria-label="Weekly settlement clock for ${c.id}. ${esc(notes.map(n=>n.replace(/<[^>]+>/g,'')).join(' '))}"><svg viewBox="0 0 ${W} ${H+6}">${g}</svg></div>
+    <div class="clockwrap"><div class="clocklabels" aria-hidden="true">${sysIn.map((s,i)=>`<div data-y="${top+i*rh}" data-h="${rh}"><b>${esc(s.short)}</b></div>`).join('')}</div>
+    <div class="clockbox" tabindex="0" role="img" aria-label="Weekly settlement clock for ${c.id}. ${esc(notes.map(n=>n.replace(/<[^>]+>/g,'')).join(' '))}"><svg viewBox="0 0 ${W} ${H+6}">${g}</svg></div></div>
     <p class="scrollhint">Scroll sideways for the full week.</p>
     <ul class="clock-notes">${notes.join('')}</ul>`;
 }
@@ -894,7 +901,7 @@ function vTimeline(c){
   const nx0 = x(n.date);
   for (let y=y0; y<=y1; y++) { const yx = x(y+'-01-01'); g += `<line x1="${yx}" x2="${yx}" y1="46" y2="54" class="t-axis"/>${Math.abs(yx-nx0) > 30 ? `<text x="${yx}" y="72" text-anchor="middle" class="t-yr">${y}</text>` : ''}`; }
   ev.forEach((t,i) => {
-    const xx = t.precision==='undated' ? W-pad-14 : x(t.date), yy = 30 - (i%2)*16;
+    const xx = t.precision==='undated' ? W-pad-14 : x(t.date), yy = 34 - (i%3)*13;
     if (t.precision==='undated') g += `<text x="${xx}" y="${yy-14}" text-anchor="middle" class="t-yr">no date</text>`;
     g += `<line x1="${xx}" x2="${xx}" y1="${yy+8}" y2="50" stroke="var(--rule-strong)"/>`;
     if (t.status==='done') g += `<circle cx="${xx}" cy="${yy}" r="9" class="t-done"/><text x="${xx}" y="${yy+3.5}" text-anchor="middle" class="t-n">${i+1}</text>`;
@@ -928,7 +935,7 @@ function vPanel(n, c){
     explain = r.explainer; srcIds = r.field_sources.explainer; allSrc = [...new Set(Object.values(r.field_sources).flat())];
     if ((r.windows||[]).some(w=>w.kind==='open')) { const nn = torontoNow(); today = `<div class="today"><div class="ph"><span>Today</span><span>${esc(openStatus(r).text)}</span></div>${day24(r, nn.dow, false, true)}<div class="hrs"><span>00:00</span><span>06</span><span>12</span><span>18</span><span>24:00</span></div></div>`; }
   } else if (n.kind==='product'){
-    kindLabel = 'What customers use · layer 7';
+    kindLabel = 'Payment type';
     const targets = [r.runs_on].flat().map(t=>sys(t));
     const fin = finality(n.id); const endsAt = pathDown(n.id).at(-1).id===root.id;
     const via = pathDown(n.id).slice(2,-1).map(x=>node(x.id).short);
@@ -1034,6 +1041,13 @@ function openNode(id){
   if (!S.node) lastFocus = id;
   const n = node(id); const c = IDX.ccyByRegion[n.region];
   go({view:'ccy', ccy:c.id, node:id, flow:null, type:null}, {focus:true});
+}
+function placeClockLabels(){
+  const cb = $('.clockbox'), cl = $('.clocklabels'); if (!cb || !cl) return;
+  const svg = cb.querySelector('svg'); const sc = svg.getBoundingClientRect().width / 1000;
+  const sync = () => { const on = cb.scrollWidth > cb.clientWidth + 2 && cb.scrollLeft > 20; cl.classList.toggle('on', on); };
+  $$('div', cl).forEach(d => { d.style.top = (+d.dataset.y*sc)+'px'; d.style.height = (+d.dataset.h*sc)+'px'; d.style.width = Math.max(70, 110*sc)+'px'; });
+  cb.addEventListener('scroll', sync, {passive:true}); requestAnimationFrame(sync);
 }
 // On phones the record opens as a bottom sheet, so bring the selected item into the strip above it.
 function bringSelectedIntoView(){

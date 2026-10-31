@@ -757,7 +757,7 @@
         "GCMS handles clearing. SMS is Mastercard's single message system."
       ],
       "unknowns": [
-        "Mastercard's Canadian settlement path was not found in a primary source. Its Bank of Canada disclosure would be the place to check."
+        "Mastercard's Canadian settlement path was not found in a public primary source. Its systems were designated prominent by the Bank of Canada in October 2023, so a disclosure may exist but was not located."
       ],
       "field_sources": {
         "operator": [
@@ -1300,6 +1300,15 @@
       "tier": "regulator",
       "published": "2026-07-01",
       "accessed": "2026-10-31"
+    },
+    {
+      "id": "boc_pps_2023",
+      "title": "Bank of Canada · Bank of Canada designates additional prominent payment systems",
+      "url": "https://www.bankofcanada.ca/2023/10/bank-canada-designates-additional-prominent-payment-systems/",
+      "publisher": "Bank of Canada",
+      "tier": "regulator",
+      "published": "2023-10-13",
+      "accessed": "2026-10-31"
     }
   ],
   "layers": [
@@ -1572,6 +1581,17 @@
       "text": "Lynx begins operations, replacing LVTS.",
       "sources": [
         "boc_lynx_overview"
+      ]
+    },
+    {
+      "date": "2023-10-16",
+      "precision": "day",
+      "region": "CA",
+      "system": "interac-debit",
+      "status": "done",
+      "text": "Bank of Canada designates VisaNet, Mastercard's clearing and single message systems, and Interac Debit's network as prominent payment systems.",
+      "sources": [
+        "boc_pps_2023"
       ]
     },
     {
