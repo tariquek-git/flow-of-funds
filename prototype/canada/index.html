@@ -182,6 +182,7 @@ main{padding-bottom:56px}
 .node,.node.k-product,.node.k-system,.node.l-1,.node.k-access{border:0;background:transparent;border-radius:0;padding:4px 2px 6px;align-items:center;text-align:center;gap:0;min-height:0}
 .node .nm{justify-content:center;font-size:var(--t-s)}
 .node .sb{display:none}
+.node.k-system .sb{display:block;font-size:var(--t-xs);color:var(--muted)}
 .node .glyph{width:46px;height:42px;display:block;margin:0 auto 2px;overflow:visible}
 .node.l-4b .glyph,.node.l-1 .glyph{width:64px}
 .node .glyph.wide{width:100%;height:22px;margin:0 0 4px}
@@ -565,7 +566,7 @@ function finality(id){
   }
   const chain = pathDown(id).map(x=>node(x.id)).filter(x=>x.kind==='system');
   if (chain.some(x=>x.rec.settlement_mode==='unknown')) return {b:'unk', t:'not confirmed'};
-  const custom = chain.find(x=>x.rec.final_label); if (custom) return {b:'day', t:custom.rec.final_label};
+  const custom = chain.find(x=>x.rec.final_label); if (custom) return {b: /^next business day/.test(custom.rec.final_label) ? 'nbd' : 'day', t:custom.rec.final_label};
   if (chain.some(x=>x.rec.settlement_mode==='deferred-net')) return {b:'nbd', t:'next business day'};
   return {b:'rt', t:'real time'};
 }
@@ -765,6 +766,7 @@ function vCcy(){
 </section>
      <div class="section-h"><h2>Who does what</h2><p>Customer money stays in bank accounts. The lines show where the banks settle what they owe each other. Pick anything to trace it.</p></div>
      ${map}
+     <p class="hint">Wires, direct deposits, pre-authorized debits and cheques run on Payments Canada's own rules, so they go straight to ACSS or Lynx without a separate network.</p>
      <p class="hint">Settlement between banks is final, but some payments can still be undone afterwards. Cheques can be returned, pre-authorized debits disputed for 90 days, and card payments charged back. Pick one to see the rule and its source.</p>
      <p class="hint narrow-hint">Tap a payment type to draw its path to the central bank.</p>
      ${clock}
@@ -779,7 +781,7 @@ function nodeBtn(n, pos, lit){
   if (lit && lit.has(n.id)) cls.push('lit');
   let sub = '', lg = '';
   let fin = '';
-  if (n.kind==='product') { sub = ''; const f = finality(n.id); const short = f.b==='rt' ? 'Real time' : f.b==='nbd' ? 'Next business day' : f.b==='day' ? 'Daily' : f.b==='mix' ? 'Visa daily, Mastercard not confirmed' : 'Not confirmed';
+  if (n.kind==='product') { sub = ''; const f = finality(n.id); const short = f.b==='rt' ? 'Real time' : f.b==='nbd' ? (f.t.charAt(0).toUpperCase()+f.t.slice(1)) : f.b==='day' ? 'Daily' : f.b==='mix' ? 'Visa daily, Mastercard not confirmed' : 'Not confirmed';
     fin = `<span class="fin fin-${f.b}">${esc(short)}</span>`; }
   else if (n.kind==='system') { sub = party(r.operator).name.replace(/ Inc\.| International Inc\.| Corp\./g,''); lg = logo(party(r.operator).logo); }
   else sub = r.through ? 'Over 50 institutions, through a seat holder' : 'Lynx participants and ACSS direct clearers';
@@ -900,7 +902,8 @@ function vTiming(c){
   const lynx = sys('lynx');
   const items = [
     {t:`Wires settle one by one on Lynx, on business days, ${lynx.hours.replace(/^Business days, /,'').replace(/\. .*/,'')}.`, src:lynx.field_sources.hours},
-    {t:'Cheques, direct deposits, pre-authorized debits and debit card payments clear through ACSS. The banks settle each day\'s totals the next business morning, through Lynx.', src:['pc_acss','interac_imn_2023']},
+    {t:'Cheques, direct deposits and pre-authorized debits clear through ACSS. The banks settle each day\'s totals the next business morning, through Lynx.', src:['pc_acss']},
+    {t:'Debit card payments are totalled the same day, cleared through ACSS the next day, and settled on Lynx after that.', src:['interac_imn_2023']},
     {t:'An e-Transfer arrives in minutes, but the banks settle it the day after. One sent on a Friday evening settles on Monday, or on Tuesday if Monday is a holiday. Interac says weekends and holidays can stretch this to four days, and which day each lands on is our reading of that rule.', src:['interac_pps_2025']},
     {t:'Visa settles each bank\'s net position once a business day through Lynx.', src:['visa_pps_2025']},
     {t:'The Real-Time Rail will settle every payment the moment it is sent, around the clock, once it launches.', src:['pc_rtr_faq']}];

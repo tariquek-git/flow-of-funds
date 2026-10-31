@@ -769,7 +769,8 @@
       "last_checked": "2026-10-31",
       "layer": "4a",
       "windows": [],
-      "participants_count": null
+      "participants_count": null,
+      "final_label": "next business day or later"
     },
     {
       "id": "mastercard-canada",
