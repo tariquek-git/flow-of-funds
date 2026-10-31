@@ -46,14 +46,16 @@ Below the rows, two secondary indexes. **By system type** (the seven groups from
 
 Three bands, top to bottom.
 
-1. **Who does what (the layer map).** Rows are the layers that have something in this currency. Empty layers are dropped. Each row is labelled with the layer number, name and a plain line on who does what. The bottom band is the central bank, full width. Nodes sit in their layer. Lines join them:
-   - thin ink line = *runs on* (a product runs on a system)
-   - double accent line with a timing label = *settles in* (e.g. "next day · net")
-   - dotted line = *access* (a seat holder's account at the central bank)
-   - dashed stub ending in "?" = settlement path not confirmed
-   The top row is the things people already know (wire, direct deposit, cheque, e-Transfer, card purchase). Technical names sit one row down.
-2. **When it's final (the settlement clock).** A Monday to Sunday strip, one row per system. Opening windows are bars, settlement moments are accent ticks, planned systems are hatched, and a vertical line marks now in Toronto. A toggle for "Monday is a statutory holiday" shows Friday's e-Transfers settling on Tuesday, which is the "up to four days" in Interac's own disclosure.
-3. **What's changing.** A dated line from 2020 to 2027 with done events solid and planned ones hatched, and now marked.
+1. **Who does what (the settlement map).** It answers one question. For each kind of payment, who carries it, when is it final between banks, and who needs a seat to take part?
+   - **Across, left to right, is speed.** Payment types are ordered by how fast they become final between banks (real time, next business day, not confirmed). A scale above the row says so, and each payment type carries its own "Final ..." line. Wire and RTR are on the left, debit, cheque, direct deposit and e-Transfer in the middle, and cards on the right.
+   - **Down is the path.** The rows are payment type, then network and rules (4a), clearing (4b), settlement (1), and the central bank band. Plain names come first, and the layer code sits small beside each one. Empty rows are dropped.
+   - **Banks are a side column, not a step.** "Who holds the accounts" lists seat holders (Lynx participants and ACSS direct clearers) and those who reach the seat through them, with dotted lines to the central bank. Banks take part in every system, so they sit beside the stack instead of inside it.
+   - **The lines.** A thin ink line means runs on. A double accent line with a timing label means settles in. A dashed double line in the planned colour means will settle in once live. Dotted means holds an account at. A dashed stub ending in "?" means not confirmed.
+   - The heading states what the lines are. Customer money stays in bank accounts, and the lines show where banks settle what they owe each other.
+2. **When it's final (the settlement clock).** A Monday to Sunday strip, one row per system. A long accent bar settles all day (Lynx). A short accent mark settles once (ACSS, Interac Debit, e-Transfer, each labelled with the days it covers). Planned is hatched, and a vertical line marks now in Toronto. A "Monday is a statutory holiday" box shows Friday to Monday settling on Tuesday, which is the four days in Interac's disclosure.
+3. **What's changing.** A dated line from 2020 to 2028. Done events are solid, planned ones hatched, undated ones sit at the right edge, and now is marked.
+
+**Phones and narrow columns.** The map switches by the width of its column, not the screen, so it also adapts when the record panel is open on a laptop. Payment types wrap, and the speed scale moves into each node's "Final ..." line. Product lines appear only for the selected path, and the seats column moves under the central bank band.
 
 ## L3 · Record panel
 
@@ -75,17 +77,19 @@ Closed by default. Rulebook and operator, Participants, Caveats, Not known yet, 
 | Meaning | Encoding | Without colour |
 |---|---|---|
 | Central bank money, finality | Accent colour | Double line, "final" label, base band |
+| Will settle once live | Planned colour, dashed double line | "planned" tag, hatch |
+| Speed to finality | Horizontal position plus the "Final ..." line | Text label on every payment type |
 | Runs on | Thin ink line | Single line |
 | Access to a settlement account | Dotted line | Dot pattern |
 | Planned | Hatch fill | "planned" label |
 | Not confirmed | Dashed outline | "?" and "Not confirmed" |
-| Selected path | Full strength | Everything else drops to 25% |
+| Selected path | Full strength, outlined | Everything else turns muted grey and keeps readable contrast |
 
-Colour encodes role only. Accent is used for nothing except settlement and the focus ring.
+Colour encodes role only. Accent is used for nothing except settlement in central bank money. Focus rings, navigation and controls are ink.
 
 ## Type and colour
 
-Instrument Sans for reading and labels, using its narrow widths inside the map so node names fit on a phone. Martian Mono for codes, times and counts (CAD, 00:30, T+1, 4b). Two weights. White page, a cool grey band for alternating layer rows, near-black ink and one vermilion accent. Dark theme mirrors it. Contrast is checked by `npm run check` against `design/tokens.json`.
+Instrument Sans for reading and labels, using its narrow widths inside the map so node names fit on a phone. Martian Mono only for codes, times and counts (CAD, 00:30, 4b, timing labels). Navigation, breadcrumbs, buttons and field labels use the sans. Two weights. White page, a cool grey band for alternating layer rows, near-black ink and one vermilion accent. Dark theme mirrors it. Contrast is checked by `npm run check` against `design/tokens.json`.
 
 ## Phones
 
