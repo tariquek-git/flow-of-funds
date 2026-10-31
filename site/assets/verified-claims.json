@@ -1,0 +1,73 @@
+{
+  "as_of": "2026-10-30",
+  "review_policy": {
+    "source_age_warning": "12 months",
+    "confidence": "primary verified means primary source directly supports structural claim; not a verified bilateral route",
+    "planned": "published policy or target, not live system participation"
+  },
+  "claims": [
+    {
+      "id": "canada-payments-canada-operator",
+      "claim": "Payments Canada owns and operates Lynx and ACSS; settlement uses Bank of Canada accounts.",
+      "level": "primary-verified",
+      "source_date": "2026-07-31",
+      "source_url": "https://www.bankofcanada.ca/core-functions/financial-system/bank-canadas-settlement-account-policies-for-payments-canada-payment-systems/"
+    },
+    {
+      "id": "canada-rtr-status",
+      "claim": "RTR in sequenced Q4 2026 target launch; not confirmed live as of Oct 30.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.payments.ca/systems-services/payment-systems/real-time-rail-payment-system/testing-and-launch"
+    },
+    {
+      "id": "interac-holding",
+      "claim": "Interac does not hold e-Transfer customer balances; financial institutions handle the bank accounts.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.interac.ca/en/resources/personal-resources/personal-faq/interac-e-transfer/"
+    },
+    {
+      "id": "interac-ownership",
+      "claim": "Interac shareholder types include banks, credit unions, caisses populaires and payment acquirers.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.interac.ca/en/interac-e-transfer-disclosure/"
+    },
+    {
+      "id": "pix-ownership",
+      "claim": "BCB owns Pix scheme and operates SPI and DICT.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.bcb.gov.br/en/financialstability/pixcentralbanksrole"
+    },
+    {
+      "id": "pix-spi-access",
+      "claim": "SPI direct participants hold PI accounts at BCB; indirect participants settle through direct participant or special agent.",
+      "level": "primary-verified",
+      "source_date": "2026-07-07 participant list; web page checked 2026-10-30",
+      "source_url": "https://www.bcb.gov.br/en/financialstability/pixparticipants"
+    },
+    {
+      "id": "us-rtp-access",
+      "claim": "RTP participation does not require The Clearing House ownership or membership.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.theclearinghouse.org/payment-systems/rtp"
+    },
+    {
+      "id": "chips-model",
+      "claim": "CHIPS uses a liquidity-saving mechanism to offset payment obligations and provides continuous settlement finality.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.theclearinghouse.org/payment-systems/chips"
+    },
+    {
+      "id": "uk-access",
+      "claim": "Eligible FCA-authorised non-bank PSPs can hold BoE settlement accounts subject to criteria; separate from reserves accounts.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.bankofengland.co.uk/Payment%20and%20settlement/access-to-uk-payment-systems-for-non-bank-payment-service-providers"
+    }
+  ]
+}

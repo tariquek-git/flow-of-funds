@@ -1,0 +1,229 @@
+{
+  "checked_at": "2026-10-30",
+  "browser": "system Chromium, injected local HTML/CSS/JS; URL navigation validated structurally",
+  "viewports": [
+    1440,
+    390,
+    320
+  ],
+  "pages_checked": 27,
+  "hard_errors": [],
+  "results": [
+    {
+      "path": "index.html",
+      "viewport": "desktop",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 1818
+    },
+    {
+      "path": "methodology.html",
+      "viewport": "desktop",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2104
+    },
+    {
+      "path": "layers/4a.html",
+      "viewport": "desktop",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2522
+    },
+    {
+      "path": "markets/canada.html",
+      "viewport": "desktop",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2165
+    },
+    {
+      "path": "systems/pix.html",
+      "viewport": "desktop",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 1587
+    },
+    {
+      "path": "systems/rtr.html",
+      "viewport": "desktop",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 1710
+    },
+    {
+      "path": "systems/rtp.html",
+      "viewport": "desktop",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 1629
+    },
+    {
+      "path": "participants/wise.html",
+      "viewport": "desktop",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 1723
+    },
+    {
+      "path": "corridors/us-ecuador.html",
+      "viewport": "desktop",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 1040
+    },
+    {
+      "path": "index.html",
+      "viewport": "phone",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2691
+    },
+    {
+      "path": "methodology.html",
+      "viewport": "phone",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2658
+    },
+    {
+      "path": "layers/4a.html",
+      "viewport": "phone",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 3937
+    },
+    {
+      "path": "markets/canada.html",
+      "viewport": "phone",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 3562
+    },
+    {
+      "path": "systems/pix.html",
+      "viewport": "phone",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2411
+    },
+    {
+      "path": "systems/rtr.html",
+      "viewport": "phone",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2605
+    },
+    {
+      "path": "systems/rtp.html",
+      "viewport": "phone",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2552
+    },
+    {
+      "path": "participants/wise.html",
+      "viewport": "phone",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2995
+    },
+    {
+      "path": "corridors/us-ecuador.html",
+      "viewport": "phone",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2024
+    },
+    {
+      "path": "index.html",
+      "viewport": "narrow",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2887
+    },
+    {
+      "path": "methodology.html",
+      "viewport": "narrow",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2972
+    },
+    {
+      "path": "layers/4a.html",
+      "viewport": "narrow",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 4157
+    },
+    {
+      "path": "markets/canada.html",
+      "viewport": "narrow",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 3948
+    },
+    {
+      "path": "systems/pix.html",
+      "viewport": "narrow",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2629
+    },
+    {
+      "path": "systems/rtr.html",
+      "viewport": "narrow",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2808
+    },
+    {
+      "path": "systems/rtp.html",
+      "viewport": "narrow",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2752
+    },
+    {
+      "path": "participants/wise.html",
+      "viewport": "narrow",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 3172
+    },
+    {
+      "path": "corridors/us-ecuador.html",
+      "viewport": "narrow",
+      "horizontal_overflow": false,
+      "h1": 1,
+      "main": true,
+      "height": 2108
+    }
+  ]
+}

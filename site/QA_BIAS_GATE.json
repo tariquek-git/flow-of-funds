@@ -1,0 +1,159 @@
+{
+  "audit_date": "2026-10-30",
+  "method": "Static content coverage and editorial bias smoke test; not a verification of market significance or financial facts",
+  "html_pages": 115,
+  "pages_by_section": {
+    "index.html": 1,
+    "holding": 8,
+    "corridors": 8,
+    "systems": 30,
+    "subfunctions": 37,
+    "layers": 10,
+    "participants": 13,
+    "markets": 8
+  },
+  "market_page_mention_counts_excluding_navigation": {
+    "Canada": 36,
+    "United States": 33,
+    "Brazil": 11,
+    "United Kingdom": 22,
+    "India": 5,
+    "Mexico": 2,
+    "Ecuador": 3,
+    "Euro area": 0,
+    "Philippines": 0,
+    "Nigeria": 0,
+    "Singapore": 0,
+    "Japan": 0,
+    "China": 0,
+    "South Africa": 0,
+    "Australia": 0,
+    "Switzerland": 0,
+    "South Korea": 0,
+    "Hong Kong": 0,
+    "United Arab Emirates": 0,
+    "Saudi Arabia": 0,
+    "Indonesia": 0
+  },
+  "currency_page_mention_counts_excluding_navigation": {
+    "USD": 11,
+    "CAD": 8,
+    "GBP": 3,
+    "EUR": 0,
+    "CHF": 0,
+    "BRL": 4,
+    "MXN": 2,
+    "AUD": 0,
+    "JPY": 0,
+    "SGD": 0,
+    "INR": 2,
+    "CNY": 0,
+    "KRW": 0,
+    "HKD": 0,
+    "AED": 0,
+    "SAR": 0,
+    "PHP": 1,
+    "IDR": 0,
+    "ZAR": 0
+  },
+  "source_domains_top_12": [
+    [
+      "www.payments.ca",
+      20
+    ],
+    [
+      "wise.com",
+      18
+    ],
+    [
+      "www.bankofengland.co.uk",
+      17
+    ],
+    [
+      "www.frbservices.org",
+      17
+    ],
+    [
+      "www.bcb.gov.br",
+      14
+    ],
+    [
+      "www.bankofcanada.ca",
+      13
+    ],
+    [
+      "corporate.visa.com",
+      10
+    ],
+    [
+      "www.interac.ca",
+      10
+    ],
+    [
+      "www.marqeta.com",
+      9
+    ],
+    [
+      "www.theclearinghouse.org",
+      9
+    ],
+    [
+      "clear.bank",
+      7
+    ],
+    [
+      "docs.wise.com",
+      6
+    ]
+  ],
+  "pages_without_source_links": [
+    "systems/architecture.html",
+    "systems/changes.html"
+  ],
+  "mechanism_page_mentions": {
+    "customer-to-customer/on-us": 14,
+    "card acquiring": 17,
+    "cash-out/mobile money": 4,
+    "commercial-bank settlement": 0,
+    "central-bank settlement": 27,
+    "non-bank access": 9,
+    "prefunding": 5,
+    "FX / exchange": 39,
+    "governance / ownership": 37,
+    "stablecoin / token": 5,
+    "planned-vs-live": 16,
+    "exception / reversals": 0
+  },
+  "main_page_current_featured_links": [
+    "layers/index.html",
+    "participants/index.html",
+    "markets/index.html",
+    "systems/index.html",
+    "corridors/index.html",
+    "holding/index.html",
+    "markets/canada.html",
+    "participants/wise.html",
+    "systems/brazil-pix.html"
+  ],
+  "manual_release_gates": [
+    "Case selection documented BEFORE examples are drawn: systemic relevance, architectural variation, corridor relevance, current change, verifiable evidence.",
+    "Editor tests at least one comparable alternative for every home-page case (counterfactual substitution).",
+    "Currencies and account jurisdiction are represented separately; USD outside the US is not assumed to settle at the Fed.",
+    "Origin and destination direction matter; scheme reach is not conflated with settlement or payout reach.",
+    "Operations, rules, governance, ownership, access, clearing and finality have distinct actor labels.",
+    "Bank, non-bank, merchant, wallet, and cash recipient are all represented in archetype coverage.",
+    "A brand is not automatically the licensed entity; roles are product/market scoped.",
+    "No inference from not being named in public participant lists to non-participation.",
+    "No undocumented company-company edge; schematics label illustrative paths visibly.",
+    "Direct connection, direct clearing, direct settlement, eligible, and approved-but-not-live differ.",
+    "Competing proof is reviewed, including operator sources that may disagree with vendor marketing.",
+    "Publication date (if known) distinguished from review date, and older than 12 months flagged.",
+    "Logo size, positioning and diagram paths do not imply market size or prominence.",
+    "User-visible empty or unverified coverage is labelled instead of silently omitted."
+  ],
+  "measurement_notes": [
+    "Counts measure editorial exposure only, not economic importance, and they are biased by how many times labels appear in headings and body copy.",
+    "A citation link on a page does not verify every claim.",
+    "The 19-currency list comes from the original research scope; country and currency are not interchangeable."
+  ]
+}

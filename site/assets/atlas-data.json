@@ -1,0 +1,2249 @@
+{
+  "sources": {
+    "mastercard": {
+      "title": "Mastercard · Switching authorization, clearing and settlement",
+      "url": "https://www.mastercard.com/eea/switching-services/our-technology/transaction.html",
+      "date": "2026-10-30 checked",
+      "category": "Primary / operator"
+    },
+    "wise_api": {
+      "title": "Wise Platform · API reference",
+      "url": "https://docs.wise.com/api-reference",
+      "date": "2026-10-30 checked",
+      "category": "Company technical documentation"
+    },
+    "wise_receive": {
+      "title": "Wise Platform · Receiving money via local details",
+      "url": "https://docs.wise.com/guides/product/receive-money",
+      "date": "2026-10-30 checked",
+      "category": "Company technical documentation"
+    },
+    "ecu_spi": {
+      "title": "Banco Central del Ecuador · Domestic SPI payment system",
+      "url": "https://www.bce.fin.ec/sistema-de-pagos/sistema-central-de-pagos/sistema-de-pagos-interbancarios-spi/",
+      "date": "2026-10-30 checked",
+      "category": "Primary / central bank"
+    },
+    "pc_lynx": {
+      "title": "Payments Canada · Lynx",
+      "url": "https://www.payments.ca/systems-services/payment-systems/high-value-payment-system-lynx",
+      "date": "2026-10-30 checked",
+      "category": "Primary / operator"
+    },
+    "pc_acss": {
+      "title": "Payments Canada · Retail batch payment system",
+      "url": "https://www.payments.ca/systems-services/payment-systems/retail-batch-payment-system",
+      "date": "2026-10-30 checked",
+      "category": "Primary / operator"
+    },
+    "pc_rtr": {
+      "title": "Payments Canada · RTR testing and launch",
+      "url": "https://www.payments.ca/systems-services/payment-systems/real-time-rail-payment-system/testing-and-launch",
+      "date": "2026-10-30 checked",
+      "category": "Primary / operator"
+    },
+    "boc_rtr": {
+      "title": "Bank of Canada · RTR settlement-account policy",
+      "url": "https://www.bankofcanada.ca/core-functions/financial-system/bank-canadas-settlement-account-policies-for-payments-canada-payment-systems/bank-canada-settlement-account-access-policy-real-time-rail/",
+      "date": "2026-07-31",
+      "category": "Primary / central bank"
+    },
+    "interac": {
+      "title": "Interac · e-Transfer FAQ",
+      "url": "https://www.interac.ca/en/resources/personal-resources/personal-faq/interac-e-transfer/",
+      "date": "2026-10-30 checked",
+      "category": "Primary / operator"
+    },
+    "interac_participation": {
+      "title": "Interac · e-Transfer participating institutions",
+      "url": "https://www.interac.ca/en/payments/personal/send-receive-money-with-interac-e-transfer/",
+      "date": "2026-10-30 checked",
+      "category": "Primary / operator"
+    },
+    "fednow": {
+      "title": "Federal Reserve · FedNow roles",
+      "url": "https://www.frbservices.org/binaries/content/assets/crsocms/resources/rules-regulations/021326-fednow-service-operating-procedures.pdf",
+      "date": "2026-02-13",
+      "category": "Primary / central bank"
+    },
+    "fedparticipants": {
+      "title": "Federal Reserve · FedNow participant categories",
+      "url": "https://www.frbservices.org/financial-services/fednow/organizations/",
+      "date": "2026-09-08 list",
+      "category": "Primary / operator"
+    },
+    "boe": {
+      "title": "Bank of England · Non-bank settlement access",
+      "url": "https://www.bankofengland.co.uk/Payment%20and%20settlement/access-to-uk-payment-systems-for-non-bank-payment-service-providers",
+      "date": "2026-10-30 checked",
+      "category": "Primary / central bank"
+    },
+    "chaps": {
+      "title": "Bank of England · CHAPS",
+      "url": "https://www.bankofengland.co.uk/payments/chaps/",
+      "date": "2026-10-30 checked",
+      "category": "Primary / operator"
+    },
+    "boe_settlement": {
+      "title": "Bank of England · Settlement models",
+      "url": "https://www.bankofengland.co.uk/payments/payment-settlement",
+      "date": "2026-10-30 checked",
+      "category": "Primary / central bank"
+    },
+    "bcb": {
+      "title": "Banco Central do Brasil · Pix and SPI participants",
+      "url": "https://www.bcb.gov.br/en/financialstability/pixparticipants",
+      "date": "2026-07-07 participant list",
+      "category": "Primary / central bank"
+    },
+    "banxico": {
+      "title": "Banco de México · SPEI",
+      "url": "https://www.banxico.org.mx/servicios/spei_-informacion-banco-mex.html",
+      "date": "2026-10-30 checked",
+      "category": "Primary / central bank"
+    },
+    "wise": {
+      "title": "Wise · Safeguarding varies by entity",
+      "url": "https://wise.com/help/articles/2949821/how-wise-keeps-your-money-safe",
+      "date": "2026-10-30 checked",
+      "category": "Company disclosure"
+    },
+    "wise_uk": {
+      "title": "Wise · UK safeguarding arrangements",
+      "url": "https://wise.com/help/articles/4IusAofIppsIGPcs7sEIXI/how-our-uk-entity-wise-payments-ltd-safeguards-customer-funds",
+      "date": "2026-10-30 checked",
+      "category": "Company disclosure"
+    },
+    "circle": {
+      "title": "Circle · USDC reserves",
+      "url": "https://www.circle.com/transparency",
+      "date": "2026-10-26",
+      "category": "Issuer disclosure"
+    },
+    "visa": {
+      "title": "Visa · Payment acceptance and issuer/acquirer roles",
+      "url": "https://corporate.visa.com/en/solutions/acceptance/payments.html",
+      "date": "2026-10-30 checked",
+      "category": "Operator disclosure"
+    },
+    "visa_rules": {
+      "title": "Visa · VisaNet operating rules",
+      "url": "https://usa.visa.com/dam/VCOM/download/about-visa/visa-rules-public.pdf",
+      "date": "2025-10 edition",
+      "category": "Operator rules / >12mo borderline"
+    },
+    "swift": {
+      "title": "Swift · Messaging, not settlement",
+      "url": "https://www.swift.com/about-us/organisation-governance/swift-oversight",
+      "date": "2026-10-30 checked",
+      "category": "Operator disclosure"
+    },
+    "swift_contract": {
+      "title": "Swift · Does not hold funds or settle transactions",
+      "url": "https://www.swift.com/es/node/11301",
+      "date": "2026-10-30 checked",
+      "category": "Operator disclosure"
+    },
+    "marqeta": {
+      "title": "Marqeta · Issuer processing and bank partners",
+      "url": "https://www.marqeta.com/services_and_system",
+      "date": "2026-10-30 checked",
+      "category": "Company disclosure"
+    },
+    "marqeta_platform": {
+      "title": "Marqeta · Platform",
+      "url": "https://www.marqeta.com/platform/card-issuing",
+      "date": "2026-10-30 checked",
+      "category": "Company disclosure"
+    },
+    "clearbank": {
+      "title": "ClearBank · Payments and direct participation",
+      "url": "https://clear.bank/products/payments",
+      "date": "2026-10-30 checked",
+      "category": "Company disclosure"
+    }
+  },
+  "layers": {
+    "7": {
+      "n": "7",
+      "title": "Customer interface",
+      "desc": "Where customers and businesses initiate payments, see balances and receive confirmations.",
+      "caution": "The front-end product does not by itself establish who holds the funds or which institution settles.",
+      "subs": [
+        [
+          "consumer-apps",
+          "Consumer apps & wallets",
+          "Mobile and web experiences that initiate transfers and display available balances.",
+          "Distinguish product owner from the entity legally holding the customer balance.",
+          [
+            "wise"
+          ]
+        ],
+        [
+          "business-apis",
+          "Business APIs & embedded payments",
+          "Interfaces that allow a business to instruct transfers or offer payments inside another product.",
+          "An API provider may orchestrate a bank relationship rather than operate a rail.",
+          [
+            "wise_api"
+          ]
+        ],
+        [
+          "merchant-checkout",
+          "Merchant checkout",
+          "The place where a shopper chooses a payment method and authorizes a purchase.",
+          "Checkout is not the same as card acquiring or interbank settlement.",
+          [
+            "visa"
+          ]
+        ],
+        [
+          "customer-account-view",
+          "Balance and account presentation",
+          "The customer-facing ledger, transaction history and available balance.",
+          "Displayed balances can represent deposits, e-money or other claims.",
+          [
+            "wise"
+          ]
+        ]
+      ]
+    },
+    "6": {
+      "n": "6",
+      "title": "Last mile",
+      "desc": "The local delivery mechanism that makes value available to the recipient.",
+      "caution": "Payout availability, receiving-account credit and interbank settlement may happen at different times.",
+      "subs": [
+        [
+          "local-bank-credit",
+          "Local account credit",
+          "Credits the recipient through a bank or payment institution in the destination market.",
+          "Recipient institution may be distinct from the cross-border provider.",
+          [
+            "interac"
+          ]
+        ],
+        [
+          "mobile-wallet-payout",
+          "Mobile-wallet payout",
+          "Credits a licensed wallet or e-money provider.",
+          "The wallet customer claim and underlying trust or safeguarding account are different.",
+          [
+            "wise"
+          ]
+        ],
+        [
+          "cash-pickup",
+          "Cash pickup",
+          "Uses an agent network to pay out notes to a verified recipient.",
+          "An agent may hold local cash inventory or receive reimbursement from a network.",
+          []
+        ],
+        [
+          "card-push-payout",
+          "Card payout",
+          "Delivers to an eligible card-linked account using participating issuer and network arrangements.",
+          "Availability depends on scheme rules, issuer, market and card type.",
+          [
+            "visa"
+          ]
+        ]
+      ]
+    },
+    "5": {
+      "n": "5",
+      "title": "FX and liquidity",
+      "desc": "Currency conversion and the funding needed to complete domestic and cross-border legs.",
+      "caution": "FX pricing, execution, prefunding and rebalancing are different functions.",
+      "subs": [
+        [
+          "fx-execution",
+          "FX pricing & execution",
+          "Quotes and exchanges one currency for another when a payment requires conversion.",
+          "A same-currency cross-border payment may require no FX conversion.",
+          [
+            "wise"
+          ]
+        ],
+        [
+          "prefunding",
+          "Prefunding",
+          "Keeps usable funds on the payout side so a transfer can be paid before offsetting funds arrive.",
+          "Prefunded liquidity can be replenished separately from the customer transfer.",
+          []
+        ],
+        [
+          "treasury-rebalancing",
+          "Treasury & rebalancing",
+          "Manages positions across accounts, currencies and banking partners.",
+          "A later treasury transfer is not necessarily the recipient payment.",
+          []
+        ],
+        [
+          "liquidity-provision",
+          "Liquidity provision",
+          "Provides intraday or settlement liquidity to eligible participants.",
+          "A settlement account and access to liquidity are different capabilities.",
+          [
+            "fedparticipants"
+          ]
+        ]
+      ]
+    },
+    "4a": {
+      "n": "4a",
+      "title": "Schemes and networks",
+      "desc": "Rules, eligibility, addressing, routing and messaging connecting payment participants.",
+      "caution": "A network may transmit instructions or set scheme rules without holding customer money.",
+      "subs": [
+        [
+          "card-schemes",
+          "Card schemes",
+          "Defines card transaction rules and operates card-network services.",
+          "Differentiate network operator, issuer, acquirer and issuer processor.",
+          [
+            "visa",
+            "mastercard"
+          ]
+        ],
+        [
+          "domestic-schemes",
+          "Domestic payment schemes",
+          "Sets rules for local account-to-account payment instructions.",
+          "Interac is a network; participating institutions hold customer accounts.",
+          [
+            "interac"
+          ]
+        ],
+        [
+          "financial-messaging",
+          "Financial messaging",
+          "Carries standardized payment instructions between institutions and infrastructures.",
+          "Swift does not hold funds or settle payment obligations.",
+          [
+            "swift"
+          ]
+        ],
+        [
+          "instant-links",
+          "Instant rails & interoperability",
+          "Links payment participants for near-real-time payment exchange and, depending on design, settlement.",
+          "Direct connection and direct settlement may have different eligibility.",
+          [
+            "fednow",
+            "bcb"
+          ]
+        ],
+        [
+          "token-networks",
+          "Token transfer networks",
+          "Records and validates token movements subject to a network protocol.",
+          "A blockchain is not identical to the reserve issuer, custodian or redemption bank.",
+          [
+            "circle"
+          ]
+        ]
+      ]
+    },
+    "4b": {
+      "n": "4b",
+      "title": "Processing",
+      "desc": "Software and operational services that authorize, route, ledger, clear and reconcile payments.",
+      "caution": "Technology providers can connect directly to a network without being the bank that holds the balance.",
+      "subs": [
+        [
+          "issuer-processing",
+          "Issuing processing",
+          "Runs transaction authorization, card controls and issuer program records.",
+          "The licensed issuing bank retains its separate obligations.",
+          [
+            "marqeta"
+          ]
+        ],
+        [
+          "acquiring-processing",
+          "Acquiring processing",
+          "Handles merchant-side payment authorization and submission for clearing.",
+          "Processor and acquiring bank should appear as separate roles.",
+          [
+            "visa"
+          ]
+        ],
+        [
+          "core-ledgers",
+          "Core ledgers",
+          "Maintains account-level postings and available balances for a licensed provider.",
+          "An internal ledger entry is not by itself central-bank settlement.",
+          [
+            "marqeta"
+          ]
+        ],
+        [
+          "clearing-netting",
+          "Clearing, netting & reconciliation",
+          "Computes obligations and matches payment records before or after settlement.",
+          "ACSS calculates net obligations which are settled separately.",
+          [
+            "pc_acss"
+          ]
+        ],
+        [
+          "payment-orchestration",
+          "Payment orchestration",
+          "Chooses a route, validates requests and manages retries between providers.",
+          "Do not assume the orchestrator ever takes custody of funds.",
+          [
+            "marqeta"
+          ]
+        ]
+      ]
+    },
+    "3": {
+      "n": "3",
+      "title": "Multi-market accounts",
+      "desc": "Account-like products spanning jurisdictions and currencies, often combining several underlying legal entities and banking partners.",
+      "caution": "A brand offering worldwide balances is not necessarily one licensed legal company.",
+      "subs": [
+        [
+          "local-collection",
+          "Local collection accounts",
+          "Provides local account details or collection capabilities for incoming payments.",
+          "Account details and legal ownership of deposits must be checked separately.",
+          [
+            "wise_receive"
+          ]
+        ],
+        [
+          "multicurrency-balances",
+          "Multi-currency balances",
+          "Shows and manages balances across currencies in one customer experience.",
+          "The underlying holding model can differ by jurisdiction.",
+          [
+            "wise"
+          ]
+        ],
+        [
+          "account-provision",
+          "Account provision",
+          "Offers the operational account layer behind a multi-market product.",
+          "It can involve licensed e-money entities, banks or partner institutions.",
+          [
+            "wise"
+          ]
+        ],
+        [
+          "global-payout-accounts",
+          "Payout accounts",
+          "Uses accounts and payment partners in multiple destinations.",
+          "Payout reach does not prove a direct settlement account in every destination.",
+          [
+            "wise"
+          ]
+        ]
+      ]
+    },
+    "2a": {
+      "n": "2a",
+      "title": "Correspondents",
+      "desc": "Banks and settlement providers that maintain accounts and payments connectivity for other institutions across markets.",
+      "caution": "Cross-border payments can involve separate nostro/vostro positions and messaging legs.",
+      "subs": [
+        [
+          "nostro-vostro",
+          "Nostro / vostro accounts",
+          "A bank holds an account with another bank to support foreign-currency payments.",
+          "The currency of an account does not imply it is held at that currency’s central bank.",
+          []
+        ],
+        [
+          "foreign-clearing",
+          "Foreign-currency clearing",
+          "Allows an institution to access domestic clearing of another currency through partners.",
+          "Sponsorship or a correspondent may be needed even without FX conversion.",
+          [
+            "clearbank"
+          ]
+        ],
+        [
+          "correspondent-chain",
+          "Correspondent payment chain",
+          "Passes payment instructions and funding across one or more banking relationships.",
+          "Actual routing may be private; diagrams must not invent named links.",
+          [
+            "swift"
+          ]
+        ]
+      ]
+    },
+    "2b": {
+      "n": "2b",
+      "title": "Sponsor banks",
+      "desc": "Banks that supply accounts, scheme participation or settlement agency to firms that lack those capabilities themselves.",
+      "caution": "Banking-as-a-service, customer deposits and scheme sponsorship should not be merged.",
+      "subs": [
+        [
+          "banking-as-service",
+          "Banking-as-a-service accounts",
+          "Supplies deposit or payment accounts behind another company’s customer experience.",
+          "Check the customer contract for the actual deposit-taking entity.",
+          [
+            "clearbank"
+          ]
+        ],
+        [
+          "scheme-sponsorship",
+          "Scheme sponsorship",
+          "Supplies eligible network participation for a client program or indirect participant.",
+          "A sponsorship relationship is distinct from providing processing software.",
+          [
+            "marqeta"
+          ]
+        ],
+        [
+          "settlement-agency",
+          "Settlement agency",
+          "Settles obligations for an indirect payment-system participant through the agent’s eligible account.",
+          "FedNow explicitly distinguishes correspondent settlement from technical service providers.",
+          [
+            "fednow"
+          ]
+        ]
+      ]
+    },
+    "1": {
+      "n": "1",
+      "title": "Settlement systems",
+      "desc": "The infrastructure and account arrangements where inter-institution obligations become final.",
+      "caution": "Finality can occur in central-bank money or other agreed settlement arrangements, not always on one central-bank ledger.",
+      "subs": [
+        [
+          "rtgs",
+          "Real-time gross settlement",
+          "Settles obligations individually through a system such as Lynx, CHAPS or Fedwire.",
+          "An RTGS account belongs to the eligible participant, not every payment-app customer.",
+          [
+            "pc_lynx",
+            "chaps"
+          ]
+        ],
+        [
+          "deferred-net",
+          "Deferred net settlement",
+          "Nets multiple payment obligations and settles the resulting positions in a later cycle.",
+          "Retail payments can appear immediate before underlying net settlement.",
+          [
+            "pc_acss"
+          ]
+        ],
+        [
+          "central-bank-accounts",
+          "Central-bank accounts",
+          "Provides settlement balances to eligible institutions under system-specific access conditions.",
+          "Having settlement access is not equivalent to permission to safeguard customer funds.",
+          [
+            "boc_rtr",
+            "boe"
+          ]
+        ],
+        [
+          "legal-finality",
+          "Settlement finality",
+          "Marks the point where the relevant settlement obligation becomes irrevocable under system rules.",
+          "Customer credit and legal finality are not necessarily simultaneous.",
+          [
+            "chaps"
+          ]
+        ],
+        [
+          "commercial-ledger",
+          "Commercial-bank / on-us ledgers",
+          "Transfers between customers on the same institution’s books without requiring a new interbank transfer for that transfer.",
+          "The bank still has separate funding and settlement obligations elsewhere.",
+          [
+            "bcb"
+          ]
+        ]
+      ]
+    }
+  },
+  "subfunctions": {
+    "consumer-apps": {
+      "id": "consumer-apps",
+      "title": "Consumer apps & wallets",
+      "desc": "Mobile and web experiences that initiate transfers and display available balances.",
+      "caution": "Distinguish product owner from the entity legally holding the customer balance.",
+      "refs": [
+        "wise"
+      ],
+      "layer": "7"
+    },
+    "business-apis": {
+      "id": "business-apis",
+      "title": "Business APIs & embedded payments",
+      "desc": "Interfaces that allow a business to instruct transfers or offer payments inside another product.",
+      "caution": "An API provider may orchestrate a bank relationship rather than operate a rail.",
+      "refs": [
+        "wise_api"
+      ],
+      "layer": "7"
+    },
+    "merchant-checkout": {
+      "id": "merchant-checkout",
+      "title": "Merchant checkout",
+      "desc": "The place where a shopper chooses a payment method and authorizes a purchase.",
+      "caution": "Checkout is not the same as card acquiring or interbank settlement.",
+      "refs": [
+        "visa"
+      ],
+      "layer": "7"
+    },
+    "customer-account-view": {
+      "id": "customer-account-view",
+      "title": "Balance and account presentation",
+      "desc": "The customer-facing ledger, transaction history and available balance.",
+      "caution": "Displayed balances can represent deposits, e-money or other claims.",
+      "refs": [
+        "wise"
+      ],
+      "layer": "7"
+    },
+    "local-bank-credit": {
+      "id": "local-bank-credit",
+      "title": "Local account credit",
+      "desc": "Credits the recipient through a bank or payment institution in the destination market.",
+      "caution": "Recipient institution may be distinct from the cross-border provider.",
+      "refs": [
+        "interac"
+      ],
+      "layer": "6"
+    },
+    "mobile-wallet-payout": {
+      "id": "mobile-wallet-payout",
+      "title": "Mobile-wallet payout",
+      "desc": "Credits a licensed wallet or e-money provider.",
+      "caution": "The wallet customer claim and underlying trust or safeguarding account are different.",
+      "refs": [
+        "wise"
+      ],
+      "layer": "6"
+    },
+    "cash-pickup": {
+      "id": "cash-pickup",
+      "title": "Cash pickup",
+      "desc": "Uses an agent network to pay out notes to a verified recipient.",
+      "caution": "An agent may hold local cash inventory or receive reimbursement from a network.",
+      "refs": [],
+      "layer": "6"
+    },
+    "card-push-payout": {
+      "id": "card-push-payout",
+      "title": "Card payout",
+      "desc": "Delivers to an eligible card-linked account using participating issuer and network arrangements.",
+      "caution": "Availability depends on scheme rules, issuer, market and card type.",
+      "refs": [
+        "visa"
+      ],
+      "layer": "6"
+    },
+    "fx-execution": {
+      "id": "fx-execution",
+      "title": "FX pricing & execution",
+      "desc": "Quotes and exchanges one currency for another when a payment requires conversion.",
+      "caution": "A same-currency cross-border payment may require no FX conversion.",
+      "refs": [
+        "wise"
+      ],
+      "layer": "5"
+    },
+    "prefunding": {
+      "id": "prefunding",
+      "title": "Prefunding",
+      "desc": "Keeps usable funds on the payout side so a transfer can be paid before offsetting funds arrive.",
+      "caution": "Prefunded liquidity can be replenished separately from the customer transfer.",
+      "refs": [],
+      "layer": "5"
+    },
+    "treasury-rebalancing": {
+      "id": "treasury-rebalancing",
+      "title": "Treasury & rebalancing",
+      "desc": "Manages positions across accounts, currencies and banking partners.",
+      "caution": "A later treasury transfer is not necessarily the recipient payment.",
+      "refs": [],
+      "layer": "5"
+    },
+    "liquidity-provision": {
+      "id": "liquidity-provision",
+      "title": "Liquidity provision",
+      "desc": "Provides intraday or settlement liquidity to eligible participants.",
+      "caution": "A settlement account and access to liquidity are different capabilities.",
+      "refs": [
+        "fedparticipants"
+      ],
+      "layer": "5"
+    },
+    "card-schemes": {
+      "id": "card-schemes",
+      "title": "Card schemes",
+      "desc": "Defines card transaction rules and operates card-network services.",
+      "caution": "Differentiate network operator, issuer, acquirer and issuer processor.",
+      "refs": [
+        "visa",
+        "mastercard"
+      ],
+      "layer": "4a"
+    },
+    "domestic-schemes": {
+      "id": "domestic-schemes",
+      "title": "Domestic payment schemes",
+      "desc": "Sets rules for local account-to-account payment instructions.",
+      "caution": "Interac is a network; participating institutions hold customer accounts.",
+      "refs": [
+        "interac"
+      ],
+      "layer": "4a"
+    },
+    "financial-messaging": {
+      "id": "financial-messaging",
+      "title": "Financial messaging",
+      "desc": "Carries standardized payment instructions between institutions and infrastructures.",
+      "caution": "Swift does not hold funds or settle payment obligations.",
+      "refs": [
+        "swift"
+      ],
+      "layer": "4a"
+    },
+    "instant-links": {
+      "id": "instant-links",
+      "title": "Instant rails & interoperability",
+      "desc": "Links payment participants for near-real-time payment exchange and, depending on design, settlement.",
+      "caution": "Direct connection and direct settlement may have different eligibility.",
+      "refs": [
+        "fednow",
+        "bcb"
+      ],
+      "layer": "4a"
+    },
+    "token-networks": {
+      "id": "token-networks",
+      "title": "Token transfer networks",
+      "desc": "Records and validates token movements subject to a network protocol.",
+      "caution": "A blockchain is not identical to the reserve issuer, custodian or redemption bank.",
+      "refs": [
+        "circle"
+      ],
+      "layer": "4a"
+    },
+    "issuer-processing": {
+      "id": "issuer-processing",
+      "title": "Issuing processing",
+      "desc": "Runs transaction authorization, card controls and issuer program records.",
+      "caution": "The licensed issuing bank retains its separate obligations.",
+      "refs": [
+        "marqeta"
+      ],
+      "layer": "4b"
+    },
+    "acquiring-processing": {
+      "id": "acquiring-processing",
+      "title": "Acquiring processing",
+      "desc": "Handles merchant-side payment authorization and submission for clearing.",
+      "caution": "Processor and acquiring bank should appear as separate roles.",
+      "refs": [
+        "visa"
+      ],
+      "layer": "4b"
+    },
+    "core-ledgers": {
+      "id": "core-ledgers",
+      "title": "Core ledgers",
+      "desc": "Maintains account-level postings and available balances for a licensed provider.",
+      "caution": "An internal ledger entry is not by itself central-bank settlement.",
+      "refs": [
+        "marqeta"
+      ],
+      "layer": "4b"
+    },
+    "clearing-netting": {
+      "id": "clearing-netting",
+      "title": "Clearing, netting & reconciliation",
+      "desc": "Computes obligations and matches payment records before or after settlement.",
+      "caution": "ACSS calculates net obligations which are settled separately.",
+      "refs": [
+        "pc_acss"
+      ],
+      "layer": "4b"
+    },
+    "payment-orchestration": {
+      "id": "payment-orchestration",
+      "title": "Payment orchestration",
+      "desc": "Chooses a route, validates requests and manages retries between providers.",
+      "caution": "Do not assume the orchestrator ever takes custody of funds.",
+      "refs": [
+        "marqeta"
+      ],
+      "layer": "4b"
+    },
+    "local-collection": {
+      "id": "local-collection",
+      "title": "Local collection accounts",
+      "desc": "Provides local account details or collection capabilities for incoming payments.",
+      "caution": "Account details and legal ownership of deposits must be checked separately.",
+      "refs": [
+        "wise_receive"
+      ],
+      "layer": "3"
+    },
+    "multicurrency-balances": {
+      "id": "multicurrency-balances",
+      "title": "Multi-currency balances",
+      "desc": "Shows and manages balances across currencies in one customer experience.",
+      "caution": "The underlying holding model can differ by jurisdiction.",
+      "refs": [
+        "wise"
+      ],
+      "layer": "3"
+    },
+    "account-provision": {
+      "id": "account-provision",
+      "title": "Account provision",
+      "desc": "Offers the operational account layer behind a multi-market product.",
+      "caution": "It can involve licensed e-money entities, banks or partner institutions.",
+      "refs": [
+        "wise"
+      ],
+      "layer": "3"
+    },
+    "global-payout-accounts": {
+      "id": "global-payout-accounts",
+      "title": "Payout accounts",
+      "desc": "Uses accounts and payment partners in multiple destinations.",
+      "caution": "Payout reach does not prove a direct settlement account in every destination.",
+      "refs": [
+        "wise"
+      ],
+      "layer": "3"
+    },
+    "nostro-vostro": {
+      "id": "nostro-vostro",
+      "title": "Nostro / vostro accounts",
+      "desc": "A bank holds an account with another bank to support foreign-currency payments.",
+      "caution": "The currency of an account does not imply it is held at that currency’s central bank.",
+      "refs": [],
+      "layer": "2a"
+    },
+    "foreign-clearing": {
+      "id": "foreign-clearing",
+      "title": "Foreign-currency clearing",
+      "desc": "Allows an institution to access domestic clearing of another currency through partners.",
+      "caution": "Sponsorship or a correspondent may be needed even without FX conversion.",
+      "refs": [
+        "clearbank"
+      ],
+      "layer": "2a"
+    },
+    "correspondent-chain": {
+      "id": "correspondent-chain",
+      "title": "Correspondent payment chain",
+      "desc": "Passes payment instructions and funding across one or more banking relationships.",
+      "caution": "Actual routing may be private; diagrams must not invent named links.",
+      "refs": [
+        "swift"
+      ],
+      "layer": "2a"
+    },
+    "banking-as-service": {
+      "id": "banking-as-service",
+      "title": "Banking-as-a-service accounts",
+      "desc": "Supplies deposit or payment accounts behind another company’s customer experience.",
+      "caution": "Check the customer contract for the actual deposit-taking entity.",
+      "refs": [
+        "clearbank"
+      ],
+      "layer": "2b"
+    },
+    "scheme-sponsorship": {
+      "id": "scheme-sponsorship",
+      "title": "Scheme sponsorship",
+      "desc": "Supplies eligible network participation for a client program or indirect participant.",
+      "caution": "A sponsorship relationship is distinct from providing processing software.",
+      "refs": [
+        "marqeta"
+      ],
+      "layer": "2b"
+    },
+    "settlement-agency": {
+      "id": "settlement-agency",
+      "title": "Settlement agency",
+      "desc": "Settles obligations for an indirect payment-system participant through the agent’s eligible account.",
+      "caution": "FedNow explicitly distinguishes correspondent settlement from technical service providers.",
+      "refs": [
+        "fednow"
+      ],
+      "layer": "2b"
+    },
+    "rtgs": {
+      "id": "rtgs",
+      "title": "Real-time gross settlement",
+      "desc": "Settles obligations individually through a system such as Lynx, CHAPS or Fedwire.",
+      "caution": "An RTGS account belongs to the eligible participant, not every payment-app customer.",
+      "refs": [
+        "pc_lynx",
+        "chaps"
+      ],
+      "layer": "1"
+    },
+    "deferred-net": {
+      "id": "deferred-net",
+      "title": "Deferred net settlement",
+      "desc": "Nets multiple payment obligations and settles the resulting positions in a later cycle.",
+      "caution": "Retail payments can appear immediate before underlying net settlement.",
+      "refs": [
+        "pc_acss"
+      ],
+      "layer": "1"
+    },
+    "central-bank-accounts": {
+      "id": "central-bank-accounts",
+      "title": "Central-bank accounts",
+      "desc": "Provides settlement balances to eligible institutions under system-specific access conditions.",
+      "caution": "Having settlement access is not equivalent to permission to safeguard customer funds.",
+      "refs": [
+        "boc_rtr",
+        "boe"
+      ],
+      "layer": "1"
+    },
+    "legal-finality": {
+      "id": "legal-finality",
+      "title": "Settlement finality",
+      "desc": "Marks the point where the relevant settlement obligation becomes irrevocable under system rules.",
+      "caution": "Customer credit and legal finality are not necessarily simultaneous.",
+      "refs": [
+        "chaps"
+      ],
+      "layer": "1"
+    },
+    "commercial-ledger": {
+      "id": "commercial-ledger",
+      "title": "Commercial-bank / on-us ledgers",
+      "desc": "Transfers between customers on the same institution’s books without requiring a new interbank transfer for that transfer.",
+      "caution": "The bank still has separate funding and settlement obligations elsewhere.",
+      "refs": [
+        "bcb"
+      ],
+      "layer": "1"
+    }
+  },
+  "participants": {
+    "wise": {
+      "id": "wise",
+      "name": "Wise",
+      "desc": "Multi-currency accounts, payment initiation, FX and payout services.",
+      "layers": [
+        "7",
+        "6",
+        "5",
+        "3"
+      ],
+      "markets": [
+        "UK",
+        "Canada",
+        "United States"
+      ],
+      "caution": "A Wise-branded service may use different group entities, bank partners and safeguarding arrangements by market. No single role applies globally.",
+      "sources": [
+        "wise",
+        "wise_uk",
+        "wise_api",
+        "wise_receive"
+      ],
+      "functions": [
+        "consumer-apps",
+        "business-apis",
+        "multicurrency-balances",
+        "local-collection",
+        "fx-execution",
+        "local-bank-credit"
+      ]
+    },
+    "visa": {
+      "id": "visa",
+      "name": "Visa",
+      "desc": "Card-network rules and acceptance infrastructure, with payout and processing-related services.",
+      "layers": [
+        "6",
+        "4a"
+      ],
+      "markets": [
+        "United States",
+        "Canada",
+        "UK"
+      ],
+      "caution": "Visa operates network services; customer deposits are held by issuing institutions, not the card network as such.",
+      "sources": [
+        "visa",
+        "visa_rules"
+      ],
+      "functions": [
+        "card-schemes",
+        "card-push-payout"
+      ]
+    },
+    "mastercard": {
+      "id": "mastercard",
+      "name": "Mastercard",
+      "desc": "Card scheme and switching network providing authorization, clearing and settlement-related network services.",
+      "layers": [
+        "4a"
+      ],
+      "markets": [
+        "United States",
+        "Canada",
+        "UK"
+      ],
+      "caution": "Mastercard manages network clearing and settlement functions, but an issuer or acquirer is the account-holding institution. Do not mistake the scheme for a central bank.",
+      "sources": [
+        "mastercard"
+      ],
+      "functions": [
+        "card-schemes"
+      ]
+    },
+    "swift": {
+      "id": "swift",
+      "name": "Swift",
+      "desc": "Secure standardized financial messaging used by banks and market infrastructures.",
+      "layers": [
+        "4a"
+      ],
+      "markets": [
+        "United States",
+        "Canada",
+        "UK"
+      ],
+      "caution": "Swift is neither a payment nor settlement system and does not hold customer funds.",
+      "sources": [
+        "swift",
+        "swift_contract"
+      ],
+      "functions": [
+        "financial-messaging"
+      ]
+    },
+    "interac": {
+      "id": "interac",
+      "name": "Interac",
+      "desc": "Operator of Canadian payment services including Interac e-Transfer. Funds stay at participating institutions.",
+      "layers": [
+        "4a"
+      ],
+      "markets": [
+        "Canada"
+      ],
+      "caution": "Interac says it does not hold the funds transferred through e-Transfer: the customer relationship and accounts are at participating institutions.",
+      "sources": [
+        "interac",
+        "interac_participation"
+      ],
+      "functions": [
+        "domestic-schemes",
+        "instant-links"
+      ]
+    },
+    "marqeta": {
+      "id": "marqeta",
+      "name": "Marqeta",
+      "desc": "Issuing processing technology and related card-program management services.",
+      "layers": [
+        "4b"
+      ],
+      "markets": [
+        "United States"
+      ],
+      "caution": "Marqeta is not the issuing bank; its program offerings rely on issuing-bank partners.",
+      "sources": [
+        "marqeta",
+        "marqeta_platform"
+      ],
+      "functions": [
+        "issuer-processing"
+      ]
+    },
+    "clearbank": {
+      "id": "clearbank",
+      "name": "ClearBank",
+      "desc": "Banking accounts and direct payment-scheme access for business and fintech clients.",
+      "layers": [
+        "2b"
+      ],
+      "markets": [
+        "UK"
+      ],
+      "caution": "The company states direct participation in UK and EU schemes; do not infer that any particular client settles in its own account.",
+      "sources": [
+        "clearbank"
+      ],
+      "functions": [
+        "banking-as-service",
+        "scheme-sponsorship"
+      ]
+    },
+    "circle": {
+      "id": "circle",
+      "name": "Circle",
+      "desc": "Issuer of USDC and administrator of its reserves and redemption arrangements.",
+      "layers": [],
+      "markets": [
+        "United States"
+      ],
+      "caution": "A stablecoin issuer is not the blockchain network, the reserve custodian or the final settlement ledger for every holder.",
+      "sources": [
+        "circle"
+      ],
+      "functions": []
+    },
+    "payments-canada": {
+      "id": "payments-canada",
+      "name": "Payments Canada",
+      "desc": "Operator of Lynx, ACSS and the planned RTR in Canada.",
+      "layers": [
+        "4b",
+        "4a",
+        "1"
+      ],
+      "markets": [
+        "Canada"
+      ],
+      "caution": "System operator and central bank are separate; Lynx participants maintain Bank of Canada settlement accounts.",
+      "sources": [
+        "pc_lynx",
+        "pc_acss",
+        "pc_rtr"
+      ],
+      "functions": [
+        "domestic-schemes",
+        "clearing-netting",
+        "rtgs"
+      ]
+    },
+    "bank-of-canada": {
+      "id": "bank-of-canada",
+      "name": "Bank of Canada",
+      "desc": "Central-bank settlement account provider and overseer of key payment systems.",
+      "layers": [
+        "1"
+      ],
+      "markets": [
+        "Canada"
+      ],
+      "caution": "RTR settlement-account eligibility policy does not prove RTR is live or identify a specific live non-bank settlement customer.",
+      "sources": [
+        "boc_rtr",
+        "pc_lynx"
+      ],
+      "functions": [
+        "central-bank-accounts"
+      ]
+    },
+    "federal-reserve": {
+      "id": "federal-reserve",
+      "name": "Federal Reserve",
+      "desc": "Operates Fedwire Funds, FedNow and FedACH, and holds master accounts for eligible institutions.",
+      "layers": [
+        "4b",
+        "4a",
+        "1"
+      ],
+      "markets": [
+        "United States"
+      ],
+      "caution": "Eligible FedNow participants may use their own master account or a correspondent arrangement; service providers can provide technical connectivity.",
+      "sources": [
+        "fednow",
+        "fedparticipants"
+      ],
+      "functions": [
+        "central-bank-accounts",
+        "rtgs",
+        "instant-links",
+        "clearing-netting"
+      ]
+    },
+    "banco-central-do-brasil": {
+      "id": "banco-central-do-brasil",
+      "name": "Banco Central do Brasil",
+      "desc": "Operates Pix components, including SPI settlement infrastructure and DICT addressing.",
+      "layers": [
+        "4a",
+        "1"
+      ],
+      "markets": [
+        "Brazil"
+      ],
+      "caution": "BCB distinguishes direct settlement participants from indirect participants; direct Pix service availability is not proof of direct SPI access.",
+      "sources": [
+        "bcb"
+      ],
+      "functions": [
+        "domestic-schemes",
+        "instant-links",
+        "central-bank-accounts"
+      ]
+    }
+  },
+  "markets": {
+    "canada": {
+      "title": "Canada",
+      "cc": "CAD",
+      "headline": "Strong domestic rails; RTR is planned, not yet confirmed live.",
+      "intro": "Interac e-Transfer, ACSS and Lynx occupy different parts of the Canadian infrastructure. Payments Canada targets an RTR launch in Q4 2026; launch and participant names must be rechecked after that point.",
+      "nodes": [
+        [
+          "Interac e-Transfer",
+          "4a",
+          "A customer-facing network service; Interac says it does not hold transferred funds.",
+          "interac",
+          [
+            "interac"
+          ]
+        ],
+        [
+          "ACSS / USBE",
+          "4b",
+          "Retail batch clearing and net settlement calculations; USD clearing can use USBE.",
+          "payments-canada",
+          [
+            "pc_acss"
+          ]
+        ],
+        [
+          "Lynx",
+          "1",
+          "High-value CAD RTGS. Payments Canada operates it; participants maintain Bank of Canada settlement accounts.",
+          "payments-canada",
+          [
+            "pc_lynx"
+          ]
+        ],
+        [
+          "Bank of Canada",
+          "1",
+          "Holds eligible participant settlement accounts, subject to account policies.",
+          "bank-of-canada",
+          [
+            "pc_lynx"
+          ]
+        ],
+        [
+          "RTR · planned",
+          "4a",
+          "New real-time system in sequenced launch phase; not shown as live.",
+          "payments-canada",
+          [
+            "pc_rtr",
+            "boc_rtr"
+          ]
+        ]
+      ],
+      "people": [
+        "interac",
+        "payments-canada",
+        "bank-of-canada"
+      ],
+      "sources": [
+        "interac",
+        "pc_acss",
+        "pc_lynx",
+        "pc_rtr",
+        "boc_rtr"
+      ]
+    },
+    "united-states": {
+      "title": "United States",
+      "cc": "USD",
+      "headline": "Multiple rails, different access and settlement models.",
+      "intro": "FedNow supports banks and eligible financial institutions, settlement agents/correspondents and technical service providers. Eligibility to use FedNow differs from having a master account.",
+      "nodes": [
+        [
+          "FedNow",
+          "4a",
+          "Instant-payment infrastructure operated by Federal Reserve Banks.",
+          "federal-reserve",
+          [
+            "fednow"
+          ]
+        ],
+        [
+          "Participants",
+          "2b",
+          "An eligible participant can use its own master account or a correspondent for settlement.",
+          "federal-reserve",
+          [
+            "fednow"
+          ]
+        ],
+        [
+          "Service providers",
+          "4b",
+          "Technical service providers may transmit messages for participants without being settlement account holders.",
+          null,
+          [
+            "fednow"
+          ]
+        ],
+        [
+          "Federal Reserve settlement",
+          "1",
+          "Settlement recorded in the relevant Reserve Bank account arrangement.",
+          "federal-reserve",
+          [
+            "fednow"
+          ]
+        ]
+      ],
+      "people": [
+        "federal-reserve"
+      ],
+      "sources": [
+        "fednow",
+        "fedparticipants"
+      ]
+    },
+    "uk": {
+      "title": "United Kingdom",
+      "cc": "GBP",
+      "headline": "Non-bank PSPs may obtain direct settlement access under conditions.",
+      "intro": "The Bank of England has allowed eligible non-bank PSPs to apply for RTGS settlement accounts since 2017. CHAPS directly settles payment obligations in RTGS, while Faster Payments also has directly-connected non-settling participants.",
+      "nodes": [
+        [
+          "Faster Payments",
+          "4a",
+          "Fast retail payment exchange; connection and settlement roles can differ.",
+          null,
+          [
+            "boe"
+          ]
+        ],
+        [
+          "CHAPS",
+          "1",
+          "High-value payment system with individual settlement on BoE RTGS books.",
+          null,
+          [
+            "chaps"
+          ]
+        ],
+        [
+          "BoE RTGS",
+          "1",
+          "Directly eligible participants can hold settlement accounts.",
+          null,
+          [
+            "boe",
+            "chaps"
+          ]
+        ],
+        [
+          "ClearBank",
+          "2b",
+          "Bank provides direct scheme access and infrastructure services to clients.",
+          "clearbank",
+          [
+            "clearbank"
+          ]
+        ]
+      ],
+      "people": [
+        "clearbank",
+        "wise",
+        "swift"
+      ],
+      "sources": [
+        "boe",
+        "chaps",
+        "clearbank"
+      ]
+    },
+    "brazil": {
+      "title": "Brazil",
+      "cc": "BRL",
+      "headline": "Pix distinguishes scheme participation from direct SPI settlement.",
+      "intro": "Banco Central do Brasil operates Pix infrastructure. Eligible authorized institutions may participate directly in SPI, while other institutions settle indirectly through a direct participant or agent.",
+      "nodes": [
+        [
+          "Pix scheme / DICT",
+          "4a",
+          "Rules and alias directory supporting instant payments.",
+          "banco-central-do-brasil",
+          [
+            "bcb"
+          ]
+        ],
+        [
+          "SPI",
+          "1",
+          "Interbank instant-payment settlement in dedicated PI accounts.",
+          "banco-central-do-brasil",
+          [
+            "bcb"
+          ]
+        ],
+        [
+          "Direct participants",
+          "2b",
+          "Hold applicable SPI accounts and settle Pix obligations directly.",
+          null,
+          [
+            "bcb"
+          ]
+        ],
+        [
+          "Indirect participants",
+          "2b",
+          "Rely on eligible direct participants or settlement agents.",
+          null,
+          [
+            "bcb"
+          ]
+        ]
+      ],
+      "people": [
+        "banco-central-do-brasil"
+      ],
+      "sources": [
+        "bcb"
+      ]
+    },
+    "mexico": {
+      "title": "Mexico",
+      "cc": "MXN",
+      "headline": "SPEI connects financial institutions for local peso transfers.",
+      "intro": "Banco de México operates SPEI, a 24/7 real-time settlement system in Mexican pesos, and publishes participant and indirect-participation information.",
+      "nodes": [
+        [
+          "SPEI",
+          "1",
+          "Banco de México-operated interbank electronic transfer system.",
+          null,
+          [
+            "banxico"
+          ]
+        ],
+        [
+          "Eligible participants",
+          "2b",
+          "Financial entities meeting system criteria.",
+          null,
+          [
+            "banxico"
+          ]
+        ],
+        [
+          "Indirect participants",
+          "2b",
+          "Access can be through the supported indirect participation arrangements.",
+          null,
+          [
+            "banxico"
+          ]
+        ]
+      ],
+      "people": [],
+      "sources": [
+        "banxico"
+      ]
+    },
+    "ecuador": {
+      "title": "Ecuador",
+      "cc": "USD",
+      "headline": "USD denomination does not make this a domestic U.S. payment.",
+      "intro": "Ecuador uses USD, while Banco Central del Ecuador separately operates a domestic interbank payment system (SPI). A payment originating in the United States may still require cross-border banking relationships and local payout. No named correspondent chain is asserted.",
+      "nodes": [
+        [
+          "USD-denominated balance",
+          "3",
+          "Local USD customer claim or account; not inherently a deposit at the U.S. Federal Reserve.",
+          null,
+          []
+        ],
+        [
+          "Cross-border intermediary",
+          "2a",
+          "Possible correspondent or funded partner; actual route must be documented.",
+          null,
+          []
+        ],
+        [
+          "Recipient account",
+          "6",
+          "Local delivery to the recipient account.",
+          null,
+          []
+        ],
+        [
+          "BCE domestic SPI",
+          "1",
+          "The central bank operates domestic interbank payment infrastructure in Ecuador; this is not Fedwire.",
+          null,
+          [
+            "ecu_spi"
+          ]
+        ]
+      ],
+      "people": [],
+      "sources": [
+        "ecu_spi"
+      ]
+    },
+    "india": {
+      "title": "India",
+      "cc": "INR",
+      "headline": "UPI operated by NPCI; settlement infrastructure at RBI.",
+      "intro": "Separate app, PSP, bank account, network and settlement.",
+      "sources": [
+        "india_npci",
+        "india_rbi"
+      ]
+    }
+  },
+  "corridors": {
+    "on-us": {
+      "id": "on-us",
+      "title": "On-us transfer",
+      "subtitle": "Same institution · internal transfer",
+      "desc": "When payer and recipient are customers of the same provider, the provider may update its own ledger without a new interbank transfer for that transaction.",
+      "stages": [
+        "Customer A",
+        "Provider internal ledger",
+        "Customer B"
+      ],
+      "layers": [
+        "7",
+        "4b",
+        "3"
+      ],
+      "sources": [
+        "bcb"
+      ],
+      "caution": "Verified system rule; example path conceptual"
+    },
+    "canada-domestic": {
+      "id": "canada-domestic",
+      "title": "Canada · CAD account transfer",
+      "subtitle": "Canada → Canada · CAD",
+      "desc": "Illustrates separate bank customer accounts, Interac instruction exchange and underlying bank settlement arrangements. Not a claim of a single fixed path for all e-Transfers.",
+      "stages": [
+        "Sender bank account",
+        "Interac e-Transfer service",
+        "Recipient bank account"
+      ],
+      "layers": [
+        "7",
+        "4a",
+        "2b",
+        "1"
+      ],
+      "sources": [
+        "interac",
+        "pc_acss"
+      ],
+      "caution": "Illustrative — do not equate e-Transfer notifications with ACSS settlement timing"
+    },
+    "us-ecuador": {
+      "id": "us-ecuador",
+      "title": "USD → USD across borders",
+      "subtitle": "United States → Ecuador · USD",
+      "desc": "Both ends can be denominated in USD, while separate jurisdictions and banks still matter. This is a role-level example, not a verified named correspondent chain.",
+      "stages": [
+        "U.S. USD account",
+        "Correspondent / liquidity leg",
+        "Ecuador USD account"
+      ],
+      "layers": [
+        "7",
+        "2a",
+        "5",
+        "6"
+      ],
+      "sources": [
+        "ecu_spi"
+      ],
+      "caution": "Illustrative — named route is not verified"
+    },
+    "card-purchase": {
+      "id": "card-purchase",
+      "title": "Card purchase",
+      "subtitle": "Cardholder → merchant",
+      "desc": "Distinguishes merchant checkout, acquiring-side services, card network processing, issuer authorization, and later clearing / settlement.",
+      "stages": [
+        "Cardholder & checkout",
+        "Acquirer → network → issuer",
+        "Merchant funding"
+      ],
+      "layers": [
+        "7",
+        "4b",
+        "4a",
+        "2b",
+        "1"
+      ],
+      "sources": [
+        "visa",
+        "marqeta"
+      ],
+      "caution": "Conceptual network path; not every card payment uses same processors"
+    },
+    "cross-border-fx": {
+      "id": "cross-border-fx",
+      "title": "Cross-border FX payout",
+      "subtitle": "USD → PHP · illustrative",
+      "desc": "Shows collection in one currency, conversion/liquidity and local payout. Local balances can be prefunded, with separate treasury replenishment.",
+      "stages": [
+        "USD collection",
+        "FX & treasury",
+        "PHP local payout"
+      ],
+      "layers": [
+        "7",
+        "5",
+        "3",
+        "6",
+        "2a"
+      ],
+      "sources": [
+        "wise"
+      ],
+      "caution": "Illustrative — no specific live partnership inferred"
+    },
+    "stablecoin": {
+      "id": "stablecoin",
+      "title": "Stablecoin transfer",
+      "subtitle": "USDC · on-chain transfer",
+      "desc": "Shows wallet transfer on a token network separately from issuer reserve assets and redemption back to a bank account.",
+      "stages": [
+        "Sending wallet",
+        "Blockchain transfer",
+        "Receiving wallet / redemption"
+      ],
+      "layers": [
+        "7",
+        "4a",
+        "3",
+        "5"
+      ],
+      "sources": [
+        "circle"
+      ],
+      "caution": "Conceptual, chain and redemption rules vary"
+    },
+    "ca-us": {
+      "id": "ca-us",
+      "title": "Canada → United States",
+      "subtitle": "CAD → USD · cross-border",
+      "desc": "Example of two local markets connected by banking and FX arrangements. One branded product need not own every underlying leg.",
+      "stages": [
+        "CAD payer account",
+        "FX & correspondent / funding",
+        "USD recipient account"
+      ],
+      "layers": [
+        "7",
+        "5",
+        "2a",
+        "6"
+      ],
+      "sources": [
+        "pc_acss",
+        "fednow",
+        "wise"
+      ],
+      "caution": "Illustrative — not a verified end-to-end named route"
+    }
+  },
+  "holding_models": {
+    "central-bank": {
+      "id": "central-bank",
+      "title": "At the central bank",
+      "desc": "Eligible participant has an account with a central bank.",
+      "caution": "This is normally the settlement asset/account of an eligible institution, not the individual app customer’s deposit.",
+      "sources": [
+        "boc_rtr",
+        "chaps"
+      ]
+    },
+    "bank-deposit": {
+      "id": "bank-deposit",
+      "title": "As a bank deposit",
+      "desc": "A customer has a deposit claim against a deposit-taking bank.",
+      "caution": "The deposit insurer and legal depositor matter; a banking app is not necessarily the bank.",
+      "sources": [
+        "clearbank"
+      ]
+    },
+    "pooled-fbo": {
+      "id": "pooled-fbo",
+      "title": "In one pooled account (FBO)",
+      "desc": "A bank holds an omnibus/FBO deposit while a separate program ledger tracks individual end-user entitlements.",
+      "caution": "FBO describes an account and recordkeeping arrangement; it is not a distinct settlement asset.",
+      "sources": []
+    },
+    "safeguarded": {
+      "id": "safeguarded",
+      "title": "Safeguarded by the company",
+      "desc": "A payment or e-money entity protects customer funds separately from its operating funds.",
+      "caution": "Funds may be held as cash, secure assets or other permitted methods depending on entity and jurisdiction.",
+      "sources": [
+        "wise",
+        "wise_uk"
+      ]
+    },
+    "invested": {
+      "id": "invested",
+      "title": "Backed by permitted investments",
+      "desc": "An entity holds permitted liquid assets against customer balances.",
+      "caution": "These investments can coexist with safeguarding; they are not always a customer bank deposit.",
+      "sources": [
+        "wise_uk"
+      ]
+    },
+    "trust": {
+      "id": "trust",
+      "title": "In trust at a local bank",
+      "desc": "Customer or wallet value is supported by money held in a trust arrangement.",
+      "caution": "Trust beneficiary and local payout rules depend on the jurisdiction; this is not always a single pooled FBO account.",
+      "sources": []
+    },
+    "stablecoin-reserves": {
+      "id": "stablecoin-reserves",
+      "title": "Behind a stablecoin",
+      "desc": "Reserves are usually split across several institutions. For USDC, Circle issues the token, most reserves sit in a BlackRock-managed government money market fund whose custodian is BNY Mellon, and the rest is cash at banks. Other stablecoins are set up differently.",
+      "caution": "Reserve backing is distinct from the token transfer network and from the bank where redemption takes place.",
+      "sources": [
+        "circle"
+      ]
+    }
+  },
+  "logos": {
+    "wise": "assets/wise.svg",
+    "visa": "assets/visa.svg",
+    "mastercard": "assets/mastercard.svg",
+    "airwallex": "assets/airwallex.svg",
+    "marqeta": "assets/marqeta.svg"
+  },
+  "reviewed": "2026-10-30",
+  "policy": "Illustrative routes must not be presented as verified bank-to-bank relationships.",
+  "national_system_groups": {
+    "payments-canada": {
+      "country": "Canada",
+      "title": "Payments Canada",
+      "type": "Statutory, member-funded public-purpose organization",
+      "overview": "A single operator owns and operates Lynx and ACSS and is developing RTR. The Bank of Canada supplies the central-bank settlement accounts.",
+      "owns": "Payments Canada is a not-for-profit organization created by federal law and funded by members. It is not a shareholder-owned private bank network.",
+      "rules": "Payments Canada owns and operates Lynx and ACSS, including associated rules and standards.",
+      "settles": "Eligible direct participants hold settlement accounts on Bank of Canada books. Payments Canada does not itself become the central bank.",
+      "access": "Membership eligibility is distinct from being a direct participant and from actually holding a settlement account.",
+      "subjects": [
+        "lynx",
+        "acss",
+        "rtr"
+      ],
+      "refs": [
+        "canada_pc",
+        "canada_boc",
+        "canada_accounts",
+        "canada_members"
+      ]
+    },
+    "interac": {
+      "country": "Canada",
+      "title": "Interac",
+      "type": "Shareholder-owned private-sector payments network",
+      "overview": "Interac operates e-Transfer and debit infrastructure. Its shareholders include banks, credit unions, caisses populaires and payment acquirers.",
+      "owns": "Interac describes a diverse shareholder base of financial-services entities. Shareholding is not the same as e-Transfer participation, and not every bank is necessarily a shareholder.",
+      "rules": "Interac runs e-Transfer operational and network services; financial institutions can be direct connectors, indirect connectors or downstream entities with different arrangements.",
+      "settles": "Interac does not itself hold e-Transfer customers’ balances; financial institutions provide accounts and clearing/settlement arrangements.",
+      "access": "The public disclosure distinguishes direct and indirect connectors, participants and downstream entities.",
+      "subjects": [
+        "interac-e-transfer"
+      ],
+      "refs": [
+        "interac",
+        "canada_boc"
+      ]
+    },
+    "us-federal-reserve": {
+      "country": "United States",
+      "title": "Federal Reserve payment services",
+      "type": "Public central-bank system with a distinctive federal structure",
+      "overview": "Fedwire, FedACH and FedNow are separate services in the Federal Reserve payments family, not interchangeable rails.",
+      "owns": "The Federal Reserve System is not a conventional shareholder-owned corporation; the Board is a federal agency and regional Reserve Banks have a distinct statutory structure.",
+      "rules": "Federal Reserve Banks operate core payment services subject to applicable Federal Reserve rules and procedures.",
+      "settles": "Federal Reserve accounts settle relevant obligations. Direct service access and use of a correspondent/settlement agent must be evaluated separately.",
+      "access": "FedNow participants, settlement agents, liquidity providers and certified technology service providers have distinct roles.",
+      "subjects": [
+        "fedwire",
+        "fedach",
+        "fednow"
+      ],
+      "refs": [
+        "us_fed",
+        "us_fedgov",
+        "us_fednow",
+        "us_fedwire"
+      ]
+    },
+    "us-clearing-house": {
+      "country": "United States",
+      "title": "The Clearing House",
+      "type": "Privately operated, bank-owned payment infrastructure",
+      "overview": "The Clearing House operates RTP, CHIPS and EPN, offering private-sector alternatives or complements to Federal Reserve services.",
+      "owns": "The Clearing House identifies itself as owned by major commercial banks. Ownership alone does not imply that a bank must be an owner to participate in each system.",
+      "rules": "Each of RTP, CHIPS and EPN has its own technical arrangements, operating requirements and payment characteristics.",
+      "settles": "RTP provides instant interbank settlement; CHIPS provides high-value clearing and settlement; EPN is an ACH operator under ACH rules.",
+      "access": "Ownership, scheme membership, system participation and access through service providers are distinct.",
+      "subjects": [
+        "rtp",
+        "chips",
+        "epn"
+      ],
+      "refs": [
+        "us_tch",
+        "us_tch2026",
+        "us_rtp",
+        "us_epn"
+      ]
+    },
+    "us-ach": {
+      "country": "United States",
+      "title": "ACH governance across operators",
+      "type": "Shared industry rules; public and private ACH operators",
+      "overview": "ACH is a particularly useful case: Nacha governs the common rulebook, while the Federal Reserve and The Clearing House operate the two ACH processing networks.",
+      "owns": "Neither Nacha nor the ACH concept is equivalent to a single company owning every ACH rail.",
+      "rules": "Nacha develops and administers ACH rules. Operating responsibilities belong to the Federal Reserve and EPN (The Clearing House).",
+      "settles": "The operators process ACH files and settlement is effected between relevant financial institutions through applicable settlement arrangements.",
+      "access": "Originators, third-party senders, ODFIs, RDFIs and ACH operators have separate roles.",
+      "subjects": [
+        "fedach",
+        "epn"
+      ],
+      "refs": [
+        "us_ach",
+        "us_ach_rules",
+        "us_epn"
+      ]
+    },
+    "brazil-pix": {
+      "country": "Brazil",
+      "title": "Pix / Banco Central do Brasil",
+      "type": "Central-bank owned scheme and infrastructure",
+      "overview": "Pix’s scheme owner and key infrastructure operator is the same central bank, unlike the separately governed networks in some other markets.",
+      "owns": "Banco Central do Brasil (BCB) is the scheme owner; this refers to governance of Pix, not ownership of deposit balances held at participant institutions.",
+      "rules": "BCB defines the Pix rulebook, supervises scheme participation and operates the DICT alias directory.",
+      "settles": "BCB operates SPI, its instant-payment RTGS settlement infrastructure. Direct and indirect SPI participation must be distinguished.",
+      "access": "A payment institution can offer Pix through indirect settlement; customer access to Pix does not prove direct SPI membership.",
+      "subjects": [
+        "pix",
+        "spi",
+        "dict"
+      ],
+      "refs": [
+        "pix",
+        "pixparts"
+      ]
+    },
+    "uk-payuk": {
+      "country": "United Kingdom",
+      "title": "Pay.UK retail payment systems",
+      "type": "Industry-governed retail payment infrastructure",
+      "overview": "Pay.UK operates Faster Payments and Bacs. It is separate from the Bank of England, whose RTGS accounts settle net obligations.",
+      "owns": "The operator and settlement-service provider are distinct organizations; this is the important governance boundary at this level.",
+      "rules": "Pay.UK operates retail schemes. Service availability to customers does not imply an RTGS settlement account at the Bank of England.",
+      "settles": "Faster Payments and Bacs settle net obligations through the Bank of England’s RTGS infrastructure on separate settlement cycles.",
+      "access": "Eligible institutions may access certain schemes directly while relying on another firm for settlement.",
+      "subjects": [
+        "faster-payments",
+        "bacs"
+      ],
+      "refs": [
+        "uk_boe",
+        "uk_nonbank"
+      ]
+    },
+    "uk-boe": {
+      "country": "United Kingdom",
+      "title": "Bank of England settlement and CHAPS",
+      "type": "Central-bank owned and operated settlement infrastructure",
+      "overview": "The Bank of England runs the RTGS infrastructure and operates CHAPS, distinct from Pay.UK’s retail systems.",
+      "owns": "The Bank of England is the central-bank provider of sterling RTGS and the operator of CHAPS.",
+      "rules": "The Bank’s RTGS/CHAPS governance sets the operating framework for these systems.",
+      "settles": "CHAPS settles individually in real time; other retail systems settle net obligations on different cycles in RTGS.",
+      "access": "Eligible non-bank PSPs may apply for RTGS settlement access but access is not an automatic grant.",
+      "subjects": [
+        "chaps",
+        "boe-rtgs"
+      ],
+      "refs": [
+        "uk_boe",
+        "uk_nonbank"
+      ]
+    },
+    "india-npci": {
+      "country": "India",
+      "title": "NPCI / UPI",
+      "type": "Not-for-profit, institution-owned payment network operator",
+      "overview": "NPCI owns and operates the UPI network; banks act as PSPs and account providers, while customer-facing third-party apps can be separate.",
+      "owns": "NPCI is a not-for-profit organization with a shareholder base including banks and other authorized payment-sector institutions; do not treat NPCI as the RBI.",
+      "rules": "NPCI owns the UPI network and prescribes its participant operating arrangements.",
+      "settles": "NPCI is the clearing and settlement agency. It calculates each bank's net position and submits it to RBI's RTGS as a net settlement batch, which debits and credits members' settlement accounts at RBI. The customer sees the money instantly, while interbank settlement happens later, in cycles, on a net basis.",
+      "access": "TPAP, PSP bank, issuing bank, beneficiary bank and NPCI are distinct roles. App adoption is not direct central-bank account access.",
+      "subjects": [
+        "upi"
+      ],
+      "refs": [
+        "india_npci",
+        "india_share",
+        "india_rbi"
+      ]
+    }
+  },
+  "national_systems": {
+    "lynx": {
+      "group": "payments-canada",
+      "title": "Lynx",
+      "kind": "High-value / time-critical payment settlement",
+      "role": "Payments Canada owns and operates Lynx. Direct participants must maintain eligible Bank of Canada settlement accounts.",
+      "method": "RTGS-style high-value settlement in central-bank money",
+      "distinction": "A high-value settlement system is not interchangeable with ACSS retail clearing.",
+      "refs": [
+        "canada_lynx",
+        "canada_accounts"
+      ]
+    },
+    "acss": {
+      "group": "payments-canada",
+      "title": "ACSS",
+      "kind": "Retail batch clearing and settlement",
+      "role": "Payments Canada operates ACSS for retail payment items such as direct deposit, pre-authorized debits and cheque-related payments.",
+      "method": "Retail clearing with net settlement obligations at the Bank of Canada",
+      "distinction": "Batch retail processing should not be labelled a real-time gross settlement rail.",
+      "refs": [
+        "canada_acss",
+        "canada_boc"
+      ]
+    },
+    "rtr": {
+      "group": "payments-canada",
+      "title": "Real-Time Rail (RTR)",
+      "kind": "Planned instant-payment system",
+      "role": "Payments Canada’s proposed national instant-payment infrastructure, separately governed from Interac e-Transfer.",
+      "method": "Planned direct participation and settlement-access arrangements",
+      "distinction": "As of October 30, 2026, the operator’s published launch target is not proof of live operation.",
+      "refs": [
+        "canada_rtr",
+        "canada_accounts"
+      ]
+    },
+    "interac-e-transfer": {
+      "group": "interac",
+      "title": "Interac e-Transfer",
+      "kind": "Domestic account-to-account transfer service",
+      "role": "Interac operates e-Transfer; participating financial institutions provide the account relationships and customer balances.",
+      "method": "Distinct consumer service, connectivity arrangements and underlying clearing/settlement mechanisms",
+      "distinction": "Interac neither holds the transferred balance nor provides an independent central-bank settlement account to every app.",
+      "refs": [
+        "interac",
+        "canada_boc"
+      ]
+    },
+    "fedwire": {
+      "group": "us-federal-reserve",
+      "title": "Fedwire Funds Service",
+      "kind": "High-value funds transfer",
+      "role": "Federal Reserve-operated high-value funds transfer system.",
+      "method": "Transfers settle via Federal Reserve account arrangements",
+      "distinction": "Fedwire is not the ACH network or the FedNow retail instant service.",
+      "refs": [
+        "us_fed",
+        "us_fedwire"
+      ]
+    },
+    "fedach": {
+      "group": "us-federal-reserve",
+      "title": "FedACH",
+      "kind": "Public-sector ACH operator service",
+      "role": "Federal Reserve Banks operate one of the two US ACH processing networks.",
+      "method": "Batch ACH processing and interbank settlement as provided under ACH operator arrangements",
+      "distinction": "Nacha is the ACH rules administrator, not the only system operator.",
+      "refs": [
+        "us_ach",
+        "us_fed"
+      ]
+    },
+    "fednow": {
+      "group": "us-federal-reserve",
+      "title": "FedNow",
+      "kind": "Instant account-to-account payment infrastructure",
+      "role": "Federal Reserve-developed infrastructure used by eligible participating financial institutions and technical providers.",
+      "method": "Instant processing and settlement through appropriate Reserve Bank account arrangements",
+      "distinction": "A software vendor certified for FedNow is not thereby a settlement account holder.",
+      "refs": [
+        "us_fednow",
+        "us_fed"
+      ]
+    },
+    "rtp": {
+      "group": "us-clearing-house",
+      "title": "RTP network",
+      "kind": "Private-sector instant-payment network",
+      "role": "Operated by The Clearing House, distinct from Federal Reserve’s FedNow.",
+      "method": "Instant interbank clearing and settlement according to RTP arrangements",
+      "distinction": "It is not interoperable with FedNow merely because both support instant payments.",
+      "refs": [
+        "us_rtp",
+        "us_tch"
+      ]
+    },
+    "chips": {
+      "group": "us-clearing-house",
+      "title": "CHIPS",
+      "kind": "Private-sector high-value payment clearing",
+      "role": "The Clearing House operates CHIPS for high-value interbank USD payments.",
+      "method": "High-value interbank payment settlement under CHIPS rules",
+      "distinction": "CHIPS is not Fedwire, even though banks use both for high-value USD payments.",
+      "refs": [
+        "us_tch"
+      ]
+    },
+    "epn": {
+      "group": "us-clearing-house",
+      "title": "Electronic Payments Network (EPN)",
+      "kind": "Private ACH processing network",
+      "role": "The Clearing House operates EPN as the second national ACH operator alongside Federal Reserve Banks.",
+      "method": "Batch ACH processing under the shared ACH operating rules",
+      "distinction": "The operator is The Clearing House; Nacha is the rules administrator.",
+      "refs": [
+        "us_epn",
+        "us_ach"
+      ]
+    },
+    "pix": {
+      "group": "brazil-pix",
+      "title": "Pix scheme",
+      "kind": "Instant payments scheme and rules",
+      "role": "BCB owns Pix, sets the rules and supervises scheme participation.",
+      "method": "Instant payment experience supported by SPI and DICT",
+      "distinction": "Pix the scheme is not the same object as SPI the settlement infrastructure.",
+      "refs": [
+        "pix"
+      ]
+    },
+    "spi": {
+      "group": "brazil-pix",
+      "title": "SPI settlement infrastructure",
+      "kind": "Instant interbank settlement",
+      "role": "BCB operates SPI to settle Pix between eligible direct participants.",
+      "method": "Real-time gross settlement in designated central-bank accounts",
+      "distinction": "A user-facing Pix institution may instead settle through a direct participant.",
+      "refs": [
+        "pix",
+        "pixparts"
+      ]
+    },
+    "dict": {
+      "group": "brazil-pix",
+      "title": "DICT alias directory",
+      "kind": "Account alias and addressing registry",
+      "role": "BCB operates the directory linking Pix keys to payment accounts.",
+      "method": "Address resolution rather than money movement or settlement",
+      "distinction": "A payment address directory does not hold balances.",
+      "refs": [
+        "pix",
+        "pixparts"
+      ]
+    },
+    "faster-payments": {
+      "group": "uk-payuk",
+      "title": "Faster Payments",
+      "kind": "Real-time retail payment exchange",
+      "role": "Pay.UK operates Faster Payments, while settlement occurs through the Bank of England’s RTGS.",
+      "method": "Near-real-time customer payments; interbank net settlement in separate cycles",
+      "distinction": "Customer funds being available immediately does not imply every transaction settled instantly at BoE.",
+      "refs": [
+        "uk_boe"
+      ]
+    },
+    "bacs": {
+      "group": "uk-payuk",
+      "title": "Bacs",
+      "kind": "Retail direct debit and credit clearing",
+      "role": "Pay.UK operates the Bacs scheme for recurring credits and debits.",
+      "method": "Multi-day retail processing with net settlement on Bank of England books",
+      "distinction": "Do not confuse Bacs batch timing with Faster Payments availability.",
+      "refs": [
+        "uk_boe"
+      ]
+    },
+    "chaps": {
+      "group": "uk-boe",
+      "title": "CHAPS",
+      "kind": "Sterling high-value payment system",
+      "role": "The Bank of England operates CHAPS.",
+      "method": "Real-time settlement in Bank of England RTGS",
+      "distinction": "Not the same operator or model as Pay.UK’s Faster Payments.",
+      "refs": [
+        "uk_boe"
+      ]
+    },
+    "boe-rtgs": {
+      "group": "uk-boe",
+      "title": "Bank of England RTGS",
+      "kind": "Sterling settlement infrastructure",
+      "role": "Settlement accounts supporting CHAPS and net settlement for other sterling payment systems.",
+      "method": "Finality in central-bank money",
+      "distinction": "Not every company providing a customer-facing payment service holds its own BoE account.",
+      "refs": [
+        "uk_boe",
+        "uk_nonbank"
+      ]
+    },
+    "upi": {
+      "group": "india-npci",
+      "title": "UPI",
+      "kind": "India’s interoperable instant payments network",
+      "role": "NPCI owns and operates UPI; banks and third-party app providers perform different functions.",
+      "method": "Network-led interbank instructions and settlement arrangements via regulated institutions",
+      "distinction": "The app the customer uses, the bank account and the network operator should be separate nodes.",
+      "refs": [
+        "india_npci",
+        "india_rbi"
+      ]
+    }
+  },
+  "governance_sources": {
+    "canada_pc": {
+      "title": "Payments Canada | Who we are",
+      "url": "https://www.payments.ca/about/who-we-are",
+      "date": "Checked 2026-10-30"
+    },
+    "canada_boc": {
+      "title": "Bank of Canada | Payment systems overseen",
+      "url": "https://www.bankofcanada.ca/regulatory-oversight/financial-market-infrastructures/payment-systems-the-bank-of-canada-oversees/",
+      "date": "Checked 2026-10-30"
+    },
+    "canada_accounts": {
+      "title": "Bank of Canada | Settlement accounts",
+      "url": "https://www.bankofcanada.ca/core-functions/financial-system/bank-canadas-settlement-account-policies-for-payments-canada-payment-systems/",
+      "date": "2026-07-31"
+    },
+    "canada_members": {
+      "title": "Payments Canada | Membership",
+      "url": "https://www.payments.ca/about/our-members-stakeholders/members",
+      "date": "Checked 2026-10-30"
+    },
+    "interac": {
+      "title": "Interac | e-Transfer public disclosure",
+      "url": "https://www.interac.ca/en/interac-e-transfer-disclosure/",
+      "date": "Checked 2026-10-30"
+    },
+    "canada_lynx": {
+      "title": "Payments Canada | Lynx",
+      "url": "https://www.payments.ca/systems-services/payment-systems/high-value-payment-system-lynx",
+      "date": "Checked 2026-10-30"
+    },
+    "canada_acss": {
+      "title": "Payments Canada | Retail batch systems",
+      "url": "https://www.payments.ca/systems-services/payment-systems/retail-batch-payment-system",
+      "date": "Checked 2026-10-30"
+    },
+    "canada_rtr": {
+      "title": "Payments Canada | Real-Time Rail",
+      "url": "https://www.payments.ca/systems-services/payment-systems/real-time-rail-payment-system",
+      "date": "Checked 2026-10-30"
+    },
+    "us_fed": {
+      "title": "Federal Reserve Financial Services | Services",
+      "url": "https://www.frbservices.org/about/about-federal-reserve-bank-services/",
+      "date": "Checked 2026-10-30"
+    },
+    "us_ach": {
+      "title": "Nacha | How ACH Payments Work",
+      "url": "https://www.nacha.org/content/how-ach-payments-work",
+      "date": "Checked 2026-10-30"
+    },
+    "us_ach_rules": {
+      "title": "Nacha | ACH Operating Rules",
+      "url": "https://www.nacha.org/content/how-ach-rules-are-made",
+      "date": "Checked 2026-10-30"
+    },
+    "us_epn": {
+      "title": "The Clearing House | EPN ACH",
+      "url": "https://www.theclearinghouse.org/payment-systems/ach",
+      "date": "Checked 2026-10-30"
+    },
+    "us_tch": {
+      "title": "The Clearing House | History and bank ownership",
+      "url": "https://www.theclearinghouse.org/about/history",
+      "date": "Checked 2026-10-30"
+    },
+    "us_tch2026": {
+      "title": "The Clearing House | 2026 ownership statement",
+      "url": "https://www.theclearinghouse.org/payment-systems/Articles/2026/06/Major-Financial-Institutions-Unveil-Bank-Led-On-Chain-Money-Initiative",
+      "date": "2026-06-05"
+    },
+    "us_rtp": {
+      "title": "The Clearing House | RTP",
+      "url": "https://www.theclearinghouse.org/payment-systems/rtp/institution",
+      "date": "Checked 2026-10-30"
+    },
+    "us_fednow": {
+      "title": "Federal Reserve | About FedNow",
+      "url": "https://www.frbservices.org/financial-services/fednow-service/about-fednow-service/",
+      "date": "Checked 2026-10-30"
+    },
+    "us_fedwire": {
+      "title": "Federal Reserve Bank of New York | Fedwire operations",
+      "url": "https://www.newyorkfed.org/aboutthefed/more-about-what-we-do",
+      "date": "Checked 2026-10-30"
+    },
+    "us_fedgov": {
+      "title": "Federal Reserve | Who owns the Federal Reserve?",
+      "url": "https://www.federalreserve.gov/faqs/about_14986.htm",
+      "date": "Checked 2026-10-30"
+    },
+    "pix": {
+      "title": "Banco Central do Brasil | Central bank’s role in Pix",
+      "url": "https://www.bcb.gov.br/en/financialstability/pixcentralbanksrole",
+      "date": "Checked 2026-10-30"
+    },
+    "pixparts": {
+      "title": "Banco Central do Brasil | Pix participation",
+      "url": "https://www.bcb.gov.br/en/financialstability/pixparticipants",
+      "date": "2026-07 participant documentation"
+    },
+    "uk_boe": {
+      "title": "Bank of England | Payment & settlement",
+      "url": "https://www.bankofengland.co.uk/payments/payment-settlement",
+      "date": "Checked 2026-10-30"
+    },
+    "uk_nonbank": {
+      "title": "Bank of England | Non-bank access",
+      "url": "https://www.bankofengland.co.uk/Payment%20and%20settlement/access-to-uk-payment-systems-for-non-bank-payment-service-providers",
+      "date": "2026 operator guidance"
+    },
+    "india_npci": {
+      "title": "NPCI | UPI Product Booklet",
+      "url": "https://www.npci.org.in/PDF/npci/upi/Product-Booklet.pdf",
+      "date": "2025 · OLDER THAN 12 MONTHS"
+    },
+    "india_share": {
+      "title": "NPCI | Equity shareholding pattern",
+      "url": "https://www.npci.org.in/PDF/npci/corporate-governance/shareholding-pattern.pdf",
+      "date": "2025-09-01 · OLDER THAN 12 MONTHS"
+    },
+    "india_rbi": {
+      "title": "Reserve Bank of India | Payment systems FAQ",
+      "url": "https://www.rbi.org.in/Scripts/FS_FAQs.aspx?Id=144&fn=9",
+      "date": "2021 · OLDER THAN 12 MONTHS"
+    }
+  }
+}
