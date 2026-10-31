@@ -53,7 +53,7 @@ const tests = {
   'every-claim-sourced': (d) => {
     const errors = [];
     const src = byId(d.sources);
-    const claimFields = ['operator', 'scheme_owner', 'roles', 'settlement_asset', 'settlement_mode', 'settles_in', 'settlement_timing', 'hours', 'participants_summary', 'explainer'];
+    const claimFields = ['operator', 'scheme_owner', 'roles', 'settlement_asset', 'settlement_mode', 'settles_in', 'settlement_timing', 'hours', 'participants_summary', 'participants_count', 'explainer'];
     for (const s of d.systems) {
       for (const f of claimFields) {
         const v = s[f];
@@ -68,6 +68,9 @@ const tests = {
       for (const [k, line] of Object.entries(sc.explainer)) for (const r of line.sources) if (!src[r]) errors.push(`${sc.id} explainer.${k} cites missing source ${r}`);
     }
     for (const p of d.parties) for (const r of p.sources) if (!src[r]) errors.push(`party ${p.id} cites missing source ${r}`);
+    for (const s of d.systems) if (s.windows.length && !(s.field_sources.windows || []).length) errors.push(`${s.id} has opening or settlement windows but no source`);
+    for (const k of ['products', 'access', 'timeline']) for (const x of d[k]) for (const r of x.sources) if (!src[r]) errors.push(`${k} ${x.id || x.date} cites missing source ${r}`);
+    for (const c of d.currencies) for (const r of c.how_sources || []) if (!src[r]) errors.push(`currency ${c.id} cites missing source ${r}`);
     return { errors };
   },
 
@@ -85,6 +88,23 @@ const tests = {
       if (s.scheme_owner && !p[s.scheme_owner]) errors.push(`${s.id}.scheme_owner ${s.scheme_owner} is not a party`);
       if (s.settles_in && !sy[s.settles_in]) errors.push(`${s.id}.settles_in ${s.settles_in} is not a system`);
     }
+    const lay = new Set(d.layers.map((l) => l.id));
+    for (const s of d.systems) if (!lay.has(s.layer)) errors.push(`${s.id}.layer ${s.layer} is not a layer`);
+    for (const pr of d.products) for (const r of [pr.runs_on].flat()) {
+      if (!sy[r]) errors.push(`product ${pr.id} runs on missing system ${r}`);
+      else if (pr.status === 'live' && sy[r].status === 'planned') errors.push(`product ${pr.id} is live but runs on planned ${r}`);
+    }
+    for (const a of d.access) {
+      if (!p[a.party]) errors.push(`access ${a.id} party ${a.party} missing`);
+      if (!lay.has(a.layer)) errors.push(`access ${a.id} layer ${a.layer} missing`);
+      for (const u of a.uses) if (!sy[u]) errors.push(`access ${a.id} uses missing system ${u}`);
+      if (a.holds_account_at && !sy[a.holds_account_at]) errors.push(`access ${a.id} holds account at missing ${a.holds_account_at}`);
+    }
+    for (const c of d.currencies) if (c.phase === 1) {
+      if (!sy[c.root]) errors.push(`currency ${c.id} root ${c.root} missing`);
+      else if (sy[c.root].settlement_mode !== 'central-bank-ledger') errors.push(`currency ${c.id} root ${c.root} is not a central bank ledger`);
+    }
+    for (const t of d.timeline) if (t.system && !sy[t.system]) errors.push(`timeline ${t.date} system ${t.system} missing`);
     for (const sc of d.scenarios) {
       if (!sy[sc.rail]) errors.push(`${sc.id}.rail ${sc.rail} is not a system`);
       if (!p[sc.settlement_lane]) errors.push(`${sc.id}.settlement_lane ${sc.settlement_lane} is not a party`);
@@ -150,6 +170,19 @@ const tests = {
       return u.issuer && u.reserve_manager && u.custodian && new Set([u.issuer, u.reserve_manager, u.custodian]).size === 3 && roles('issuer') && roles('custodian');
     }, 'usdc must name three distinct parties: issuer, reserve manager, custodian');
     return { errors, warnings };
+  },
+
+  'timeline-consistent': (d) => {
+    // A dated event marked done cannot be in the future; a planned one cannot be in the past unless undated or quarter-level.
+    const errors = [];
+    for (const t of d.timeline) {
+      const dt = new Date(t.date);
+      if (t.status === 'done' && dt > TODAY) errors.push(`timeline ${t.date} is marked done but is in the future`);
+      if (t.status === 'planned' && t.precision === 'day' && dt < TODAY) errors.push(`timeline ${t.date} is marked planned but the date has passed`);
+    }
+    const sy = byId(d.systems);
+    for (const t of d.timeline) if (t.system && t.status === 'planned' && sy[t.system]?.status === 'live' && /launch/i.test(t.text)) errors.push(`timeline says ${t.system} launch is planned but the system is marked live`);
+    return { errors };
   },
 
   'freshness': (d) => {

@@ -1,0 +1,1 @@
+{"name":"A future event marked done","expect_fail":"timeline-consistent","patch":[{"path":"timeline","value":[{"date":"2027-01-15","precision":"day","region":"CA","system":"rtr","status":"done","text":"x","sources":["pc_rtr_faq"]}]}]}

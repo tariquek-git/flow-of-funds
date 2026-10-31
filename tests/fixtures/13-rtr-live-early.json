@@ -1,0 +1,1 @@
+{"name":"RTR marked live while the timeline still says launch is planned","expect_fail":"timeline-consistent","patch":[{"path":"systems[id=rtr].status","value":"live"}]}

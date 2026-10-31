@@ -1,0 +1,1 @@
+{"name":"Opening hours added with no source","expect_fail":"every-claim-sourced","patch":[{"path":"systems[id=acss].field_sources.windows","remove":true}]}

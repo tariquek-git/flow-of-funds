@@ -1,42 +1,210 @@
 {
   "meta": {
     "name": "Settlement Map",
-    "version": "v9-phase1-canada",
+    "version": "v9-phase1-canada-ia2",
     "as_of": "2026-10-31",
     "scope": "Phase 1. Canada end to end plus the US systems the Canada to US flow touches. Other countries follow in Phase 2."
   },
-
   "groups": [
-    { "id": "high-value", "order": 1, "name": "High-value and central bank settlement", "definition": "Systems where large or time-critical payments settle one by one, or where a central bank holds the accounts everything else settles into." },
-    { "id": "batch", "order": 2, "name": "Batch clearing", "definition": "Systems that collect retail items through the day and settle the net amounts later." },
-    { "id": "instant", "order": 3, "name": "Instant payments", "definition": "Systems where the customer sees the money arrive in seconds. Interbank settlement may be instant or deferred." },
-    { "id": "cards", "order": 4, "name": "Card networks", "definition": "Networks that set card rules and route authorization and clearing between issuers and acquirers." },
-    { "id": "cross-border", "order": 5, "name": "Cross-border messaging and FX settlement", "definition": "Networks that carry instructions between banks in different countries, or settle both legs of an FX trade together." },
-    { "id": "digital", "order": 6, "name": "Stablecoins and tokenized money", "definition": "Digital tokens redeemable for fiat, with an issuer, a reserve manager and a custodian as separate parties." },
-    { "id": "services", "order": 7, "name": "Customer-facing services", "definition": "Wallets, apps and super-apps that customers use. They rely on the systems above to move and settle money." }
+    {
+      "id": "high-value",
+      "order": 1,
+      "name": "High-value and central bank settlement",
+      "definition": "Systems where large or time-critical payments settle one by one, or where a central bank holds the accounts everything else settles into."
+    },
+    {
+      "id": "batch",
+      "order": 2,
+      "name": "Batch clearing",
+      "definition": "Systems that collect retail items through the day and settle the net amounts later."
+    },
+    {
+      "id": "instant",
+      "order": 3,
+      "name": "Instant payments",
+      "definition": "Systems where the customer sees the money arrive in seconds. Interbank settlement may be instant or deferred."
+    },
+    {
+      "id": "cards",
+      "order": 4,
+      "name": "Card networks",
+      "definition": "Networks that set card rules and route authorization and clearing between issuers and acquirers."
+    },
+    {
+      "id": "cross-border",
+      "order": 5,
+      "name": "Cross-border messaging and FX settlement",
+      "definition": "Networks that carry instructions between banks in different countries, or settle both legs of an FX trade together."
+    },
+    {
+      "id": "digital",
+      "order": 6,
+      "name": "Stablecoins and tokenized money",
+      "definition": "Digital tokens redeemable for fiat, with an issuer, a reserve manager and a custodian as separate parties."
+    },
+    {
+      "id": "services",
+      "order": 7,
+      "name": "Customer-facing services",
+      "definition": "Wallets, apps and super-apps that customers use. They rely on the systems above to move and settle money."
+    }
   ],
-
   "regions": [
-    { "id": "CA", "name": "Canada", "currency": "CAD", "phase": 1 },
-    { "id": "US", "name": "United States", "currency": "USD", "phase": 1, "note": "Only the systems the Canada to US flow touches are loaded in Phase 1." },
-    { "id": "GLOBAL", "name": "Global", "currency": null, "phase": 1 }
+    {
+      "id": "CA",
+      "name": "Canada",
+      "currency": "CAD",
+      "phase": 1
+    },
+    {
+      "id": "US",
+      "name": "United States",
+      "currency": "USD",
+      "phase": 1,
+      "note": "Only the systems the Canada to US flow touches are loaded in Phase 1."
+    },
+    {
+      "id": "GLOBAL",
+      "name": "Global",
+      "currency": null,
+      "phase": 1
+    }
   ],
-
   "parties": [
-    { "id": "payments-canada", "name": "Payments Canada", "kind": "operator", "country": "CA", "sources": ["pc_lynx", "pc_acss"] },
-    { "id": "bank-of-canada", "name": "Bank of Canada", "kind": "central-bank", "country": "CA", "sources": ["boc_lynx_acss", "boc_rtr"] },
-    { "id": "interac-corp", "name": "Interac Corp.", "kind": "operator", "country": "CA", "sources": ["boc_oversight", "interac_pps_2025"] },
-    { "id": "visa", "name": "Visa Inc.", "kind": "scheme-owner", "country": "US", "sources": ["boc_oversight"] },
-    { "id": "mastercard", "name": "Mastercard International Inc.", "kind": "scheme-owner", "country": "US", "sources": ["boc_oversight"] },
-    { "id": "swift-scrl", "name": "Swift", "kind": "messaging-network", "country": "GLOBAL", "sources": ["swift_contract"] },
-    { "id": "federal-reserve", "name": "Federal Reserve Banks", "kind": "central-bank", "country": "US", "sources": ["frb_wires"] },
-    { "id": "payer", "name": "Payer (Canadian business)", "kind": "customer", "country": "CA", "generic": true, "sources": [] },
-    { "id": "payer-bank", "name": "Payer's bank (Canada)", "kind": "participant", "country": "CA", "generic": true, "sources": [] },
-    { "id": "us-correspondent", "name": "US correspondent bank", "kind": "participant", "country": "US", "generic": true, "sources": ["bis_corr"] },
-    { "id": "payee-bank", "name": "Payee's bank (US)", "kind": "participant", "country": "US", "generic": true, "sources": [] },
-    { "id": "payee", "name": "Payee (US business)", "kind": "customer", "country": "US", "generic": true, "sources": [] }
+    {
+      "id": "payments-canada",
+      "name": "Payments Canada",
+      "kind": "operator",
+      "country": "CA",
+      "sources": [
+        "pc_lynx",
+        "pc_acss"
+      ]
+    },
+    {
+      "id": "bank-of-canada",
+      "name": "Bank of Canada",
+      "kind": "central-bank",
+      "country": "CA",
+      "sources": [
+        "boc_lynx_acss",
+        "boc_rtr"
+      ]
+    },
+    {
+      "id": "interac-corp",
+      "name": "Interac Corp.",
+      "kind": "operator",
+      "country": "CA",
+      "sources": [
+        "boc_oversight",
+        "interac_pps_2025"
+      ]
+    },
+    {
+      "id": "visa",
+      "name": "Visa Inc.",
+      "kind": "scheme-owner",
+      "country": "US",
+      "sources": [
+        "boc_oversight"
+      ],
+      "logo": "visa"
+    },
+    {
+      "id": "mastercard",
+      "name": "Mastercard International Inc.",
+      "kind": "scheme-owner",
+      "country": "US",
+      "sources": [
+        "boc_oversight"
+      ],
+      "logo": "mastercard"
+    },
+    {
+      "id": "swift-scrl",
+      "name": "Swift",
+      "kind": "messaging-network",
+      "country": "GLOBAL",
+      "sources": [
+        "swift_contract"
+      ],
+      "logo": "swift"
+    },
+    {
+      "id": "federal-reserve",
+      "name": "Federal Reserve Banks",
+      "kind": "central-bank",
+      "country": "US",
+      "sources": [
+        "frb_wires"
+      ]
+    },
+    {
+      "id": "payer",
+      "name": "Payer (Canadian business)",
+      "kind": "customer",
+      "country": "CA",
+      "generic": true,
+      "sources": []
+    },
+    {
+      "id": "payer-bank",
+      "name": "Payer's bank (Canada)",
+      "kind": "participant",
+      "country": "CA",
+      "generic": true,
+      "sources": []
+    },
+    {
+      "id": "us-correspondent",
+      "name": "US correspondent bank",
+      "kind": "participant",
+      "country": "US",
+      "generic": true,
+      "sources": [
+        "bis_corr"
+      ]
+    },
+    {
+      "id": "payee-bank",
+      "name": "Payee's bank (US)",
+      "kind": "participant",
+      "country": "US",
+      "generic": true,
+      "sources": []
+    },
+    {
+      "id": "payee",
+      "name": "Payee (US business)",
+      "kind": "customer",
+      "country": "US",
+      "generic": true,
+      "sources": []
+    },
+    {
+      "id": "ca-direct",
+      "name": "Direct participants and direct clearers",
+      "kind": "participant",
+      "country": "CA",
+      "generic": true,
+      "sources": [
+        "pc_lynx_explainer",
+        "pc_acss"
+      ]
+    },
+    {
+      "id": "ca-indirect",
+      "name": "Indirect clearers",
+      "kind": "participant",
+      "country": "CA",
+      "generic": true,
+      "sources": [
+        "pc_acss",
+        "pc_lynx_explainer"
+      ]
+    }
   ],
-
   "systems": [
     {
       "id": "boc-accounts",
@@ -47,7 +215,9 @@
       "status": "live",
       "operator": "bank-of-canada",
       "scheme_owner": null,
-      "roles": ["settlement"],
+      "roles": [
+        "settlement"
+      ],
       "settlement_asset": "Central bank money (CAD)",
       "settlement_mode": "central-bank-ledger",
       "settles_in": null,
@@ -55,18 +225,43 @@
       "hours": null,
       "participants_summary": "Eligible Payments Canada members and, for RTR, payment service providers the Bank supervises under the RPAA. The Bank decides each application.",
       "explainer": "The Bank of Canada holds the settlement accounts for Lynx, ACSS and RTR participants. Every Canadian dollar settlement chain on this map ends in these accounts.",
-      "caveats": ["Account access depends on eligibility tests and the Bank's discretion. Holding an account for RTR does not grant one for Lynx."],
-      "unknowns": ["Account hours are not published as a single figure. They follow each system's window."],
+      "caveats": [
+        "Account access depends on eligibility tests and the Bank's discretion. Holding an account for RTR does not grant one for Lynx."
+      ],
+      "unknowns": [
+        "Account hours are not published as a single figure. They follow each system's window."
+      ],
       "field_sources": {
-        "operator": ["boc_lynx_acss"],
-        "roles": ["boc_lynx_acss", "boc_rtr"],
-        "settlement_asset": ["boc_lynx_acss"],
-        "settlement_mode": ["boc_lynx_acss"],
-        "settlement_timing": ["boc_lynx_acss"],
-        "participants_summary": ["boc_lynx_acss", "boc_rtr"],
-        "explainer": ["boc_lynx_acss", "boc_rtr"]
+        "operator": [
+          "boc_lynx_acss"
+        ],
+        "roles": [
+          "boc_lynx_acss",
+          "boc_rtr"
+        ],
+        "settlement_asset": [
+          "boc_lynx_acss"
+        ],
+        "settlement_mode": [
+          "boc_lynx_acss"
+        ],
+        "settlement_timing": [
+          "boc_lynx_acss"
+        ],
+        "participants_summary": [
+          "boc_lynx_acss",
+          "boc_rtr"
+        ],
+        "explainer": [
+          "boc_lynx_acss",
+          "boc_rtr"
+        ]
       },
-      "last_checked": "2026-10-31"
+      "last_checked": "2026-10-31",
+      "layer": "1",
+      "windows": [],
+      "participants_count": null,
+      "access": true
     },
     {
       "id": "lynx",
@@ -77,29 +272,91 @@
       "status": "live",
       "operator": "payments-canada",
       "scheme_owner": "payments-canada",
-      "roles": ["messaging", "settlement", "rulebook"],
+      "roles": [
+        "messaging",
+        "settlement",
+        "rulebook"
+      ],
       "settlement_asset": "Central bank money (CAD)",
       "settlement_mode": "rtgs",
       "settles_in": "boc-accounts",
       "settlement_timing": "Real time, payment by payment",
-      "hours": "Business days. Closed weekends and statutory holidays.",
+      "hours": "Business days, 00:30 to 19:00 ET. Regular payments until 18:00.",
       "participants_summary": "Domestic banks, some foreign bank branches and other financial institutions. Each must hold a settlement account at the Bank of Canada.",
       "explainer": "Lynx is Canada's high-value payment system, owned and operated by Payments Canada. Each payment settles on its own, irrevocably and in real time, across participants' Bank of Canada settlement accounts.",
-      "caveats": ["Lynx supports ISO 20022 messages, so remittance data can travel with the payment."],
-      "unknowns": ["Exact daily opening and closing times were not confirmed on the operator page this pass."],
+      "caveats": [
+        "Lynx supports ISO 20022 messages, so remittance data can travel with the payment.",
+        "Lynx began operations on 30 August 2021, replacing LVTS."
+      ],
+      "unknowns": [
+        "Hours are from the Bank of Canada's 2022 overview. Recheck against the current Lynx rules."
+      ],
       "field_sources": {
-        "operator": ["pc_lynx", "boc_oversight"],
-        "scheme_owner": ["pc_lynx"],
-        "roles": ["pc_lynx"],
-        "settlement_asset": ["pc_lynx", "boc_lynx_acss"],
-        "settlement_mode": ["pc_lynx"],
-        "settles_in": ["pc_lynx", "boc_lynx_acss"],
-        "settlement_timing": ["pc_lynx"],
-        "hours": ["pc_lynx"],
-        "participants_summary": ["pc_lynx"],
-        "explainer": ["pc_lynx", "boc_oversight"]
+        "operator": [
+          "pc_lynx",
+          "boc_oversight"
+        ],
+        "scheme_owner": [
+          "pc_lynx"
+        ],
+        "roles": [
+          "pc_lynx"
+        ],
+        "settlement_asset": [
+          "pc_lynx",
+          "boc_lynx_acss"
+        ],
+        "settlement_mode": [
+          "pc_lynx"
+        ],
+        "settles_in": [
+          "pc_lynx",
+          "boc_lynx_acss"
+        ],
+        "settlement_timing": [
+          "pc_lynx"
+        ],
+        "hours": [
+          "boc_lynx_overview",
+          "pc_lynx"
+        ],
+        "participants_summary": [
+          "pc_lynx",
+          "pc_lynx_explainer"
+        ],
+        "explainer": [
+          "pc_lynx",
+          "boc_oversight"
+        ],
+        "windows": [
+          "boc_lynx_overview"
+        ],
+        "participants_count": [
+          "pc_lynx_explainer"
+        ]
       },
-      "last_checked": "2026-10-31"
+      "last_checked": "2026-10-31",
+      "layer": "1",
+      "windows": [
+        {
+          "days": "business",
+          "start": "00:30",
+          "end": "19:00",
+          "tz": "America/Toronto",
+          "kind": "open",
+          "label": "Processing cycle"
+        },
+        {
+          "days": "business",
+          "start": "18:00",
+          "end": "18:00",
+          "tz": "America/Toronto",
+          "kind": "cutoff",
+          "label": "Settlement window 1 closes"
+        }
+      ],
+      "participants_count": "16 Payments Canada members including the Bank of Canada. Over 50 other institutions clear through them.",
+      "settles_label": "real time · gross"
     },
     {
       "id": "acss",
@@ -110,7 +367,11 @@
       "status": "live",
       "operator": "payments-canada",
       "scheme_owner": "payments-canada",
-      "roles": ["clearing", "netting", "rulebook"],
+      "roles": [
+        "clearing",
+        "netting",
+        "rulebook"
+      ],
       "settlement_asset": "Central bank money (CAD)",
       "settlement_mode": "deferred-net",
       "settles_in": "lynx",
@@ -122,20 +383,61 @@
         "AFT (direct deposit and pre-authorized debit) items clear through ACSS.",
         "USBE, the US dollar companion, clears USD items in Canada and settles through correspondent banks in New York."
       ],
-      "unknowns": ["Payments Canada does not name Interac products in its ACSS item list."],
+      "unknowns": [
+        "Payments Canada does not name Interac products in its ACSS item list."
+      ],
       "field_sources": {
-        "operator": ["pc_acss", "boc_oversight"],
-        "scheme_owner": ["pc_acss"],
-        "roles": ["pc_acss"],
-        "settlement_asset": ["pc_acss", "boc_lynx_acss"],
-        "settlement_mode": ["pc_acss"],
-        "settles_in": ["boc_lynx_acss"],
-        "settlement_timing": ["pc_acss"],
-        "hours": ["pc_acss"],
-        "participants_summary": ["pc_acss"],
-        "explainer": ["pc_acss", "boc_lynx_acss"]
+        "operator": [
+          "pc_acss",
+          "boc_oversight"
+        ],
+        "scheme_owner": [
+          "pc_acss"
+        ],
+        "roles": [
+          "pc_acss"
+        ],
+        "settlement_asset": [
+          "pc_acss",
+          "boc_lynx_acss"
+        ],
+        "settlement_mode": [
+          "pc_acss"
+        ],
+        "settles_in": [
+          "boc_lynx_acss"
+        ],
+        "settlement_timing": [
+          "pc_acss"
+        ],
+        "hours": [
+          "pc_acss"
+        ],
+        "participants_summary": [
+          "pc_acss"
+        ],
+        "explainer": [
+          "pc_acss",
+          "boc_lynx_acss"
+        ],
+        "windows": [
+          "pc_acss"
+        ]
       },
-      "last_checked": "2026-10-31"
+      "last_checked": "2026-10-31",
+      "layer": "4b",
+      "windows": [
+        {
+          "days": "business",
+          "start": "morning",
+          "end": "morning",
+          "tz": "America/Toronto",
+          "kind": "settlement",
+          "label": "Previous day's net balances settle"
+        }
+      ],
+      "participants_count": null,
+      "settles_label": "next morning · net"
     },
     {
       "id": "rtr",
@@ -146,7 +448,12 @@
       "status": "planned",
       "operator": "payments-canada",
       "scheme_owner": "payments-canada",
-      "roles": ["messaging", "clearing", "settlement", "rulebook"],
+      "roles": [
+        "messaging",
+        "clearing",
+        "settlement",
+        "rulebook"
+      ],
       "settlement_asset": "Central bank money (CAD)",
       "settlement_mode": "real-time-funded",
       "settles_in": "boc-accounts",
@@ -158,20 +465,59 @@
         "Not live as of 2026-10-31. Launch is phased and receiving is required first.",
         "The Bank expects RTR settlement accounts to always hold enough to settle RTR payments."
       ],
-      "unknowns": ["Live participant names are not published yet."],
+      "unknowns": [
+        "Live participant names are not published yet."
+      ],
       "field_sources": {
-        "operator": ["pc_rtr_faq"],
-        "scheme_owner": ["pc_rtr_faq"],
-        "roles": ["pc_rtr_faq"],
-        "settlement_asset": ["boc_rtr"],
-        "settlement_mode": ["boc_rtr"],
-        "settles_in": ["boc_rtr"],
-        "settlement_timing": ["pc_rtr_faq"],
-        "hours": ["pc_rtr_faq"],
-        "participants_summary": ["boc_rtr"],
-        "explainer": ["pc_rtr_faq", "boc_rtr"]
+        "operator": [
+          "pc_rtr_faq"
+        ],
+        "scheme_owner": [
+          "pc_rtr_faq"
+        ],
+        "roles": [
+          "pc_rtr_faq"
+        ],
+        "settlement_asset": [
+          "boc_rtr"
+        ],
+        "settlement_mode": [
+          "boc_rtr"
+        ],
+        "settles_in": [
+          "boc_rtr"
+        ],
+        "settlement_timing": [
+          "pc_rtr_faq"
+        ],
+        "hours": [
+          "pc_rtr_faq"
+        ],
+        "participants_summary": [
+          "boc_rtr"
+        ],
+        "explainer": [
+          "pc_rtr_faq",
+          "boc_rtr"
+        ],
+        "windows": [
+          "pc_rtr_faq"
+        ]
       },
-      "last_checked": "2026-10-31"
+      "last_checked": "2026-10-31",
+      "layer": "1",
+      "windows": [
+        {
+          "days": "daily",
+          "start": "00:00",
+          "end": "24:00",
+          "tz": "America/Toronto",
+          "kind": "open",
+          "label": "Exchange and settlement, planned"
+        }
+      ],
+      "participants_count": null,
+      "settles_label": "real time · planned"
     },
     {
       "id": "interac-e-transfer",
@@ -182,7 +528,12 @@
       "status": "live",
       "operator": "interac-corp",
       "scheme_owner": "interac-corp",
-      "roles": ["messaging", "netting", "rulebook", "customer-service"],
+      "roles": [
+        "messaging",
+        "netting",
+        "rulebook",
+        "customer-service"
+      ],
       "settlement_asset": "Central bank money (CAD), via Lynx",
       "settlement_mode": "deferred-net",
       "settles_in": "lynx",
@@ -194,19 +545,64 @@
         "Weekend and holiday transactions can settle up to four days later.",
         "Interac plans to move settlement to RTR, where transactions would clear and settle immediately."
       ],
-      "unknowns": ["Customer-facing hours are not stated in the sources checked."],
+      "unknowns": [
+        "Customer-facing hours are not stated in the sources checked."
+      ],
       "field_sources": {
-        "operator": ["boc_oversight", "interac_pps_2025"],
-        "scheme_owner": ["interac_pps_2025"],
-        "roles": ["interac_pps_2025"],
-        "settlement_asset": ["interac_pps_2025"],
-        "settlement_mode": ["interac_pps_2025"],
-        "settles_in": ["interac_pps_2025"],
-        "settlement_timing": ["interac_pps_2025"],
-        "participants_summary": ["interac_disclosure"],
-        "explainer": ["interac_pps_2025"]
+        "operator": [
+          "boc_oversight",
+          "interac_pps_2025"
+        ],
+        "scheme_owner": [
+          "interac_pps_2025"
+        ],
+        "roles": [
+          "interac_pps_2025"
+        ],
+        "settlement_asset": [
+          "interac_pps_2025"
+        ],
+        "settlement_mode": [
+          "interac_pps_2025"
+        ],
+        "settles_in": [
+          "interac_pps_2025"
+        ],
+        "settlement_timing": [
+          "interac_pps_2025"
+        ],
+        "participants_summary": [
+          "interac_disclosure"
+        ],
+        "explainer": [
+          "interac_pps_2025"
+        ],
+        "windows": [
+          "interac_pps_2025"
+        ]
       },
-      "last_checked": "2026-10-31"
+      "last_checked": "2026-10-31",
+      "layer": "4a",
+      "windows": [
+        {
+          "days": "daily",
+          "start": "00:00",
+          "end": "24:00",
+          "tz": "America/Toronto",
+          "kind": "cycle",
+          "label": "Settlement cycle 00:00 to 23:59 ET"
+        },
+        {
+          "days": "next-business",
+          "start": "lynx",
+          "end": "lynx",
+          "tz": "America/Toronto",
+          "kind": "settlement",
+          "label": "Net settles the day after the value date, through Lynx"
+        }
+      ],
+      "participants_count": null,
+      "settles_label": "next day · net"
     },
     {
       "id": "visanet-canada",
@@ -217,7 +613,12 @@
       "status": "live",
       "operator": "visa",
       "scheme_owner": "visa",
-      "roles": ["messaging", "clearing", "netting", "rulebook"],
+      "roles": [
+        "messaging",
+        "clearing",
+        "netting",
+        "rulebook"
+      ],
       "settlement_asset": null,
       "settlement_mode": "unknown",
       "settles_in": null,
@@ -225,16 +626,34 @@
       "hours": null,
       "participants_summary": "Issuers and acquirers licensed by Visa.",
       "explainer": "VisaNet is a card network the Bank of Canada oversees, and Visa sets its rules. Where the CAD net amounts finally settle is not stated in the primary sources checked.",
-      "caveats": ["Card authorization, clearing and settlement happen at different times. Settlement is not instant even when authorization is."],
-      "unknowns": ["CAD settlement path (settlement bank, timing, whether it ends in Lynx) not confirmed from a primary source."],
+      "caveats": [
+        "Card authorization, clearing and settlement happen at different times. Settlement is not instant even when authorization is."
+      ],
+      "unknowns": [
+        "CAD settlement path (settlement bank, timing, whether it ends in Lynx) not confirmed from a primary source."
+      ],
       "field_sources": {
-        "operator": ["boc_oversight"],
-        "scheme_owner": ["boc_oversight", "visa_rules"],
-        "roles": ["visa_rules"],
-        "participants_summary": ["visa_rules"],
-        "explainer": ["boc_oversight"]
+        "operator": [
+          "boc_oversight"
+        ],
+        "scheme_owner": [
+          "boc_oversight",
+          "visa_rules"
+        ],
+        "roles": [
+          "visa_rules"
+        ],
+        "participants_summary": [
+          "visa_rules"
+        ],
+        "explainer": [
+          "boc_oversight"
+        ]
       },
-      "last_checked": "2026-10-31"
+      "last_checked": "2026-10-31",
+      "layer": "4a",
+      "windows": [],
+      "participants_count": null
     },
     {
       "id": "mastercard-canada",
@@ -245,7 +664,12 @@
       "status": "live",
       "operator": "mastercard",
       "scheme_owner": "mastercard",
-      "roles": ["messaging", "clearing", "netting", "rulebook"],
+      "roles": [
+        "messaging",
+        "clearing",
+        "netting",
+        "rulebook"
+      ],
       "settlement_asset": null,
       "settlement_mode": "unknown",
       "settles_in": null,
@@ -253,16 +677,33 @@
       "hours": null,
       "participants_summary": "Issuers and acquirers licensed by Mastercard.",
       "explainer": "Mastercard's GCMS and SMS are card systems the Bank of Canada oversees, and Mastercard sets their rules. Where the CAD net amounts finally settle is not stated in the primary sources checked.",
-      "caveats": ["GCMS handles clearing. SMS is Mastercard's single message system."],
-      "unknowns": ["CAD settlement path not confirmed from a primary source."],
+      "caveats": [
+        "GCMS handles clearing. SMS is Mastercard's single message system."
+      ],
+      "unknowns": [
+        "CAD settlement path not confirmed from a primary source."
+      ],
       "field_sources": {
-        "operator": ["boc_oversight"],
-        "scheme_owner": ["boc_oversight"],
-        "roles": ["mastercard_switching"],
-        "participants_summary": ["mastercard_switching"],
-        "explainer": ["boc_oversight"]
+        "operator": [
+          "boc_oversight"
+        ],
+        "scheme_owner": [
+          "boc_oversight"
+        ],
+        "roles": [
+          "mastercard_switching"
+        ],
+        "participants_summary": [
+          "mastercard_switching"
+        ],
+        "explainer": [
+          "boc_oversight"
+        ]
       },
-      "last_checked": "2026-10-31"
+      "last_checked": "2026-10-31",
+      "layer": "4a",
+      "windows": [],
+      "participants_count": null
     },
     {
       "id": "swift",
@@ -273,7 +714,9 @@
       "status": "live",
       "operator": "swift-scrl",
       "scheme_owner": null,
-      "roles": ["messaging"],
+      "roles": [
+        "messaging"
+      ],
       "settlement_asset": null,
       "settlement_mode": "none",
       "settles_in": null,
@@ -281,16 +724,31 @@
       "hours": null,
       "participants_summary": "Banks and other financial institutions that exchange messages on the network.",
       "explainer": "Swift is a messaging network that carries payment instructions between banks. It does not hold funds or settle payments.",
-      "caveats": ["A Swift message is an instruction. Money moves only when the banks debit and credit accounts."],
+      "caveats": [
+        "A Swift message is an instruction. Money moves only when the banks debit and credit accounts."
+      ],
       "unknowns": [],
       "field_sources": {
-        "operator": ["swift_contract"],
-        "roles": ["swift_contract"],
-        "settlement_mode": ["swift_contract"],
-        "participants_summary": ["swift_contract"],
-        "explainer": ["swift_contract"]
+        "operator": [
+          "swift_contract"
+        ],
+        "roles": [
+          "swift_contract"
+        ],
+        "settlement_mode": [
+          "swift_contract"
+        ],
+        "participants_summary": [
+          "swift_contract"
+        ],
+        "explainer": [
+          "swift_contract"
+        ]
       },
-      "last_checked": "2026-10-31"
+      "last_checked": "2026-10-31",
+      "layer": "4a",
+      "windows": [],
+      "participants_count": null
     },
     {
       "id": "fed-master-accounts",
@@ -301,7 +759,9 @@
       "status": "live",
       "operator": "federal-reserve",
       "scheme_owner": null,
-      "roles": ["settlement"],
+      "roles": [
+        "settlement"
+      ],
       "settlement_asset": "Central bank money (USD)",
       "settlement_mode": "central-bank-ledger",
       "settles_in": null,
@@ -309,18 +769,37 @@
       "hours": null,
       "participants_summary": "Eligible depository institutions with a Federal Reserve Bank master account.",
       "explainer": "Federal Reserve Banks hold master accounts for eligible institutions. A Fedwire credit to a master account is final.",
-      "caveats": ["Phase 1 loads only what the Canada to US flow touches. FedACH, FedNow, CHIPS and RTP follow in Phase 2."],
+      "caveats": [
+        "Phase 1 loads only what the Canada to US flow touches. FedACH, FedNow, CHIPS and RTP follow in Phase 2."
+      ],
       "unknowns": [],
       "field_sources": {
-        "operator": ["frb_wires"],
-        "roles": ["frb_wires"],
-        "settlement_asset": ["frb_wires"],
-        "settlement_mode": ["frb_wires"],
-        "settlement_timing": ["frb_wires"],
-        "participants_summary": ["frb_wires"],
-        "explainer": ["frb_wires"]
+        "operator": [
+          "frb_wires"
+        ],
+        "roles": [
+          "frb_wires"
+        ],
+        "settlement_asset": [
+          "frb_wires"
+        ],
+        "settlement_mode": [
+          "frb_wires"
+        ],
+        "settlement_timing": [
+          "frb_wires"
+        ],
+        "participants_summary": [
+          "frb_wires"
+        ],
+        "explainer": [
+          "frb_wires"
+        ]
       },
-      "last_checked": "2026-10-31"
+      "last_checked": "2026-10-31",
+      "layer": "1",
+      "windows": [],
+      "participants_count": null
     },
     {
       "id": "fedwire-funds",
@@ -331,53 +810,213 @@
       "status": "live",
       "operator": "federal-reserve",
       "scheme_owner": "federal-reserve",
-      "roles": ["messaging", "settlement", "rulebook"],
+      "roles": [
+        "messaging",
+        "settlement",
+        "rulebook"
+      ],
       "settlement_asset": "Central bank money (USD)",
       "settlement_mode": "rtgs",
       "settles_in": "fed-master-accounts",
-      "settlement_timing": "Final when credited to the receiving bank's master account",
-      "hours": null,
+      "settlement_timing": "Immediate, final and irrevocable once processed",
+      "hours": "Business days, 21:00 the previous evening to 19:00 ET. Third-party cutoff 18:45.",
       "participants_summary": "Institutions with Federal Reserve master accounts.",
       "explainer": "Fedwire Funds is the Federal Reserve's high-value funds transfer service. Payments credited to a participant's Federal Reserve master account are final.",
-      "caveats": ["A planned November 2026 Fedwire release was rescheduled to November 2027."],
-      "unknowns": ["Operating hours were not confirmed on the page checked this pass."],
+      "caveats": [
+        "A planned November 2026 Fedwire release was rescheduled to November 2027."
+      ],
+      "unknowns": [],
       "field_sources": {
-        "operator": ["frb_wires"],
-        "scheme_owner": ["frb_wires"],
-        "roles": ["frb_wires"],
-        "settlement_asset": ["frb_wires"],
-        "settlement_mode": ["frb_wires"],
-        "settles_in": ["frb_wires"],
-        "settlement_timing": ["frb_wires"],
-        "participants_summary": ["frb_wires"],
-        "explainer": ["frb_wires"]
+        "operator": [
+          "frb_wires"
+        ],
+        "scheme_owner": [
+          "frb_wires"
+        ],
+        "roles": [
+          "frb_wires"
+        ],
+        "settlement_asset": [
+          "frb_wires"
+        ],
+        "settlement_mode": [
+          "frb_wires"
+        ],
+        "settles_in": [
+          "frb_wires"
+        ],
+        "settlement_timing": [
+          "fed_funds_about",
+          "frb_wires"
+        ],
+        "participants_summary": [
+          "frb_wires"
+        ],
+        "explainer": [
+          "frb_wires"
+        ],
+        "hours": [
+          "fed_funds_about"
+        ],
+        "windows": [
+          "fed_funds_about"
+        ]
       },
-      "last_checked": "2026-10-31"
+      "last_checked": "2026-10-31",
+      "layer": "1",
+      "windows": [
+        {
+          "days": "business",
+          "start": "21:00-1",
+          "end": "19:00",
+          "tz": "America/New_York",
+          "kind": "open",
+          "label": "Funds transfer business day"
+        },
+        {
+          "days": "business",
+          "start": "18:45",
+          "end": "18:45",
+          "tz": "America/New_York",
+          "kind": "cutoff",
+          "label": "Third-party transfer cutoff"
+        }
+      ],
+      "participants_count": null,
+      "settles_label": "immediate · gross"
     }
   ],
-
   "scenarios": [
     {
       "id": "ca-us-wire",
       "title": "Canada to US business payment by wire",
       "rail": "fedwire-funds",
       "summary": "A Canadian business pays a US supplier in USD through its bank and a US correspondent.",
-      "lanes": ["payer", "payer-bank", "swift-scrl", "us-correspondent", "payee-bank", "payee"],
+      "lanes": [
+        "payer",
+        "payer-bank",
+        "swift-scrl",
+        "us-correspondent",
+        "payee-bank",
+        "payee"
+      ],
       "settlement_lane": "federal-reserve",
       "steps": [
-        { "n": 1, "from": "payer", "to": "payer", "type": "customer", "phase": "authorization", "timing": "T+0", "caption": "The payer asks its Canadian bank to send USD to a US account.", "sources": ["bis_corr"] },
-        { "n": 2, "from": "payer-bank", "to": "payer-bank", "type": "money", "phase": "authorization", "timing": "T+0", "caption": "The Canadian bank debits the payer's CAD account and converts it to USD. This is a book entry at the bank, not an interbank payment.", "sources": ["bis_corr"] },
-        { "n": 3, "from": "payer-bank", "to": "us-correspondent", "via": "swift-scrl", "type": "message", "phase": "clearing", "timing": "T+0", "caption": "The Canadian bank sends a payment instruction to its US correspondent over Swift. Swift carries the message and moves no money.", "sources": ["swift_contract", "bis_corr"] },
-        { "n": 4, "from": "us-correspondent", "to": "us-correspondent", "type": "money", "phase": "clearing", "timing": "T+0", "caption": "The correspondent debits the USD account the Canadian bank holds with it.", "sources": ["bis_corr"] },
-        { "n": 5, "from": "us-correspondent", "to": "payee-bank", "via": "fedwire-funds", "type": "settlement", "phase": "settlement", "timing": "T+0", "caption": "The correspondent sends the funds over Fedwire. The credit to the payee bank's Federal Reserve master account is final.", "sources": ["frb_wires"] },
-        { "n": 6, "from": "payee-bank", "to": "payee", "type": "money", "phase": "settlement", "timing": "T+0", "caption": "The payee's bank credits the payee's USD account.", "sources": ["bis_corr"] },
-        { "n": 7, "from": "payee", "to": "payee", "type": "customer", "phase": "settlement", "timing": "T+0", "caption": "The payee sees the USD credit.", "sources": ["bis_corr"] }
+        {
+          "n": 1,
+          "from": "payer",
+          "to": "payer",
+          "type": "customer",
+          "phase": "authorization",
+          "timing": "T+0",
+          "caption": "The payer asks its Canadian bank to send USD to a US account.",
+          "sources": [
+            "bis_corr"
+          ]
+        },
+        {
+          "n": 2,
+          "from": "payer-bank",
+          "to": "payer-bank",
+          "type": "money",
+          "phase": "authorization",
+          "timing": "T+0",
+          "caption": "The Canadian bank debits the payer's CAD account and converts it to USD. This is a book entry at the bank, not an interbank payment.",
+          "sources": [
+            "bis_corr"
+          ]
+        },
+        {
+          "n": 3,
+          "from": "payer-bank",
+          "to": "us-correspondent",
+          "via": "swift-scrl",
+          "type": "message",
+          "phase": "clearing",
+          "timing": "T+0",
+          "caption": "The Canadian bank sends a payment instruction to its US correspondent over Swift. Swift carries the message and moves no money.",
+          "sources": [
+            "swift_contract",
+            "bis_corr"
+          ]
+        },
+        {
+          "n": 4,
+          "from": "us-correspondent",
+          "to": "us-correspondent",
+          "type": "money",
+          "phase": "clearing",
+          "timing": "T+0",
+          "caption": "The correspondent debits the USD account the Canadian bank holds with it.",
+          "sources": [
+            "bis_corr"
+          ]
+        },
+        {
+          "n": 5,
+          "from": "us-correspondent",
+          "to": "payee-bank",
+          "via": "fedwire-funds",
+          "type": "settlement",
+          "phase": "settlement",
+          "timing": "T+0",
+          "caption": "The correspondent sends the funds over Fedwire. The credit to the payee bank's Federal Reserve master account is final.",
+          "sources": [
+            "frb_wires"
+          ]
+        },
+        {
+          "n": 6,
+          "from": "payee-bank",
+          "to": "payee",
+          "type": "money",
+          "phase": "settlement",
+          "timing": "T+0",
+          "caption": "The payee's bank credits the payee's USD account.",
+          "sources": [
+            "bis_corr"
+          ]
+        },
+        {
+          "n": 7,
+          "from": "payee",
+          "to": "payee",
+          "type": "customer",
+          "phase": "settlement",
+          "timing": "T+0",
+          "caption": "The payee sees the USD credit.",
+          "sources": [
+            "bis_corr"
+          ]
+        }
       ],
       "explainer": {
-        "messaging": { "text": "A Swift instruction between the two banks, then a Fedwire message inside the US.", "sources": ["swift_contract", "frb_wires"] },
-        "money": { "text": "Book entries at the Canadian bank (CAD debit) and at the US correspondent (USD account debit).", "sources": ["bis_corr"] },
-        "settlement": { "text": "Only the US leg settles in central bank money, on Federal Reserve books through Fedwire. No CAD interbank settlement happens for this payment.", "sources": ["frb_wires", "bis_corr"] },
-        "customer": { "text": "The payer sees one outgoing wire and an FX rate. The payee sees an incoming USD credit.", "sources": ["bis_corr"] }
+        "messaging": {
+          "text": "A Swift instruction between the two banks, then a Fedwire message inside the US.",
+          "sources": [
+            "swift_contract",
+            "frb_wires"
+          ]
+        },
+        "money": {
+          "text": "Book entries at the Canadian bank (CAD debit) and at the US correspondent (USD account debit).",
+          "sources": [
+            "bis_corr"
+          ]
+        },
+        "settlement": {
+          "text": "Only the US leg settles in central bank money, on Federal Reserve books through Fedwire. No CAD interbank settlement happens for this payment.",
+          "sources": [
+            "frb_wires",
+            "bis_corr"
+          ]
+        },
+        "customer": {
+          "text": "The payer sees one outgoing wire and an FX rate. The payee sees an incoming USD credit.",
+          "sources": [
+            "bis_corr"
+          ]
+        }
       },
       "caveats": [
         "If the payee banks with the correspondent itself, step 5 becomes a book transfer and no Fedwire payment happens.",
@@ -387,22 +1026,482 @@
       "last_checked": "2026-10-31"
     }
   ],
-
   "sources": [
-    { "id": "pc_lynx", "title": "Payments Canada · Lynx high-value payment system", "url": "https://www.payments.ca/systems-services/payment-systems/high-value-payment-system-lynx", "publisher": "Payments Canada", "tier": "operator", "published": null, "accessed": "2026-10-31" },
-    { "id": "pc_acss", "title": "Payments Canada · Retail batch payment system (ACSS and USBE)", "url": "https://www.payments.ca/systems-services/payment-systems/retail-batch-payment-system", "publisher": "Payments Canada", "tier": "operator", "published": null, "accessed": "2026-10-31" },
-    { "id": "pc_rtr_faq", "title": "Payments Canada · Real-Time Rail frequently asked questions", "url": "https://www.payments.ca/systems-services/payment-systems/real-time-rail-payment-system/frequently-asked-questions", "publisher": "Payments Canada", "tier": "operator", "published": null, "accessed": "2026-10-31" },
-    { "id": "boc_lynx_acss", "title": "Bank of Canada · Settlement account access policy for Lynx and ACSS", "url": "https://www.bankofcanada.ca/core-functions/financial-system/bank-canadas-settlement-account-policies-for-payments-canada-payment-systems/bank-canada-settlement-account-access-policy-lynx-automated-clearing-settlement-system/", "publisher": "Bank of Canada", "tier": "regulator", "published": "2023-09-25", "accessed": "2026-10-31" },
-    { "id": "boc_rtr", "title": "Bank of Canada · Settlement account access policy for the Real-Time Rail", "url": "https://www.bankofcanada.ca/core-functions/financial-system/bank-canadas-settlement-account-policies-for-payments-canada-payment-systems/bank-canada-settlement-account-access-policy-real-time-rail/", "publisher": "Bank of Canada", "tier": "regulator", "published": "2026-07-31", "accessed": "2026-10-31" },
-    { "id": "boc_oversight", "title": "Bank of Canada · Payment systems the Bank of Canada oversees", "url": "https://www.bankofcanada.ca/core-functions/financial-system/payment-systems/", "publisher": "Bank of Canada", "tier": "regulator", "published": "2026-10-14", "accessed": "2026-10-31" },
-    { "id": "interac_pps_2025", "title": "Interac · e-Transfer self-assessment against Bank of Canada PPS standards (as at 2025-04-30)", "url": "https://www.interac.ca/wp-content/uploads/2025/09/Interac-PPS-e-Transfer-Self-Assessment-2025-VF-Disclosure-Submission.pdf", "publisher": "Interac Corp.", "tier": "operator", "published": "2025-04-30", "accessed": "2026-10-31" },
-    { "id": "interac_disclosure", "title": "Interac · e-Transfer public disclosure", "url": "https://www.interac.ca/en/interac-e-transfer-disclosure/", "publisher": "Interac Corp.", "tier": "operator", "published": "2026-07-29", "accessed": "2026-10-31" },
-    { "id": "visa_rules", "title": "Visa · Core rules and Visa product and service rules", "url": "https://usa.visa.com/dam/VCOM/download/about-visa/visa-rules-public.pdf", "publisher": "Visa", "tier": "operator", "published": "2025-10", "accessed": "2026-10-30" },
-    { "id": "mastercard_switching", "title": "Mastercard · Authorization, clearing and settlement", "url": "https://www.mastercard.com/eea/switching-services/our-technology/transaction.html", "publisher": "Mastercard", "tier": "operator", "published": null, "accessed": "2026-10-30" },
-    { "id": "swift_contract", "title": "Swift · Swift does not hold funds or settle transactions", "url": "https://www.swift.com/es/node/11301", "publisher": "Swift", "tier": "operator", "published": null, "accessed": "2026-10-30" },
-    { "id": "frb_wires", "title": "Federal Reserve Financial Services · Fedwire Funds Service", "url": "https://www.frbservices.org/financial-services/wires", "publisher": "Federal Reserve Banks", "tier": "regulator", "published": null, "accessed": "2026-10-31" },
-    { "id": "bis_corr", "title": "BIS CPMI · Correspondent banking (CPMI Papers No. 147)", "url": "https://www.bis.org/cpmi/publ/d147.pdf", "publisher": "Bank for International Settlements", "tier": "regulator", "published": "2016-07-13", "accessed": "2026-10-31" },
-    { "id": "fed_rtp_joint", "title": "Federal Reserve Board · Order on interest on RTP joint account balances", "url": "https://federalreserve.gov/paymentsystems/files/interest_on_rtp_joint_balances.pdf", "publisher": "Federal Reserve Board", "tier": "regulator", "published": "2023-06-07", "accessed": "2026-10-31" },
-    { "id": "npci_upi_settle", "title": "NPCI · UPI settlement process", "url": "https://www.npci.org.in/PDF/npci/others/UPI-Settlement-Process.pdf", "publisher": "NPCI", "tier": "operator", "published": null, "accessed": "2026-10-31" }
+    {
+      "id": "pc_lynx",
+      "title": "Payments Canada · Lynx high-value payment system",
+      "url": "https://www.payments.ca/systems-services/payment-systems/high-value-payment-system-lynx",
+      "publisher": "Payments Canada",
+      "tier": "operator",
+      "published": null,
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "pc_acss",
+      "title": "Payments Canada · Retail batch payment system (ACSS and USBE)",
+      "url": "https://www.payments.ca/systems-services/payment-systems/retail-batch-payment-system",
+      "publisher": "Payments Canada",
+      "tier": "operator",
+      "published": null,
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "pc_rtr_faq",
+      "title": "Payments Canada · Real-Time Rail frequently asked questions",
+      "url": "https://www.payments.ca/systems-services/payment-systems/real-time-rail-payment-system/frequently-asked-questions",
+      "publisher": "Payments Canada",
+      "tier": "operator",
+      "published": null,
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "boc_lynx_acss",
+      "title": "Bank of Canada · Settlement account access policy for Lynx and ACSS",
+      "url": "https://www.bankofcanada.ca/core-functions/financial-system/bank-canadas-settlement-account-policies-for-payments-canada-payment-systems/bank-canada-settlement-account-access-policy-lynx-automated-clearing-settlement-system/",
+      "publisher": "Bank of Canada",
+      "tier": "regulator",
+      "published": "2023-09-25",
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "boc_rtr",
+      "title": "Bank of Canada · Settlement account access policy for the Real-Time Rail",
+      "url": "https://www.bankofcanada.ca/core-functions/financial-system/bank-canadas-settlement-account-policies-for-payments-canada-payment-systems/bank-canada-settlement-account-access-policy-real-time-rail/",
+      "publisher": "Bank of Canada",
+      "tier": "regulator",
+      "published": "2026-07-31",
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "boc_oversight",
+      "title": "Bank of Canada · Payment systems the Bank of Canada oversees",
+      "url": "https://www.bankofcanada.ca/core-functions/financial-system/payment-systems/",
+      "publisher": "Bank of Canada",
+      "tier": "regulator",
+      "published": "2026-10-14",
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "interac_pps_2025",
+      "title": "Interac · e-Transfer self-assessment against Bank of Canada PPS standards (as at 2025-04-30)",
+      "url": "https://www.interac.ca/wp-content/uploads/2025/09/Interac-PPS-e-Transfer-Self-Assessment-2025-VF-Disclosure-Submission.pdf",
+      "publisher": "Interac Corp.",
+      "tier": "operator",
+      "published": "2025-04-30",
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "interac_disclosure",
+      "title": "Interac · e-Transfer public disclosure",
+      "url": "https://www.interac.ca/en/interac-e-transfer-disclosure/",
+      "publisher": "Interac Corp.",
+      "tier": "operator",
+      "published": "2026-07-29",
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "visa_rules",
+      "title": "Visa · Core rules and Visa product and service rules",
+      "url": "https://usa.visa.com/dam/VCOM/download/about-visa/visa-rules-public.pdf",
+      "publisher": "Visa",
+      "tier": "operator",
+      "published": "2025-10",
+      "accessed": "2026-10-30"
+    },
+    {
+      "id": "mastercard_switching",
+      "title": "Mastercard · Authorization, clearing and settlement",
+      "url": "https://www.mastercard.com/eea/switching-services/our-technology/transaction.html",
+      "publisher": "Mastercard",
+      "tier": "operator",
+      "published": null,
+      "accessed": "2026-10-30"
+    },
+    {
+      "id": "swift_contract",
+      "title": "Swift · Swift does not hold funds or settle transactions",
+      "url": "https://www.swift.com/es/node/11301",
+      "publisher": "Swift",
+      "tier": "operator",
+      "published": null,
+      "accessed": "2026-10-30"
+    },
+    {
+      "id": "frb_wires",
+      "title": "Federal Reserve Financial Services · Fedwire Funds Service",
+      "url": "https://www.frbservices.org/financial-services/wires",
+      "publisher": "Federal Reserve Banks",
+      "tier": "regulator",
+      "published": null,
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "bis_corr",
+      "title": "BIS CPMI · Correspondent banking (CPMI Papers No. 147)",
+      "url": "https://www.bis.org/cpmi/publ/d147.pdf",
+      "publisher": "Bank for International Settlements",
+      "tier": "regulator",
+      "published": "2016-07-13",
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "fed_rtp_joint",
+      "title": "Federal Reserve Board · Order on interest on RTP joint account balances",
+      "url": "https://federalreserve.gov/paymentsystems/files/interest_on_rtp_joint_balances.pdf",
+      "publisher": "Federal Reserve Board",
+      "tier": "regulator",
+      "published": "2023-06-07",
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "npci_upi_settle",
+      "title": "NPCI · UPI settlement process",
+      "url": "https://www.npci.org.in/PDF/npci/others/UPI-Settlement-Process.pdf",
+      "publisher": "NPCI",
+      "tier": "operator",
+      "published": null,
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "boc_lynx_overview",
+      "title": "Bank of Canada · An overview of Lynx, Canada's high-value payment system",
+      "url": "https://www.bankofcanada.ca/wp-content/uploads/2022/05/Overview-Lynx-Canadas-High-Value-Payment-System.pdf",
+      "publisher": "Bank of Canada",
+      "tier": "regulator",
+      "published": "2022-05",
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "pc_lynx_explainer",
+      "title": "Payments Canada · Explainer on Lynx wire payments",
+      "url": "https://www.payments.ca/explainer-lynx-wire-payments-and-payment-confirmation-reference-number",
+      "publisher": "Payments Canada",
+      "tier": "operator",
+      "published": "2026-06-03",
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "fed_funds_about",
+      "title": "Federal Reserve Board · Fedwire Funds Services",
+      "url": "https://www.federalreserve.gov/paymentsystems/fedfunds_about.htm",
+      "publisher": "Federal Reserve Board",
+      "tier": "regulator",
+      "published": "2024-06-25",
+      "accessed": "2026-10-31"
+    },
+    {
+      "id": "press_rtr_aug2026",
+      "title": "Payment Expert · RTR rules take effect ahead of Q4 launch",
+      "url": "https://paymentexpert.com/2026/08/10/rtr-canada-payments-modernisation/",
+      "publisher": "Payment Expert",
+      "tier": "press",
+      "published": "2026-08-10",
+      "accessed": "2026-10-31"
+    }
+  ],
+  "layers": [
+    {
+      "id": "7",
+      "name": "Customer interface",
+      "does": "The app, card or bank channel a customer uses to start or receive a payment."
+    },
+    {
+      "id": "6",
+      "name": "Last mile",
+      "does": "Gets money to the recipient through a local account, wallet or cash pickup."
+    },
+    {
+      "id": "5",
+      "name": "FX and liquidity",
+      "does": "Converts currency and pre-funds the paying side."
+    },
+    {
+      "id": "4a",
+      "name": "Schemes and networks",
+      "does": "Sets the rules and carries the messages between member institutions."
+    },
+    {
+      "id": "4b",
+      "name": "Processing and clearing",
+      "does": "Exchanges payment items and works out who owes whom."
+    },
+    {
+      "id": "3",
+      "name": "Multi-market accounts",
+      "does": "One provider holds balances and pays out across many markets."
+    },
+    {
+      "id": "2a",
+      "name": "Correspondents",
+      "does": "Banks that hold accounts for other banks in a foreign currency."
+    },
+    {
+      "id": "2b",
+      "name": "Sponsor banks and access",
+      "does": "Institutions that hold a settlement seat and give others access to it."
+    },
+    {
+      "id": "1",
+      "name": "Settlement systems",
+      "does": "Moves money between institutions' central bank accounts. Once it lands here it is final."
+    }
+  ],
+  "currencies": [
+    {
+      "id": "CAD",
+      "region": "CA",
+      "flag": "ca",
+      "central_bank": "Bank of Canada",
+      "root": "boc-accounts",
+      "phase": 1,
+      "how": "Payments Canada runs the shared systems and the Bank of Canada holds the accounts they settle in. Interac runs e-Transfer and settles it a day later through Lynx. A 24/7 Real-Time Rail is due in Q4 2026.",
+      "how_sources": [
+        "pc_lynx",
+        "boc_lynx_acss",
+        "interac_pps_2025",
+        "pc_rtr_faq"
+      ]
+    },
+    {
+      "id": "USD",
+      "region": "US",
+      "flag": "us",
+      "central_bank": "Federal Reserve",
+      "root": "fed-master-accounts",
+      "phase": 1,
+      "how": "Only the Fedwire leg used by the Canada to US flow is loaded. FedACH, FedNow, CHIPS and RTP arrive in Phase 2.",
+      "how_sources": [
+        "fed_funds_about"
+      ]
+    },
+    {
+      "id": "EUR",
+      "flag": "eu",
+      "central_bank": "European Central Bank (Eurosystem)",
+      "phase": 2
+    },
+    {
+      "id": "GBP",
+      "flag": "gb",
+      "central_bank": "Bank of England",
+      "phase": 2
+    },
+    {
+      "id": "MXN",
+      "flag": "mx",
+      "central_bank": "Banco de México",
+      "phase": 2
+    },
+    {
+      "id": "BRL",
+      "flag": "br",
+      "central_bank": "Banco Central do Brasil",
+      "phase": 2
+    },
+    {
+      "id": "INR",
+      "flag": "in",
+      "central_bank": "Reserve Bank of India",
+      "phase": 2
+    },
+    {
+      "id": "CNY",
+      "flag": "cn",
+      "central_bank": "People's Bank of China",
+      "phase": 2
+    },
+    {
+      "id": "KRW",
+      "flag": "kr",
+      "central_bank": "Bank of Korea",
+      "phase": 2
+    }
+  ],
+  "access": [
+    {
+      "id": "ca-seat-holders",
+      "name": "Seat holders",
+      "party": "ca-direct",
+      "region": "CA",
+      "layer": "2b",
+      "holds_account_at": "boc-accounts",
+      "uses": [
+        "lynx",
+        "acss"
+      ],
+      "summary": "16 Payments Canada members, including the Bank of Canada, take part in Lynx. ACSS direct clearers connect directly and hold Bank of Canada settlement accounts.",
+      "sources": [
+        "pc_lynx_explainer",
+        "pc_acss"
+      ]
+    },
+    {
+      "id": "ca-through-a-seat",
+      "name": "Through a seat holder",
+      "party": "ca-indirect",
+      "region": "CA",
+      "layer": "2b",
+      "through": "ca-seat-holders",
+      "uses": [
+        "lynx",
+        "acss"
+      ],
+      "summary": "Over 50 other financial institutions clear through a Lynx participant. ACSS indirect clearers rely on a direct clearer.",
+      "sources": [
+        "pc_lynx_explainer",
+        "pc_acss"
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "ca-wire",
+      "name": "Wire",
+      "plain": "Large or urgent bank-to-bank payment",
+      "region": "CA",
+      "runs_on": "lynx",
+      "status": "live",
+      "sources": [
+        "pc_lynx_explainer"
+      ]
+    },
+    {
+      "id": "ca-direct-deposit",
+      "name": "Direct deposit",
+      "plain": "Payroll and government payments into an account",
+      "region": "CA",
+      "runs_on": "acss",
+      "status": "live",
+      "sources": [
+        "pc_acss"
+      ]
+    },
+    {
+      "id": "ca-pad",
+      "name": "Pre-authorized debit",
+      "plain": "Bills pulled from an account on a schedule",
+      "region": "CA",
+      "runs_on": "acss",
+      "status": "live",
+      "sources": [
+        "pc_acss"
+      ]
+    },
+    {
+      "id": "ca-cheque",
+      "name": "Cheque",
+      "plain": "Paper and imaged cheques",
+      "region": "CA",
+      "runs_on": "acss",
+      "status": "live",
+      "sources": [
+        "pc_acss"
+      ]
+    },
+    {
+      "id": "ca-pos-debit",
+      "name": "Debit at checkout",
+      "plain": "Point-of-service debit at a store",
+      "region": "CA",
+      "runs_on": "acss",
+      "status": "live",
+      "sources": [
+        "pc_acss"
+      ]
+    },
+    {
+      "id": "ca-etransfer",
+      "name": "e-Transfer",
+      "plain": "Send money from a banking app by email or phone",
+      "region": "CA",
+      "runs_on": "interac-e-transfer",
+      "status": "live",
+      "sources": [
+        "interac_pps_2025"
+      ]
+    },
+    {
+      "id": "ca-credit-card",
+      "name": "Card purchase",
+      "plain": "Visa or Mastercard credit or debit card",
+      "region": "CA",
+      "runs_on": [
+        "visanet-canada",
+        "mastercard-canada"
+      ],
+      "status": "live",
+      "sources": [
+        "boc_oversight"
+      ]
+    },
+    {
+      "id": "ca-rtr-payment",
+      "name": "Real-time payment",
+      "plain": "Instant account-to-account payment, any hour",
+      "region": "CA",
+      "runs_on": "rtr",
+      "status": "planned",
+      "sources": [
+        "pc_rtr_faq"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2020-08-10",
+      "precision": "day",
+      "region": "CA",
+      "system": "interac-e-transfer",
+      "status": "done",
+      "text": "Bank of Canada designates Interac e-Transfer a prominent payment system.",
+      "sources": [
+        "interac_disclosure"
+      ]
+    },
+    {
+      "date": "2021-08-30",
+      "precision": "day",
+      "region": "CA",
+      "system": "lynx",
+      "status": "done",
+      "text": "Lynx begins operations, replacing LVTS.",
+      "sources": [
+        "boc_lynx_overview"
+      ]
+    },
+    {
+      "date": "2026-08-24",
+      "precision": "day",
+      "region": "CA",
+      "system": "rtr",
+      "status": "done",
+      "text": "RTR by-law and rules take effect.",
+      "sources": [
+        "press_rtr_aug2026"
+      ]
+    },
+    {
+      "date": "2026-10-01",
+      "precision": "quarter",
+      "region": "CA",
+      "system": "rtr",
+      "status": "planned",
+      "text": "RTR launch planned for Q4 2026. Receiving is required first, sending is optional at the start.",
+      "sources": [
+        "pc_rtr_faq",
+        "press_rtr_aug2026"
+      ]
+    },
+    {
+      "date": "2027-06-01",
+      "precision": "undated",
+      "region": "CA",
+      "system": "interac-e-transfer",
+      "status": "planned",
+      "text": "Interac plans to move e-Transfer settlement to RTR, so it would clear and settle immediately. No date published.",
+      "sources": [
+        "interac_pps_2025"
+      ]
+    }
   ]
 }

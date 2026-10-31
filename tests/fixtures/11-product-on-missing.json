@@ -1,0 +1,1 @@
+{"name":"Product runs on a system that does not exist","expect_fail":"referential-integrity","patch":[{"path":"products[id=ca-wire].runs_on","value":"lvts"}]}

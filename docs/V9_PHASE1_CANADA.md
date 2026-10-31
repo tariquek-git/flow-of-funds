@@ -6,12 +6,14 @@ Branch `settlement-map-v9-canada`, cut from `settlement-map-v9-preview`. Nothing
 
 | Path | What it is |
 |---|---|
-| `data/atlas.json` | The one data file. 10 systems, 12 parties, 1 scenario, 15 sources |
+| `docs/IA.md` | Information architecture, version 2. Read this first |
+| `data/atlas.json` | The one data file. 10 systems, 8 products, 2 access classes, 5 dated changes, 1 scenario, 19 sources |
 | `data/atlas.schema.json` | JSON Schema (draft 2020-12) for system, scenario, source, party, group |
 | `design/tokens.json` | Colour and line tokens. The prototype must contain every value |
+| `design/icons.json` | Flags (flag-icons 7.6, MIT) and logos (Simple Icons 13.21, CC0) embedded in the page |
 | `scripts/check.mjs` | `npm run check` (drift tests), `npm run check:self` (fixtures), `npm run mermaid` |
-| `tests/fixtures/*.json` | Ten deliberately broken patches. Each must fail the test it targets |
-| `prototype/canada/index.html` | L1 to L4 plus Railroom, reading `data/atlas.json` |
+| `tests/fixtures/*.json` | 14 deliberately broken patches. Each must fail the test it targets |
+| `prototype/canada/index.html` | Currency index, CAD layer map, settlement clock, change timeline, record panel and Railroom, all reading `data/atlas.json` |
 | `scripts/build-preview.mjs` | Inlines the data into one file for a private review link (`dist/`, ignored) |
 
 Run it with `npm install`, `npm run check:self`, then `npx serve .` and open `/prototype/canada/`.
@@ -19,6 +21,8 @@ Run it with `npm install`, `npm run check:self`, then `npx serve .` and open `/p
 ---
 
 ## 1. Seven top-level groups
+
+**Update after the IA rebuild.** The home page now leads with currencies, because every currency ends at one central bank and that is the map's core idea. The seven groups below stay as the "By system type" index on the home page and as a tag on every system. The layers are the rows of each currency map. See `docs/IA.md`.
 
 All seven are kinds of payment infrastructure, grouped by what the system does to money. Region is a filter.
 
@@ -58,71 +62,14 @@ All seven are kinds of payment infrastructure, grouped by what the system does t
 
 ---
 
-## 2. Wireframes (Canada, RTR)
+## 2. Screens
 
-**Two drill axes.** Across, the breadcrumb (World › group › region › system). Down, the settlement path inside the panel (system › where it settles › central bank). "Drill up" lists every system that settles into the one you are looking at.
+Superseded by `docs/IA.md` and the prototype itself. In short:
 
-**L1 World · desktop**
-```
-Settlement Map  Fintech North                          Atlas | Railroom
-World
-Region [All] [Canada] [United States] [Global]
-
-Who settles what, and where it ends up
-──────────────────────────────────────────────────────────────────────
-High-value and central bank settlement                     4 systems
-  Systems where large or time-critical payments settle one by one...
-──────────────────────────────────────────────────────────────────────
-Batch clearing                                              1 system
-──────────────────────────────────────────────────────────────────────
-Instant payments                                           2 systems
-──────────────────────────────────────────────────────────────────────
-Stablecoins and tokenized money                              Phase 2
-```
-
-**L2 group · desktop, with L3 panel open**
-```
-World › Instant payments › Canada › RTR
-──────────────────────────────────────────┬───────────────────────────
-System        Operator   Settles in  Timing│ Real-Time Rail (RTR) planned   [Close ×]
-CA RTR planned Payments C BoC accts ↓ 24/7 │ Instant payments · Canada
-CA e-Transfer  Interac    Lynx ↓      T+1  │ Operator        Payments Canada
-                                          │ Participants    Regulated FIs and RPAA PSPs
-                                          │ Settlement asset Central bank money (CAD)
-                                          │ Hours           24/7/365 (planned)
-                                          │ Settles in      Bank of Canada settlement accounts
-                                          │ Two-sentence explainer
-                                          │ Source: Payments Canada, Bank of Canada. Checked 31 Oct 2026
-                                          │ SETTLEMENT PATH
-                                          │ ● RTR        Real time, funded account
-                                          │ ║
-                                          │ ○ BoC accounts   Final. Central bank money (CAD)
-                                          │ [↓ Drill down to BoC accounts] [↑ Settles here (0)]
-                                          │ L4  + Rulebook and operator
-                                          │     + Participants
-                                          │     + Caveats
-                                          │     + Not known yet
-                                          │     + All sources
-```
-
-**Phone**
-```
-Settlement Map          Atlas Railroom
-World › Instant payments › RTR
-[All][Canada][US][Global]
-Instant payments
-RTR  planned
-  Operator   Payments Canada
-  Settles in BoC accounts ↓      ← table becomes stacked rows, nothing hidden
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  bottom sheet, half height
-[Full height]            [Close ×]
-Real-Time Rail (RTR) planned
-facts · explainer · source
-settlement path · drill buttons
-L4 disclosures
-```
-
-L4 sections are closed by default. Esc and Back close the panel and return focus to the row.
+- **L1 Currencies.** One row per currency with flag, central bank, how that market does it, a nine-cell layer strip, and a 24-hour strip of its central settlement system with a now mark. Phase 2 currencies are listed compactly.
+- **L2 Currency map.** Layer rows (empty ones dropped) sitting on a full-width central bank band. Top row is what customers use (wire, direct deposit, e-Transfer, card purchase). Lines show runs on, settles in (with timing) and account access. Selecting anything lights its path down to the central bank and everything that depends on it. Below the map, a week-long settlement clock with a statutory holiday toggle, and a dated change timeline.
+- **L3 Record panel.** Facts, two sentences, source line, the settlement path with Drill down and Settles here (n), today's hours, and the Railroom link. Bottom sheet on phones.
+- **L4.** Rulebook and operator, participants, caveats, not known yet, all sources.
 
 ---
 
@@ -154,6 +101,7 @@ The full records, with every source, are in `data/atlas.json`.
 --line-message: 1px;      /* dashed 4 3, open arrowhead, ink */
 --line-money: 2.5px;      /* solid, filled arrowhead, ink */
 --line-settlement: 2.5px; /* double line, accent, ends in the settlement column, labelled "final" */
+/* on the currency map the same grammar applies: thin ink = runs on, double accent = settles in (with timing), dotted = holds an account at */
 /* customer step: plain label in the lane, no line */
 ```
 SVG markers `m-open` and `m-fill` are in the prototype. Line type is readable without colour (dash, weight, double line, label).
@@ -162,20 +110,23 @@ SVG markers `m-open` and `m-fill` are in the prototype. Line type is readable wi
 
 | Theme | Pair | Ratio | Needs |
 |---|---|---|---|
-| light | ink on paper | 15.48 | 4.5 |
-| light | muted on paper | 6.56 | 4.5 |
-| light | accent on paper | 8.03 | 4.5 |
-| light | planned on paper | 6.52 | 4.5 |
-| light | ink on selected row | 13.67 | 4.5 |
-| light | accent on selected row | 7.09 | 4.5 |
-| light | rule-strong on paper (UI) | 3.37 | 3.0 |
-| dark | ink on paper | 14.68 | 4.5 |
-| dark | muted on paper | 7.15 | 4.5 |
-| dark | accent on paper | 8.42 | 4.5 |
-| dark | planned on paper | 9.38 | 4.5 |
-| dark | rule-strong on paper (UI) | 4.19 | 3.0 |
+| light | ink on paper | 18.92 | 4.5 |
+| light | muted on paper | 7.75 | 4.5 |
+| light | muted on layer band | 6.97 | 4.5 |
+| light | accent on paper | 6.00 | 4.5 |
+| light | accent on layer band | 5.39 | 4.5 |
+| light | planned on layer band | 5.98 | 4.5 |
+| light | accent on central bank band | 5.23 | 4.5 |
+| light | rule-strong on layer band (UI) | 3.64 | 3.0 |
+| dark | ink on paper | 15.95 | 4.5 |
+| dark | muted on layer band | 7.54 | 4.5 |
+| dark | accent on paper | 7.85 | 4.5 |
+| dark | accent on central bank band | 6.96 | 4.5 |
+| dark | rule-strong on layer band (UI) | 4.13 | 3.0 |
 
-The light hairline `rule` colour is decorative only. Anything a reader has to see uses `rule-strong` or darker.
+All 28 pairs pass. The full list prints with `npm run check`.
+
+The hairline `rule` colour is decorative only. Anything a reader has to see uses `rule-strong` or darker.
 
 ---
 
@@ -226,6 +177,9 @@ No CAD interbank settlement happens in this flow, which surprises most readers. 
 | referential-integrity | `settles_in`, operator, group, lane or step party points at nothing | `05-dangling-settles-in` |
 | settlement-chain-terminates | A settlement path loops, or ends somewhere that is neither a central bank ledger nor a declared unknown | `06-settlement-loop` |
 | live-never-depends-on-planned | A live system settles in a planned one (Interac in RTR today) | `07-live-on-planned` |
+| referential-integrity (products, access, currencies) | A product runs on a missing system, a live product runs on a planned one, or a currency's root is not a central bank ledger | `11-product-on-missing` |
+| every-claim-sourced (hours) | Opening or settlement windows have no source | `12-unsourced-window` |
+| timeline-consistent | A future event is marked done, a passed date is still planned, or a system is marked live while its launch is still planned | `13-rtr-live-early`, `14-done-in-future` |
 | role-tags | Swift gets a settlement role, Interac moves off Lynx, ACSS stops settling in Lynx, UPI not in RBI RTGS, CHIPS/RTP not on their NY Fed accounts, USDC without three distinct parties | `01-swift-settles`, `02-interac-in-acss`, `10-upi-wrong` |
 | freshness | A record or source is older than 180 days (warning), or a source document is over 12 months old (warning) | live warnings today on four older documents |
 | contrast | A token pair drops below 4.5:1 text or 3:1 UI | `09-low-contrast` (the 3.7:1 problem) |

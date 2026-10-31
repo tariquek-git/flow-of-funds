@@ -10,237 +10,397 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;700&family=Atkinson+Hyperlegible+Next:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&family=Martian+Mono:wdth,wght@75..100,400..600&display=swap">
 <style>
-/* Layout: a reference ledger. Rows on the left, one record panel on the right (bottom sheet on phones).
-   Two drill axes. Across: World > group > region > system. Down: system > where it settles > central bank. */
+/* Layout: a working atlas. Currency index, then one currency as a layered dependency map sitting on its central bank,
+   then a week-long settlement clock and a dated change line. Record panel on the right, bottom sheet on phones.
+   Colour encodes one role only: accent = central bank money and finality. */
 :root{
-  --paper:#F3F3EF; --ink:#1B1B1B; --muted:#5A564F; --rule:#D3CCC0; --rule-strong:#8A8378;
-  --accent:#8C1D3A; --accent-soft:#EFE2E4; --planned:#6A5418;
-  --read:"Atkinson Hyperlegible Next","Atkinson Hyperlegible",-apple-system,"Segoe UI",Roboto,sans-serif;
-  --code:"Atkinson Hyperlegible Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-  --s1:13px; --s2:16px; --s3:18px; --s4:22px; --s5:30px;
-  --line-message:1px; --line-money:2.5px; --line-settlement:2.5px; --dash-message:4 3;
+  --paper:#FFFFFF; --band:#F1F3F5; --ink:#0D1117; --muted:#4B5361; --rule:#DDE1E6; --rule-strong:#767F8C;
+  --accent:#B9301A; --accent-soft:#FCECE8; --planned:#7A5600;
+  --sans:"Instrument Sans",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:"Martian Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --t-xs:11px; --t-s:13px; --t-m:15px; --t-l:18px; --t-xl:24px; --t-xxl:34px;
+  --hatch:repeating-linear-gradient(135deg,color-mix(in srgb,var(--planned) 22%,transparent) 0 2px,transparent 2px 7px);
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --paper:#16171A; --ink:#ECE8E1; --muted:#A9A398; --rule:#34363B; --rule-strong:#7D7A74;
-  --accent:#EE9AAE; --accent-soft:#2C1E22; --planned:#D9B865; color-scheme:dark}}
+  --paper:#0E1013; --band:#171A1F; --ink:#E9EBEE; --muted:#A4ABB6; --rule:#2B3038; --rule-strong:#737C88;
+  --accent:#FF826A; --accent-soft:#2B1813; --planned:#E2B94F; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --paper:#16171A; --ink:#ECE8E1; --muted:#A9A398; --rule:#34363B; --rule-strong:#7D7A74;
-  --accent:#EE9AAE; --accent-soft:#2C1E22; --planned:#D9B865; color-scheme:dark}
+  --paper:#0E1013; --band:#171A1F; --ink:#E9EBEE; --muted:#A4ABB6; --rule:#2B3038; --rule-strong:#737C88;
+  --accent:#FF826A; --accent-soft:#2B1813; --planned:#E2B94F; color-scheme:dark}
 
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 var(--s2)/1.55 var(--read);
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 var(--t-m)/1.5 var(--sans);font-optical-sizing:auto}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--paper)}
 a{color:inherit}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.code{font-family:var(--code);font-size:var(--s1);letter-spacing:.01em}
+.mono{font-family:var(--mono);font-size:var(--t-xs);letter-spacing:0;font-variation-settings:"wdth" 85}
 .muted{color:var(--muted)}
-.wrap{max-width:1180px;margin:0 auto}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1240px;margin:0 auto}
+.flag{display:inline-block;width:20px;height:15px;vertical-align:-2px;box-shadow:0 0 0 1px var(--rule);flex:none}
+.flag svg{display:block;width:100%;height:100%}
+.logo{display:inline-block;width:16px;height:16px;vertical-align:-3px;flex:none}
+.logo svg{display:block;width:100%;height:100%;fill:currentColor}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+h1,h2,h3{text-wrap:balance}
 
-/* header */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--rule-strong);
-  display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between;padding-block:14px 10px}
-.mark{font-weight:700;font-size:var(--s3);letter-spacing:-.01em;text-decoration:none}
-.mark small{font-weight:400;font-size:var(--s1);color:var(--muted);margin-left:8px;letter-spacing:.04em}
-.nav{display:flex;gap:4px;flex-wrap:wrap}
-.nav a{padding:6px 10px;text-decoration:none;font-size:var(--s1);font-family:var(--code);border-bottom:2px solid transparent}
-.nav a[aria-current="page"]{border-bottom-color:var(--ink);font-weight:700}
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:12;background:var(--paper);border-bottom:1px solid var(--ink)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+.brand b{font-size:var(--t-l);font-weight:700;letter-spacing:-.01em;font-variation-settings:"wdth" 88}
+.brand span{font-family:var(--mono);font-size:var(--t-xs);color:var(--muted)}
+.nav{display:flex;gap:2px}
+.nav a{font-family:var(--mono);font-size:var(--t-xs);text-decoration:none;padding:16px 10px 14px;border-bottom:3px solid transparent;margin-bottom:-1px}
+.nav a[aria-current="page"]{border-bottom-color:var(--accent);font-weight:600}
 
-.crumbs{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;padding-block:14px 4px;font-size:var(--s1);font-family:var(--code)}
-.crumbs a{text-decoration:none;color:var(--muted)}
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;padding-block:14px 0;font-family:var(--mono);font-size:var(--t-xs)}
+.crumbs a{color:var(--muted);text-decoration:none;padding:6px 0}
 .crumbs a:hover{color:var(--ink);text-decoration:underline}
-.crumbs [aria-current]{color:var(--ink);font-weight:700}
+.crumbs [aria-current]{font-weight:600}
 .crumbs .sep{color:var(--rule-strong)}
 
-.regions{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-block:6px 18px;font-size:var(--s1)}
-.regions span{color:var(--muted);margin-right:4px}
-.chip{border:1px solid var(--rule-strong);background:none;padding:3px 10px;border-radius:2px;cursor:pointer;font-family:var(--code);font-size:var(--s1)}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+main{padding-bottom:56px}
+.pagehead{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 32px;align-items:end;padding-block:18px 18px;border-bottom:1px solid var(--rule)}
+.pagehead h1{margin:0;font-size:var(--t-xxl);line-height:1.08;letter-spacing:-.02em;font-weight:700;font-variation-settings:"wdth" 85;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.pagehead h1 .flag{width:32px;height:24px}
+.pagehead p{margin:6px 0 0;max-width:70ch;color:var(--muted)}
+.pagehead .now{font-family:var(--mono);font-size:var(--t-xs);text-align:right;line-height:1.7;white-space:nowrap}
+.pagehead .now b{font-weight:600}
+.status-open{color:var(--ink)} .status-closed{color:var(--muted)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:0}
+.dot.on{background:var(--accent)} .dot.off{box-shadow:inset 0 0 0 1.5px var(--rule-strong)}
 
-/* body split */
-.split{display:grid;grid-template-columns:minmax(0,1fr);gap:0 40px;padding-bottom:64px}
-.split.has-panel{grid-template-columns:minmax(0,1fr) minmax(0,440px)}
-.list{min-width:0}
-h1{font-size:var(--s5);line-height:1.15;letter-spacing:-.02em;margin:0 0 6px;text-wrap:balance;font-weight:700}
-.lede{max-width:64ch;margin:0 0 24px;color:var(--muted)}
+.section-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:34px 0 10px}
+.section-h h2{margin:0;font-size:var(--t-l);font-weight:700;font-variation-settings:"wdth" 90}
+.section-h p{margin:0;color:var(--muted);font-size:var(--t-s);max-width:70ch}
 
-/* L1 rows */
-.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule-strong)}
-.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 24px;align-items:baseline;padding:14px 4px;border-bottom:1px solid var(--rule);text-decoration:none}
-.row:hover .row-name,.row:focus-visible .row-name{text-decoration:underline}
-.row-name{font-size:var(--s3);font-weight:700}
-.row-def{grid-column:1;color:var(--muted);max-width:64ch;font-size:var(--s2)}
-.row-count{grid-row:1/span 2;grid-column:2;text-align:right;font-family:var(--code);font-size:var(--s1);white-space:nowrap}
-.row.empty .row-name{font-weight:400;color:var(--muted)}
+/* L1 currency ledger */
+.ledger{border-top:1px solid var(--ink)}
+.ccy{display:grid;grid-template-columns:132px minmax(0,1fr) 220px 260px;gap:6px 24px;align-items:center;padding:16px 0;border-bottom:1px solid var(--rule);text-decoration:none}
+.ccy:hover .ccy-code{color:var(--accent)}
+.ccy-id{display:flex;align-items:center;gap:10px}
+.ccy-code{font-family:var(--mono);font-size:var(--t-l);font-weight:600;font-variation-settings:"wdth" 90}
+.ccy-cb{font-weight:700;font-size:var(--t-m);font-variation-settings:"wdth" 90}
+.ccy-how{color:var(--muted);font-size:var(--t-s);margin-top:2px;max-width:66ch}
+.strip-label{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:3px}
+.layerstrip{display:grid;grid-template-columns:repeat(9,1fr);gap:2px}
+.layerstrip i{height:18px;background:var(--band);box-shadow:inset 0 0 0 1px var(--rule);font:normal 9px/18px var(--mono);text-align:center;color:var(--muted)}
+.layerstrip i.on{background:var(--ink);color:var(--paper);box-shadow:none}
+.layerstrip i.root{background:var(--accent);color:var(--paper)}
+.day24{position:relative;height:18px;background:var(--band);box-shadow:inset 0 0 0 1px var(--rule)}
+.day24 .open{position:absolute;top:4px;bottom:4px;background:var(--ink)}
+.day24 .now{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--accent)}
+.day24 .tick{position:absolute;top:0;bottom:0;width:1px;background:var(--rule-strong)}
+.ccy-later{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0;border-bottom:1px solid var(--rule)}
+.ccy-later div{display:flex;align-items:center;gap:10px;padding:10px 16px 10px 0;font-size:var(--t-s);color:var(--muted);border-top:1px solid var(--rule)}
+.ccy-later b{font-family:var(--mono);font-size:var(--t-xs);color:var(--ink);font-weight:600}
+.idx{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:0 40px}
+.idx ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.idx li a{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule);text-decoration:none}
+.idx li a:hover span:first-child{text-decoration:underline}
+.idx li a .mono{color:var(--muted);white-space:nowrap}
+.idx li a.empty{color:var(--muted)}
 
-/* L2 table */
-.tablebox{overflow-x:auto;border-top:1px solid var(--rule-strong)}
-table{border-collapse:collapse;width:100%;font-size:var(--s2)}
-th{font-family:var(--code);font-size:var(--s1);font-weight:400;color:var(--muted);text-align:left;padding:10px 12px 8px 0;border-bottom:1px solid var(--rule-strong);white-space:nowrap}
-td{padding:12px 12px 12px 0;border-bottom:1px solid var(--rule);vertical-align:baseline}
-tbody tr{cursor:pointer}
-tbody tr:hover td{background:color-mix(in srgb,var(--accent-soft) 60%,transparent)}
-tbody tr[aria-selected="true"] td{background:var(--accent-soft)}
-td.sys button{all:unset;cursor:pointer;font-weight:700}
-td.sys button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.cc{font-family:var(--code);font-size:11px;border:1px solid var(--rule-strong);padding:0 4px;margin-right:8px;vertical-align:2px;color:var(--muted)}
-.st-planned{font-family:var(--code);font-size:var(--s1);color:var(--planned);margin-left:6px}
-.settle-link{color:var(--accent);text-decoration:none;font-weight:700}
-.settle-link:hover{text-decoration:underline}
-.unknown{color:var(--muted);font-style:italic}
-.group-head{font-size:var(--s3);margin:28px 0 8px;font-weight:700}
+/* body split with panel */
+.split{display:grid;grid-template-columns:minmax(0,1fr);gap:0 32px}
+.split.has-panel{grid-template-columns:minmax(0,1fr) minmax(0,400px)}
+.main-col{min-width:0;container-type:inline-size}
 
-/* L3 panel */
-.panel{min-width:0;border-left:1px solid var(--rule-strong);padding:4px 0 0 28px;align-self:start;position:sticky;top:calc(env(safe-area-inset-top,0px) + 70px);max-height:calc(100vh - 90px);overflow:auto}
-.panel-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
-.panel-bar .grip{display:none}
-.icon-btn{border:1px solid var(--rule-strong);background:none;border-radius:2px;padding:4px 10px;cursor:pointer;font-family:var(--code);font-size:var(--s1)}
-h2[tabindex="-1"]:focus:not(:focus-visible){outline:none}
-.panel h2{font-size:var(--s4);line-height:1.2;margin:0 0 2px;letter-spacing:-.01em}
-.panel .kind{font-family:var(--code);font-size:var(--s1);color:var(--muted);margin:0 0 14px}
-dl.facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 16px;margin:0 0 16px;padding:12px 0;border-block:1px solid var(--rule)}
-dl.facts dt{font-family:var(--code);font-size:var(--s1);color:var(--muted);padding-top:2px}
+/* L2 layer map */
+.map{position:relative;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.map svg.edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
+.lrow{display:grid;grid-template-columns:168px minmax(0,1fr);min-height:76px;border-top:1px solid var(--rule)}
+.lrow:first-of-type{border-top:0}
+.lrow:nth-of-type(even){background:var(--band)}
+.lhead{padding:12px 14px 12px 0;display:grid;grid-template-columns:30px 1fr;gap:0 8px;align-content:center}
+.lhead{position:relative;z-index:3}
+.lhead .lid{font-family:var(--mono);font-size:var(--t-xs);font-weight:600;border:1px solid var(--rule-strong);text-align:center;height:22px;line-height:20px;background:var(--paper)}
+.lhead b{font-size:var(--t-s);line-height:1.2;font-variation-settings:"wdth" 85}
+.lhead > span:not(.lid){grid-column:2;font-size:var(--t-xs);color:var(--muted);line-height:1.3}
+.lnodes{display:grid;grid-template-columns:repeat(var(--cols,9),minmax(0,1fr));gap:8px;align-items:center;padding:14px 0 14px 4px;position:relative;z-index:3}
+.node{all:unset;position:relative;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:1px;min-height:44px;justify-content:center;padding:7px 9px;background:var(--paper);border:1px solid var(--rule-strong);border-radius:2px;transition:opacity .15s}
+.node .nm{font-weight:700;font-size:var(--t-s);line-height:1.15;font-variation-settings:"wdth" 80;display:flex;gap:6px;align-items:center}
+.node .sb{font-size:var(--t-xs);color:var(--muted);line-height:1.25;font-variation-settings:"wdth" 85}
+.node.k-product{border-style:solid;border-color:var(--rule)}
+.node.k-product .nm{font-variation-settings:"wdth" 85}
+.node.k-system{border:1.5px solid var(--ink)}
+.node.l-1{border:2px solid var(--accent)}
+.node.k-access{border:1.5px dotted var(--ink)}
+.node.planned{background-image:var(--hatch)}
+.node.planned::after{content:"planned";position:absolute;top:-8px;right:6px;font:600 9px/14px var(--mono);color:var(--planned);background:var(--paper);border:1px solid currentColor;padding:0 4px}
+.node.unknown{border-style:dashed}
+.node:hover{outline:1px solid var(--ink)}
+.node:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.node.sel{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.node.sel .sb{color:var(--paper);opacity:.8}
+.node.sel.planned::after{color:var(--planned)}
+.map.has-sel .node:not(.lit),.map.has-sel .base:not(.lit){opacity:.25}
+.base{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:168px minmax(0,1fr) auto;align-items:center;gap:0 4px;width:100%;padding:14px 12px 14px 0;background:var(--accent-soft);border-top:4px double var(--accent);position:relative;z-index:3}
+.base .lhead{padding:0 14px 0 0}
+.base .lhead .lid{border-color:var(--accent);color:var(--accent)}
+.base .bname{font-weight:700;font-size:var(--t-l);font-variation-settings:"wdth" 85;display:flex;align-items:center;gap:10px;padding-left:4px}
+.base .bsub{font-family:var(--mono);font-size:var(--t-xs);color:var(--accent);text-align:right}
+.base.sel{outline:2px solid var(--ink);outline-offset:-2px}
+.base:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.e{fill:none;transition:opacity .15s}
+.e-runs{stroke:var(--ink);stroke-width:1.2}
+.e-settle-out{stroke:var(--accent);stroke-width:5}
+.e-settle-in{stroke:var(--paper);stroke-width:1.6}
+.e-access{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:1.5 3.5;stroke-linecap:round}
+.e-unknown{stroke:var(--rule-strong);stroke-width:1.2;stroke-dasharray:3 3}
+.e-lab rect{fill:var(--paper)}
+.e-lab text{font:600 10px var(--mono);fill:var(--accent)}
+.e-q{font:700 12px var(--mono);fill:var(--muted)}
+.map.has-sel .e:not(.lit),.map.has-sel .e-lab:not(.lit),.map.has-sel .e-q:not(.lit){opacity:.12}
+.maplegend{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:var(--t-xs);color:var(--muted);padding:10px 0 0}
+.maplegend span{display:inline-flex;align-items:center;gap:6px}
+.maplegend svg{flex:none}
+.hint{font-size:var(--t-s);color:var(--muted);margin:8px 0 0}
+.narrow-hint{display:none}
+
+/* clock */
+.clockbox{overflow-x:auto;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);-webkit-overflow-scrolling:touch}
+.clockbox svg{display:block;min-width:720px;width:100%;height:auto}
+.c-day{font:600 11px var(--mono);fill:var(--ink)}
+.c-date{font:400 10px var(--mono);fill:var(--muted)}
+.c-row{font:700 12px var(--sans);fill:var(--ink)}
+.c-sub{font:400 10px var(--sans);fill:var(--muted)}
+.c-grid{stroke:var(--rule);stroke-width:1}
+.c-gridd{stroke:var(--rule-strong);stroke-width:1}
+.c-open{fill:var(--ink)}
+.c-cust{fill:none;stroke:var(--ink);stroke-width:1.2;stroke-dasharray:2 2}
+.c-settle{fill:var(--accent)}
+.c-settle-t{font:600 9.5px var(--mono);fill:var(--accent)}
+.c-plan{fill:url(#hatch)}
+.c-plan-edge{fill:none;stroke:var(--planned);stroke-width:1}
+.c-plan-t{font:600 9.5px var(--mono);fill:var(--planned)}
+.c-unk{font:400 11px var(--sans);fill:var(--muted);font-style:italic}
+.c-now{stroke:var(--accent);stroke-width:2}
+.c-now-t{font:600 10px var(--mono);fill:var(--accent)}
+.c-hol{fill:var(--band)}
+.c-hol-t{font:600 9.5px var(--mono);fill:var(--muted)}
+.c-cut{stroke:var(--paper);stroke-width:1.5}
+.toggle{display:inline-flex;align-items:center;gap:8px;font-size:var(--t-s);cursor:pointer;user-select:none;min-height:40px}
+.toggle input{width:18px;height:18px;accent-color:var(--accent);margin:0}
+.clock-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:4px 28px;margin:10px 0 0;padding:0;list-style:none;font-size:var(--t-s);color:var(--muted)}
+.clock-notes li{padding:6px 0;border-bottom:1px solid var(--rule)}
+.clock-notes b{color:var(--ink);font-weight:700}
+
+/* timeline */
+.tlbox{overflow-x:auto;border-top:1px solid var(--ink)}
+.tlbox svg{display:block;min-width:640px;width:100%;height:auto}
+.t-axis{stroke:var(--ink);stroke-width:1.5}
+.t-yr{font:600 10px var(--mono);fill:var(--muted)}
+.t-done{fill:var(--ink)}
+.t-plan{fill:url(#hatch2);stroke:var(--planned);stroke-width:1.2}
+.t-now{stroke:var(--accent);stroke-width:2}
+.t-now-t{font:600 10px var(--mono);fill:var(--accent)}
+.t-n{font:600 10px var(--mono);fill:var(--paper)}
+.t-np{font:600 10px var(--mono);fill:var(--planned)}
+.tl-list{list-style:none;margin:0;padding:0}
+.tl-list li{display:grid;grid-template-columns:28px 120px minmax(0,1fr);gap:0 12px;padding:9px 0;border-bottom:1px solid var(--rule);font-size:var(--t-s)}
+.tl-list .n{font-family:var(--mono);font-size:var(--t-xs);font-weight:600;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:var(--ink);color:var(--paper)}
+.tl-list .n.p{background:none;color:var(--planned);box-shadow:inset 0 0 0 1.2px var(--planned)}
+.tl-list .d{font-family:var(--mono);font-size:var(--t-xs);color:var(--muted);padding-top:2px}
+.tl-list .s{display:block;font-size:var(--t-xs);color:var(--muted)}
+
+/* type view */
+.typelist{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.typelist li button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:28px minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:4px 16px;width:100%;padding:12px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.typelist li button:hover b{text-decoration:underline}
+.typelist li button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.typelist .set{color:var(--accent);font-weight:700}
+
+/* panel */
+.panel{min-width:0;border-left:1px solid var(--ink);padding:14px 0 24px 24px;align-self:start;position:sticky;top:calc(env(safe-area-inset-top,0px) + 53px);max-height:calc(100vh - 53px - env(safe-area-inset-top,0px));overflow:auto;overscroll-behavior:contain}
+.pbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.pbar .grip{display:none}
+.btn{border:1px solid var(--rule-strong);background:var(--paper);border-radius:2px;padding:0 12px;min-height:36px;cursor:pointer;font-family:var(--mono);font-size:var(--t-xs)}
+.btn:hover{border-color:var(--ink)}
+.btn:disabled{color:var(--muted);border-color:var(--rule);cursor:default}
+.btn.strong{border-color:var(--ink)}
+.panel .ptype{font-family:var(--mono);font-size:var(--t-xs);color:var(--muted);margin:0 0 2px}
+.panel h2{margin:0 0 12px;font-size:var(--t-xl);line-height:1.12;font-weight:700;letter-spacing:-.01em;font-variation-settings:"wdth" 85;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.panel h2:focus{outline:none}
+.panel h2 .tag{font:600 10px var(--mono);color:var(--planned);border:1px solid currentColor;padding:1px 4px}
+dl.facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 14px;margin:0 0 14px;padding:12px 0;border-block:1px solid var(--rule);font-size:var(--t-s)}
+dl.facts dt{font-family:var(--mono);font-size:var(--t-xs);color:var(--muted);padding-top:1px}
 dl.facts dd{margin:0}
-dl.facts .settles dd{color:var(--accent);font-weight:700}
-.explain{max-width:60ch;margin:0 0 8px}
-.srcline{font-size:var(--s1);color:var(--muted);margin:0 0 20px}
-.srcline a{color:var(--muted)}
-
-/* settlement drill */
-.drill{margin:0 0 20px}
-.drill h3,.panel h3{font-size:var(--s1);font-family:var(--code);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px}
-.ladder{list-style:none;margin:0;padding:0}
-.rung{display:grid;grid-template-columns:18px minmax(0,1fr);gap:0 10px}
-.rung .rail{position:relative}
-.rung .rail::before{content:"";position:absolute;left:8px;top:0;bottom:0;border-left:var(--line-settlement) double var(--accent);width:0}
-.rung:last-child .rail::before{bottom:auto;height:14px}
-.rung:first-child .rail::before{top:14px}
-.rung .rail::after{content:"";position:absolute;left:3px;top:8px;width:12px;height:12px;border:2px solid var(--accent);background:var(--paper);border-radius:50%}
-.rung.here .rail::after{background:var(--accent)}
-.rung .body{padding:4px 0 14px}
-.rung button.to{all:unset;cursor:pointer;font-weight:700}
-.rung button.to:hover{text-decoration:underline}
-.rung button.to:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.rung .how{display:block;font-family:var(--code);font-size:var(--s1);color:var(--muted)}
-.rung.terminal .how{color:var(--accent)}
-.drill-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.drill-btns button{border:1px solid var(--ink);background:none;border-radius:2px;padding:6px 12px;cursor:pointer;font-size:var(--s1);font-family:var(--code)}
-.drill-btns button:disabled{border-color:var(--rule);color:var(--muted);cursor:default}
-.feeders{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--rule)}
-.feeders li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;padding:8px 0;border-bottom:1px solid var(--rule)}
-.feeders button{all:unset;cursor:pointer;font-weight:700}
-.feeders button:hover{text-decoration:underline}
-.feeders button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
-.flowlink{display:inline-block;margin:0 0 20px;color:var(--accent);font-weight:700;text-decoration:none}
+dl.facts .acc{color:var(--accent);font-weight:700}
+.unk{color:var(--muted);font-style:italic}
+.explain{margin:0 0 6px}
+.src{font-size:var(--t-xs);color:var(--muted);margin:0 0 18px}
+.ph{font-family:var(--mono);font-size:var(--t-xs);font-weight:600;margin:0 0 8px;display:flex;justify-content:space-between}
+.ladder{list-style:none;margin:0 0 10px;padding:0}
+.rung{display:grid;grid-template-columns:20px minmax(0,1fr);gap:0 10px}
+.rung .rl{position:relative}
+.rung .rl::before{content:"";position:absolute;left:7px;top:0;bottom:0;border-left:5px double var(--accent)}
+.rung.k-runs .rl::before{border-left:1.2px solid var(--ink);left:9px}
+.rung:last-child .rl::before{display:none}
+.rung .rl::after{content:"";position:absolute;left:4px;top:7px;width:12px;height:12px;background:var(--paper);border:2px solid var(--ink);border-radius:2px}
+.rung.root .rl::after{border-color:var(--accent);background:var(--accent)}
+.rung.cur .rl::after{background:var(--ink)}
+.rung .rb{padding:3px 0 14px;font-size:var(--t-s)}
+.rung .rb button{all:unset;cursor:pointer;font-weight:700}
+.rung .rb button:hover{text-decoration:underline}
+.rung .rb button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.rung .how{display:block;font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:1px}
+.rung.root .how{color:var(--accent)}
+.drillrow{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 6px}
+.feeders{list-style:none;margin:6px 0 0;padding:0;border-top:1px solid var(--rule);font-size:var(--t-s)}
+.feeders li{border-bottom:1px solid var(--rule)}
+.feeders button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;justify-content:space-between;gap:10px;width:100%;padding:9px 0}
+.feeders button:hover b{text-decoration:underline}
+.feeders button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.today{margin:18px 0 6px}
+.today .day24{height:22px}
+.today .hrs{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-top:3px}
+.flowlink{display:inline-flex;align-items:center;min-height:40px;margin:8px 0 10px;color:var(--accent);font-weight:700;text-decoration:none}
 .flowlink:hover{text-decoration:underline}
-
-/* L4 disclosure */
 details{border-top:1px solid var(--rule)}
 details:last-of-type{border-bottom:1px solid var(--rule)}
-summary{cursor:pointer;padding:10px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between}
+summary{cursor:pointer;min-height:40px;display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:var(--t-s);list-style:none}
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-family:var(--code);color:var(--muted)}
+summary::after{content:"+";font-family:var(--mono);color:var(--muted)}
 details[open] summary::after{content:"−"}
-details > div{padding:0 0 14px;font-size:var(--s2)}
-details ul{margin:0;padding-left:18px}
+details>div{padding:0 0 12px;font-size:var(--t-s)}
+details ul{margin:0;padding-left:16px}
 details li{margin:0 0 6px}
-.srclist{list-style:none;padding:0}
-.srclist li{margin:0 0 10px}
-.srclist .code{color:var(--muted);display:block}
+.srcs{list-style:none!important;padding:0!important}
+.srcs li{margin:0 0 10px}
+.srcs .mono{display:block;color:var(--muted)}
 
 /* Railroom */
-.flow-head{display:flex;flex-wrap:wrap;gap:6px 24px;align-items:baseline;justify-content:space-between;margin-bottom:12px}
-.diagram{overflow-x:auto;border-block:1px solid var(--rule-strong);margin:0 0 16px;position:relative}
+.flow-head{display:flex;flex-wrap:wrap;gap:6px 24px;align-items:baseline;justify-content:space-between;padding-block:18px 6px}
+.flow-head h1{margin:0;font-size:var(--t-xxl);line-height:1.08;font-weight:700;letter-spacing:-.02em;font-variation-settings:"wdth" 85}
+.lede{max-width:70ch;color:var(--muted);margin:4px 0 14px}
+.diagram{overflow-x:auto;border-block:1px solid var(--ink);margin:0 0 14px}
 .diagram svg{display:block}
-.lane-label{font:700 12px var(--read);fill:var(--ink)}
+.lane-label{font:700 12px var(--sans);fill:var(--ink)}
 .lane-label.settle{fill:var(--accent)}
-.step-num{font:700 12px var(--code);fill:var(--muted)}
-.step-cap{font:400 12px var(--read);fill:var(--muted)}
-.step.on .step-num,.step.on .step-cap{fill:var(--ink)}
-.step .ln{stroke:var(--rule-strong)}
-.step.on .ln{stroke:var(--ink)}
-.step.on .ln.settle,.step .ln.settle{stroke:var(--accent)}
-.step:not(.on) .ln.settle{opacity:.55}
-.step .lbl{font:700 11px var(--code);fill:var(--muted)}
-.step.on .lbl{fill:var(--ink)}
-.step .lbl.final{fill:var(--accent)}
 .lane-rule{stroke:var(--rule)}
 .lane-rule.settle{stroke:var(--accent);stroke-dasharray:2 3}
-.controls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:0 0 8px}
-.controls button{border:1px solid var(--ink);background:none;border-radius:2px;padding:6px 14px;cursor:pointer;font-family:var(--code);font-size:var(--s1)}
-.controls button:disabled{border-color:var(--rule);color:var(--muted);cursor:default}
-.scrub{flex:1;min-width:200px;display:grid;gap:4px}
-.scrub input{width:100%;accent-color:var(--accent)}
-.marks{display:flex;justify-content:space-between;font-family:var(--code);font-size:11px;color:var(--muted)}
-.caption{min-height:3.2em;max-width:70ch;font-size:var(--s3);margin:4px 0 18px}
-.caption .code{display:block;color:var(--muted)}
-.legend-inline{font-size:var(--s1);color:var(--muted);margin:0 0 20px;max-width:80ch}
-.four{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:0 28px;border-top:1px solid var(--rule-strong);margin:8px 0 20px}
+.step{cursor:pointer}
+.step-num{font:600 11px var(--mono);fill:var(--muted)}
+.step .ln{stroke:var(--rule-strong)}
+.step.on .ln{stroke:var(--ink)}
+.step .ln.settle{stroke:var(--accent)}
+.step:not(.on) .ln.settle{opacity:.5}
+.step .lbl{font:600 10px var(--mono);fill:var(--muted)}
+.step.on .lbl,.step.on .step-num{fill:var(--ink)}
+.step .lbl.final{fill:var(--accent)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:0 0 6px}
+.scrub{flex:1;min-width:220px;display:grid;gap:4px}
+.scrub input{width:100%;accent-color:var(--accent);min-height:28px}
+.marks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.caption{min-height:3.2em;max-width:72ch;font-size:var(--t-l);margin:4px 0 16px;font-variation-settings:"wdth" 90}
+.caption .mono{display:block;color:var(--muted)}
+.four{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:0 28px;border-top:1px solid var(--ink);margin:6px 0 18px}
 .four div{padding:12px 0;border-bottom:1px solid var(--rule)}
-.four h3{margin:0 0 4px;font-size:var(--s1);font-family:var(--code);text-transform:uppercase;letter-spacing:.08em}
-.four h3.settle{color:var(--accent)}
-.four p{margin:0 0 4px}
-.steps-text{padding-left:22px;max-width:72ch}
+.four h3{margin:0 0 4px;font:600 var(--t-xs) var(--mono)}
+.four h3.acc{color:var(--accent)}
+.four p{margin:0 0 4px;font-size:var(--t-s)}
+.steps-text{padding-left:22px;max-width:76ch;font-size:var(--t-s)}
 .steps-text li{margin:0 0 8px;color:var(--muted)}
 .steps-text li[aria-current="step"]{color:var(--ink);font-weight:700}
-.steps-text .code{font-weight:400}
-.foot{border-top:1px solid var(--rule);padding-block:14px 28px;font-size:var(--s1);color:var(--muted)}
+.steps-text .mono{font-weight:400}
+
+.foot{border-top:1px solid var(--ink);padding-block:14px 30px;font-size:var(--t-xs);color:var(--muted);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:6px 32px}
 .err{border:1px solid var(--accent);padding:12px;margin:20px 0}
 
-/* phones: panel becomes a bottom sheet */
-@media (max-width: 820px){
-  .split.has-panel{grid-template-columns:minmax(0,1fr)}
-  .panel{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:8;max-height:none;height:56vh;border-left:0;border-top:1px solid var(--rule-strong);
-    background:var(--paper);padding:8px max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
-    box-shadow:0 -1px 0 var(--rule-strong);overflow:auto}
-  .panel.full{height:calc(100vh - 56px - env(safe-area-inset-top,0px))}
-  .panel-bar{position:sticky;top:-8px;background:var(--paper);padding:6px 0 8px;margin-top:-8px}
-  .panel-bar .grip{display:inline-block}
-  .split.has-panel .list{padding-bottom:58vh}
-  .row{grid-template-columns:minmax(0,1fr)}
-  .row-count{grid-row:auto;grid-column:1;text-align:left}
-  h1{font-size:26px}
-  /* L2 table becomes stacked rows so nothing is hidden */
-  table.stack thead{position:absolute;left:-9999px}
-  table.stack, table.stack tbody, table.stack tr, table.stack td{display:block;width:100%}
-  table.stack tr{border-bottom:1px solid var(--rule);padding:10px 0}
-  table.stack td{border:0;padding:2px 0}
-  table.stack td[data-label]::before{content:attr(data-label);display:inline-block;min-width:92px;font-family:var(--code);font-size:var(--s1);color:var(--muted)}
+/* phones and narrow windows */
+@media (max-width: 980px){
+  .ccy{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 16px}
+  .ccy-main{grid-column:1/-1;order:-1}
+  .ccy-id{order:-2;grid-column:1/-1}
 }
-@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media (max-width: 900px){
+  .split.has-panel{grid-template-columns:minmax(0,1fr)}
+  .panel{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:15;height:58vh;max-height:none;border-left:0;border-top:1px solid var(--ink);background:var(--paper);
+    padding:0 max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));box-shadow:0 -8px 24px color-mix(in srgb,var(--ink) 12%,transparent)}
+  .panel.full{height:calc(100vh - 52px - env(safe-area-inset-top,0px))}
+  .pbar{position:sticky;top:0;background:var(--paper);padding:10px 0 8px;z-index:2}
+  .pbar .grip{display:inline-flex;align-items:center}
+  .split.has-panel .main-col{padding-bottom:60vh}
+  .pagehead{grid-template-columns:minmax(0,1fr)}
+  .pagehead .now{text-align:left}
+  .pagehead h1{font-size:28px}
+  .typelist li button{grid-template-columns:28px minmax(0,1fr)}
+  .typelist li button > :nth-child(n+3){grid-column:2}
+  .tl-list li{grid-template-columns:28px minmax(0,1fr)}
+  .tl-list li .d{grid-column:2}
+  .tl-list li > span:last-child{grid-column:2}
+}
+@container (max-width: 860px){
+  .lrow{grid-template-columns:minmax(0,1fr)}
+  .lhead{padding:10px 0 0;grid-template-columns:30px minmax(0,1fr)}
+  .lhead > span:not(.lid){display:none}
+  .lnodes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 8px;padding:12px 0 16px}
+  .lnodes .node{flex:0 1 auto;max-width:calc(50% - 4px);min-width:96px}
+  .base{grid-template-columns:minmax(0,1fr);gap:4px;padding:12px}
+  .base .lhead{display:none}
+  .base .bsub{text-align:left;padding-left:4px}
+  .clockbox svg{min-width:900px}
+  .scrollhint{display:block}
+  .narrow-hint{display:block}
+  .lhead b{background:var(--paper);padding:0 4px 0 0}
+  .lrow:nth-of-type(even) .lhead b{background:var(--band)}
+}
+.scrollhint{display:none;font-family:var(--mono);font-size:10px;color:var(--muted);margin:6px 0 0}
+@media (max-width: 560px){
+  .ccy{grid-template-columns:minmax(0,1fr)}
+  .nav a{padding-inline:8px}
+  .brand span{display:none}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 
-<header class="top wrap">
-  <a class="mark" href="#" data-nav="home">Settlement Map<small>Fintech North</small></a>
-  <nav class="nav" aria-label="Sections">
-    <a href="#" data-nav="home" id="nav-atlas">Atlas</a>
-    <a href="#flow-ca-us-wire" data-nav="flow" id="nav-flow">Railroom</a>
-  </nav>
+<header class="top gut">
+  <div class="wrap">
+    <a class="brand" href="#" data-nav="home"><b>Settlement Map</b><span>Fintech North</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#" data-nav="home" id="nav-home">Currencies</a>
+      <a href="#" data-nav="flow" id="nav-flow">Railroom</a>
+    </nav>
+  </div>
 </header>
-<main class="wrap" id="app" aria-live="polite"><p class="muted">Loading the atlas data.</p></main>
-<footer class="wrap foot" id="foot"></footer>
+<main class="gut"><div class="wrap" id="app" aria-live="polite"><p class="muted" style="padding-top:24px">Loading the atlas data.</p></div></main>
+<footer class="gut"><div class="wrap foot" id="foot"></div></footer>
 
 <script type="application/json" id="atlas-inline"></script>
+<script type="application/json" id="icons-inline">{"logo":{"visa":"M9.112 8.262L5.97 15.758H3.92L2.374 9.775c-.094-.368-.175-.503-.461-.658C1.447 8.864.677 8.627 0 8.479l.046-.217h3.3a.904.904 0 01.894.764l.817 4.338 2.018-5.102zm8.033 5.049c.008-1.979-2.736-2.088-2.717-2.972.006-.269.262-.555.822-.628a3.66 3.66 0 011.913.336l.34-1.59a5.207 5.207 0 00-1.814-.333c-1.917 0-3.266 1.02-3.278 2.479-.012 1.079.963 1.68 1.698 2.04.756.367 1.01.603 1.006.931-.005.504-.602.725-1.16.734-.975.015-1.54-.263-1.992-.473l-.351 1.642c.453.208 1.289.39 2.156.398 2.037 0 3.37-1.006 3.377-2.564m5.061 2.447H24l-1.565-7.496h-1.656a.883.883 0 00-.826.55l-2.909 6.946h2.036l.405-1.12h2.488zm-2.163-2.656l1.02-2.815.588 2.815zm-8.16-4.84l-1.603 7.496H8.34l1.605-7.496z","mastercard":"M11.343 18.031c.058.049.12.098.181.146-1.177.783-2.59 1.238-4.107 1.238C3.32 19.416 0 16.096 0 12c0-4.095 3.32-7.416 7.416-7.416 1.518 0 2.931.456 4.105 1.238-.06.051-.12.098-.165.15C9.6 7.489 8.595 9.688 8.595 12c0 2.311 1.001 4.51 2.748 6.031zm5.241-13.447c-1.52 0-2.931.456-4.105 1.238.06.051.12.098.165.15C14.4 7.489 15.405 9.688 15.405 12c0 2.31-1.001 4.507-2.748 6.031-.058.049-.12.098-.181.146 1.177.783 2.588 1.238 4.107 1.238C20.68 19.416 24 16.096 24 12c0-4.094-3.32-7.416-7.416-7.416zM12 6.174c-.096.075-.189.15-.28.231C10.156 7.764 9.169 9.765 9.169 12c0 2.236.987 4.236 2.551 5.595.09.08.185.158.28.232.096-.074.189-.152.28-.232 1.563-1.359 2.551-3.359 2.551-5.595 0-2.235-.987-4.236-2.551-5.595-.09-.08-.184-.156-.28-.231z","swift":"M7.508 0c-.287 0-.573 0-.86.002-.241.002-.483.003-.724.01-.132.003-.263.009-.395.015A9.154 9.154 0 0 0 4.348.15 5.492 5.492 0 0 0 2.85.645 5.04 5.04 0 0 0 .645 2.848c-.245.48-.4.972-.495 1.5-.093.52-.122 1.05-.136 1.576a35.2 35.2 0 0 0-.012.724C0 6.935 0 7.221 0 7.508v8.984c0 .287 0 .575.002.862.002.24.005.481.012.722.014.526.043 1.057.136 1.576.095.528.25 1.02.495 1.5a5.03 5.03 0 0 0 2.205 2.203c.48.244.97.4 1.498.495.52.093 1.05.124 1.576.138.241.007.483.009.724.01.287.002.573.002.86.002h8.984c.287 0 .573 0 .86-.002.241-.001.483-.003.724-.01a10.523 10.523 0 0 0 1.578-.138 5.322 5.322 0 0 0 1.498-.495 5.035 5.035 0 0 0 2.203-2.203c.245-.48.4-.972.495-1.5.093-.52.124-1.05.138-1.576.007-.241.009-.481.01-.722.002-.287.002-.575.002-.862V7.508c0-.287 0-.573-.002-.86a33.662 33.662 0 0 0-.01-.724 10.5 10.5 0 0 0-.138-1.576 5.328 5.328 0 0 0-.495-1.5A5.039 5.039 0 0 0 21.152.645 5.32 5.32 0 0 0 19.654.15a10.493 10.493 0 0 0-1.578-.138 34.98 34.98 0 0 0-.722-.01C17.067 0 16.779 0 16.492 0H7.508zm6.035 3.41c4.114 2.47 6.545 7.162 5.549 11.131-.024.093-.05.181-.076.272l.002.001c2.062 2.538 1.5 5.258 1.236 4.745-1.072-2.086-3.066-1.568-4.088-1.043a6.803 6.803 0 0 1-.281.158l-.02.012-.002.002c-2.115 1.123-4.957 1.205-7.812-.022a12.568 12.568 0 0 1-5.64-4.838c.649.48 1.35.902 2.097 1.252 3.019 1.414 6.051 1.311 8.197-.002C9.651 12.73 7.101 9.67 5.146 7.191a10.628 10.628 0 0 1-1.005-1.384c2.34 2.142 6.038 4.83 7.365 5.576C8.69 8.408 6.208 4.743 6.324 4.86c4.436 4.47 8.528 6.996 8.528 6.996.154.085.27.154.36.213.085-.215.16-.437.224-.668.708-2.588-.09-5.548-1.893-7.992z"},"flag":{"ca":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#fff\" d=\"M150.1 0h339.7v480H150z\"/><path fill=\"#d52b1e\" d=\"M-19.7 0h169.8v480H-19.7zm509.5 0h169.8v480H489.9zM201 232l-13.3 4.4 61.4 54c4.7 13.7-1.6 17.8-5.6 25l66.6-8.4-1.6 67 13.9-.3-3.1-66.6 66.7 8c-4.1-8.7-7.8-13.3-4-27.2l61.3-51-10.7-4c-8.8-6.8 3.8-32.6 5.6-48.9 0 0-35.7 12.3-38 5.8l-9.2-17.5-32.6 35.8c-3.5.9-5-.5-5.9-3.5l15-74.8-23.8 13.4q-3.2 1.3-5.2-2.2l-23-46-23.6 47.8q-2.8 2.5-5 .7L264 130.8l13.7 74.1c-1.1 3-3.7 3.8-6.7 2.2l-31.2-35.3c-4 6.5-6.8 17.1-12.2 19.5s-23.5-4.5-35.6-7c4.2 14.8 17 39.6 9 47.7\"/><\/svg>","us":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#bd3d44\" d=\"M0 0h640v480H0\"/><path stroke=\"#fff\" stroke-width=\"37\" d=\"M0 55.3h640M0 129h640M0 203h640M0 277h640M0 351h640M0 425h640\"/><path fill=\"#192f5d\" d=\"M0 0h364.8v258.5H0\"/><marker markerHeight=\"30\" markerWidth=\"30\"><path fill=\"#fff\" d=\"m14 0 9 27L0 10h28L5 27z\"/><\/marker><path fill=\"none\" marker-mid=\"url(#us-a)\" d=\"m0 0 16 11h61 61 61 61 60L47 37h61 61 60 61L16 63h61 61 61 61 60L47 89h61 61 60 61L16 115h61 61 61 61 60L47 141h61 61 60 61L16 166h61 61 61 61 60L47 192h61 61 60 61L16 218h61 61 61 61 60z\"/><\/svg>","eu":"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 640 480\"><defs><g><g><path d=\"m0-1-.3 1 .5.1z\"/><use xlink:href=\"#eu-a\" transform=\"scale(-1 1)\"/><\/g><g><use xlink:href=\"#eu-b\" transform=\"rotate(72)\"/><use xlink:href=\"#eu-b\" transform=\"rotate(144)\"/><\/g><use xlink:href=\"#eu-c\" transform=\"scale(-1 1)\"/><\/g><\/defs><path fill=\"#039\" d=\"M0 0h640v480H0z\"/><g fill=\"#fc0\" transform=\"translate(320 242.3)scale(23.7037)\"><use xlink:href=\"#eu-d\" width=\"100%\" height=\"100%\" y=\"-6\"/><use xlink:href=\"#eu-d\" width=\"100%\" height=\"100%\" y=\"6\"/><g><use xlink:href=\"#eu-d\" width=\"100%\" height=\"100%\" x=\"-6\"/><use xlink:href=\"#eu-d\" width=\"100%\" height=\"100%\" transform=\"rotate(-144 -2.3 -2.1)\"/><use xlink:href=\"#eu-d\" width=\"100%\" height=\"100%\" transform=\"rotate(144 -2.1 -2.3)\"/><use xlink:href=\"#eu-d\" width=\"100%\" height=\"100%\" transform=\"rotate(72 -4.7 -2)\"/><use xlink:href=\"#eu-d\" width=\"100%\" height=\"100%\" transform=\"rotate(72 -5 .5)\"/><\/g><use xlink:href=\"#eu-e\" width=\"100%\" height=\"100%\" transform=\"scale(-1 1)\"/><\/g><\/svg>","gb":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#012169\" d=\"M0 0h640v480H0z\"/><path fill=\"#FFF\" d=\"m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0z\"/><path fill=\"#C8102E\" d=\"m424 281 216 159v40L369 281zm-184 20 6 35L54 480H0zM640 0v3L391 191l2-44L590 0zM0 0l239 176h-60L0 42z\"/><path fill=\"#FFF\" d=\"M241 0v480h160V0zM0 160v160h640V160z\"/><path fill=\"#C8102E\" d=\"M0 193v96h640v-96zM273 0v480h96V0z\"/><\/svg>","mx":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><path fill=\"#006847\" d=\"M0 0h213.3v480H0z\"/><path fill=\"#fff\" d=\"M213.3 0h213.4v480H213.3z\"/><path fill=\"#ce1126\" d=\"M426.7 0H640v480H426.7z\"/><circle cx=\"320\" cy=\"240\" r=\"62\" fill=\"#8c5a2b\"/><\/svg>","br":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 640 480\"><g stroke-width=\"1pt\"><path fill=\"#229e45\" fill-rule=\"evenodd\" d=\"M0 0h640v480H0z\"/><path fill=\"#f8e509\" fill-rule=\"evenodd\" d=\"m321.4 436 301.5-195.7L319.6 44 17.1 240.7z\"/><path fill=\"#2b49a3\" fill-rule=\"evenodd\" d=\"M452.8 240c0 70.3-57.1 127.3-127.6 127.3A127.4 127.4 0 1 1 452.8 240\"/><path fill=\"#ffffef\" fill-rule=\"evenodd\" d=\"m283.3 316.3-4-2.3-4 2 .9-4.5-3.2-3.4 4.5-.5 2.2-4 1.9 4.2 4.4.8-3.3 3m86 26.3-3.9-2.3-4 2 .8-4.5-3.1-3.3 4.5-.5 2.1-4.1 2 4.2 4.4.8-3.4 3.1m-36.2-30-3.4-2-3.5 1.8.8-3.9-2.8-2.9 4-.4 1.8-3.6 1.6 3.7 3.9.7-3 2.7m87-8.5-3.4-2-3.5 1.8.8-3.9-2.7-2.8 3.9-.4 1.8-3.5 1.6 3.6 3.8.7-2.9 2.6m-87.3-22-4-2.2-4 2 .8-4.6-3.1-3.3 4.5-.5 2.1-4.1 2 4.2 4.4.8-3.4 3.2m-104.6-35-4-2.2-4 2 1-4.6-3.3-3.3 4.6-.5 2-4.1 2 4.2 4.4.8-3.3 3.1m13.3 57.2-4-2.3-4 2 .9-4.5-3.2-3.3 4.5-.6 2.1-4 2 4.2 4.4.8-3.3 3.1m132-67.3-3.6-2-3.6 1.8.8-4-2.8-3 4-.5 1.9-3.6 1.7 3.8 4 .7-3 2.7m-6.7 38.3-2.7-1.6-2.9 1.4.6-3.2-2.2-2.3 3.2-.4 1.5-2.8 1.3 3 3 .5-2.2 2.2m-142.2 50.4-2.7-1.5-2.7 1.3.6-3-2.1-2.2 3-.4 1.4-2.7 1.3 2.8 3 .6-2.3 2M419 299.8l-2.2-1.1-2.2 1 .5-2.3-1.7-1.6 2.4-.3 1.2-2 1 2 2.5.5-1.9 1.5\"/><path fill=\"#ffffef\" fill-rule=\"evenodd\" d=\"m219.3 287.6-2.7-1.5-2.7 1.3.6-3-2.1-2.2 3-.4 1.4-2.7 1.3 2.8 3 .6-2.3 2\"/><path fill=\"#ffffef\" fill-rule=\"evenodd\" d=\"m219.3 287.6-2.7-1.5-2.7 1.3.6-3-2.1-2.2 3-.4 1.4-2.7 1.3 2.8 3 .6-2.3 2m42.3 3-2.6-1.4-2.7 1.3.6-3-2.1-2.2 3-.4 1.4-2.7 1.3 2.8 3 .5-2.3 2.1m-4.8 17-2.6-1.5-2.7 1.4.6-3-2.1-2.3 3-.4 1.4-2.7 1.3 2.8 3 .6-2.3 2m87.4-22.2-2.6-1.6-2.8 1.4.6-3-2-2.3 3-.3 1.4-2.7 1.2 2.8 3 .5-2.2 2.1m-25.1 3-2.7-1.5-2.7 1.4.6-3-2-2.3 3-.3 1.4-2.8 1.2 2.9 3 .5-2.2 2.1m-68.8-5.8-1.7-1-1.7.8.4-1.9-1.3-1.4 1.9-.2.8-1.7.8 1.8 1.9.3-1.4 1.3m167.8 45.4-2.6-1.5-2.7 1.4.6-3-2.1-2.3 3-.4 1.4-2.7 1.3 2.8 3 .6-2.3 2m-20.8 6-2.2-1.4-2.3 1.2.5-2.6-1.7-1.8 2.5-.3 1.2-2.3 1 2.4 2.5.4-1.9 1.8m10.4 2.3-2-1.2-2.1 1 .4-2.3-1.6-1.7 2.3-.3 1.1-2 1 2 2.3.5-1.7 1.6m29.1-22.8-2-1-2 1 .5-2.3-1.6-1.7 2.3-.3 1-2 1 2.1 2.1.4-1.6 1.6m-38.8 41.8-2.5-1.4-2.7 1.2.6-2.8-2-2 3-.3 1.3-2.5 1.2 2.6 3 .5-2.3 1.9m.6 14.2-2.4-1.4-2.4 1.3.6-2.8-1.9-2 2.7-.4 1.2-2.5 1.1 2.6 2.7.5-2 2m-19-23.1-1.9-1.2-2 1 .4-2.2-1.5-1.7 2.2-.2 1-2 1 2 2.2.4-1.6 1.6m-17.8 2.3-2-1.2-2 1 .5-2.2-1.6-1.7 2.3-.2 1-2 1 2 2.1.4-1.6 1.6m-30.4-24.6-2-1.1-2 1 .5-2.3-1.6-1.6 2.2-.3 1-2 1 2 2.2.5-1.6 1.5m3.7 57-1.6-.9-1.8.9.4-2-1.3-1.4 1.9-.2.9-1.7.8 1.8 1.9.3-1.4 1.3m-46.2-86.6-4-2.3-4 2 .9-4.5-3.2-3.3 4.5-.6 2.2-4 1.9 4.2 4.4.8-3.3 3.1\"/><path fill=\"#fff\" fill-rule=\"evenodd\" d=\"M444.4 285.8a125 125 0 0 0 5.8-19.8c-67.8-59.5-143.3-90-238.7-83.7a125 125 0 0 0-8.5 20.9c113-10.8 196 39.2 241.4 82.6\"/><path fill=\"#309e3a\" d=\"m414 252.4 2.3 1.3a3 3 0 0 0-.3 2.2 3 3 0 0 0 1.4 1.7q1 .8 2 .7.9 0 1.3-.7l.2-.9-.5-1-1.5-1.8a8 8 0 0 1-1.8-3 4 4 0 0 1 2-4.4 4 4 0 0 1 2.3-.2 7 7 0 0 1 2.6 1.2q2.1 1.5 2.6 3.2a4 4 0 0 1-.6 3.3l-2.4-1.5q.5-1 .2-1.7-.2-.8-1.2-1.4a3 3 0 0 0-1.8-.7 1 1 0 0 0-.9.5q-.3.4-.1 1 .2.8 1.6 2.2t2 2.5a4 4 0 0 1-.3 4.2 4 4 0 0 1-1.9 1.5 4 4 0 0 1-2.4.3q-1.3-.3-2.8-1.3-2.2-1.5-2.7-3.3a5 5 0 0 1 .6-4zm-11.6-7.6 2.5 1.3a3 3 0 0 0-.2 2.2 3 3 0 0 0 1.4 1.6q1.1.8 2 .6.9 0 1.3-.8l.2-.8q0-.5-.5-1l-1.6-1.8q-1.7-1.6-2-2.8a4 4 0 0 1 .4-3.1 4 4 0 0 1 1.6-1.4 4 4 0 0 1 2.2-.3 7 7 0 0 1 2.6 1q2.3 1.5 2.7 3.1a4 4 0 0 1-.4 3.4l-2.5-1.4q.5-1 .2-1.7-.4-1-1.3-1.4a3 3 0 0 0-1.9-.6 1 1 0 0 0-.8.5q-.3.4-.1 1 .3.8 1.7 2.2 1.5 1.5 2 2.4a4 4 0 0 1 0 4.2 4 4 0 0 1-1.8 1.6 4 4 0 0 1-2.4.3 8 8 0 0 1-2.9-1.1 6 6 0 0 1-2.8-3.2 5 5 0 0 1 .4-4m-14.2-3.8 7.3-12 8.8 5.5-1.2 2-6.4-4-1.6 2.7 6 3.7-1.3 2-6-3.7-2 3.3 6.7 4-1.2 2zm-20.7-17 1.1-2 5.4 2.7-2.5 5q-1.2.3-3 .2a9 9 0 0 1-3.3-1 8 8 0 0 1-3-2.6 6 6 0 0 1-1-3.5 9 9 0 0 1 1-3.7 8 8 0 0 1 2.6-3 6 6 0 0 1 3.6-1.1q1.4 0 3.2 1 2.4 1.1 3.1 2.8a5 5 0 0 1 .3 3.5l-2.7-.8a3 3 0 0 0-.2-2q-.4-.9-1.6-1.4a4 4 0 0 0-3.1-.3q-1.5.5-2.6 2.6t-.7 3.8a4 4 0 0 0 2 2.4q.8.5 1.7.5h1.8l.8-1.6zm-90.2-22.3 2-14 4.2.7 1.1 9.8 3.9-9 4.2.6-2 13.8-2.7-.4 1.7-10.9-4.4 10.5-2.7-.4-1.1-11.3-1.6 11zm-14.1-1.7 1.3-14 10.3 1-.2 2.4-7.5-.7-.3 3 7 .7-.3 2.4-7-.7-.3 3.8 7.8.7-.2 2.4z\"/><g stroke-opacity=\".5\"><path fill=\"#309e3a\" d=\"M216.5 191.3q0-2.2.7-3.6a7 7 0 0 1 1.4-1.9 5 5 0 0 1 1.8-1.2q1.5-.5 3-.5 3.1.1 5 2a7 7 0 0 1 1.6 5.5q0 3.3-2 5.3a7 7 0 0 1-5 1.7 7 7 0 0 1-4.8-2 7 7 0 0 1-1.7-5.3\"/><path fill=\"#f7ffff\" d=\"M219.4 191.3q0 2.3 1 3.6t2.8 1.3a4 4 0 0 0 2.8-1.1q1-1.2 1.1-3.7.1-2.4-1-3.6a4 4 0 0 0-2.7-1.3 4 4 0 0 0-2.8 1.2q-1.1 1.2-1.2 3.6\"/><\/g><g stroke-opacity=\".5\"><path fill=\"#309e3a\" d=\"m233 198.5.2-14h6q2.2 0 3.2.5 1 .3 1.6 1.3c.6 1 .6 1.4.6 2.3a4 4 0 0 1-1 2.6 5 5 0 0 1-2.7 1.2l1.5 1.2q.6.6 1.5 2.3l1.7 2.8h-3.4l-2-3.2-1.4-2-.9-.6-1.4-.2h-.6v5.8z\"/><path fill=\"#fff\" d=\"M236 190.5h2q2.1 0 2.6-.2.5-.1.8-.5.4-.6.3-1 0-.9-.4-1.2-.3-.4-1-.6h-2l-2.3-.1z\"/><\/g><g stroke-opacity=\".5\"><path fill=\"#309e3a\" d=\"m249 185.2 5.2.3q1.7 0 2.6.3a5 5 0 0 1 2 1.4 6 6 0 0 1 1.2 2.4q.4 1.4.3 3.3a9 9 0 0 1-.5 3q-.6 1.5-1.7 2.4a5 5 0 0 1-2 1q-1 .3-2.5.2l-5.3-.3z\"/><path fill=\"#fff\" d=\"m251.7 187.7-.5 9.3h3.8q.8 0 1.2-.5.5-.4.8-1.3t.4-2.6l-.1-2.5a3 3 0 0 0-.8-1.4l-1.2-.7-2.3-.3z\"/><\/g><g stroke-opacity=\".5\"><path fill=\"#309e3a\" d=\"m317.6 210.2 3.3-13.6 4.4 1 3.2 1q1.1.6 1.6 1.9t.2 2.8q-.3 1.2-1 2a4 4 0 0 1-3 1.4q-1 0-3-.5l-1.7-.5-1.2 5.2z\"/><path fill=\"#fff\" d=\"m323 199.6-.8 3.8 1.5.4q1.6.4 2.2.3a2 2 0 0 0 1.6-1.5q0-.7-.2-1.3a2 2 0 0 0-1-.9l-1.9-.5-1.3-.3z\"/><\/g><g stroke-opacity=\".5\"><path fill=\"#309e3a\" d=\"m330.6 214.1 4.7-13.2 5.5 2q2.2.8 3 1.4.8.7 1 1.8c.2 1.1.2 1.5 0 2.3q-.6 1.5-1.8 2.2-1.2.6-3 .3.6.7 1 1.6l.8 2.7.6 3.1-3.1-1.1-1-3.6-.7-2.4-.6-.8q-.3-.4-1.3-.7l-.5-.2-2 5.6z\"/><path fill=\"#fff\" d=\"m336 207.4 1.9.7q2 .7 2.5.7t.9-.3q.5-.3.6-.9.3-.6 0-1.2l-.8-.9-2-.7-2-.7-1.2 3.3z\"/><\/g><g stroke-opacity=\".5\"><path fill=\"#309e3a\" d=\"M347 213.6a9 9 0 0 1 1.7-3.2l1.8-1.5 2-.7q1.5-.1 3.1.4a7 7 0 0 1 4.2 3.3q1.2 2.4.2 5.7a7 7 0 0 1-3.4 4.5q-2.3 1.3-5.2.4a7 7 0 0 1-4.2-3.3 7 7 0 0 1-.2-5.6\"/><path fill=\"#fff\" d=\"M349.8 214.4q-.7 2.3 0 3.8c.7 1.5 1.2 1.6 2.3 2q1.5.5 3-.4 1.4-.8 2.1-3.2.8-2.2 0-3.7a4 4 0 0 0-2.2-2 4 4 0 0 0-3 .3q-1.5.8-2.2 3.2\"/><\/g><g stroke-opacity=\".5\"><path fill=\"#309e3a\" d=\"m374.3 233.1 6.4-12.4 5.3 2.7a10 10 0 0 1 2.7 1.9q.8.7.8 1.9c0 1.2 0 1.5-.4 2.2a4 4 0 0 1-2 2q-1.5.4-3.1-.2.6 1 .8 1.7.3.9.4 2.8l.2 3.2-3-1.5-.4-3.7-.3-2.5-.5-1-1.2-.7-.5-.3-2.7 5.2z\"/><path fill=\"#fff\" d=\"m380.5 227.2 1.9 1q1.8 1 2.3 1t1-.2q.4-.2.7-.8t.2-1.2l-.7-1-1.8-1-2-1z\"/><\/g><g stroke-opacity=\".5\"><path fill=\"#309e3a\" d=\"M426.1 258.7a9 9 0 0 1 2.5-2.6 7 7 0 0 1 2.2-.9 6 6 0 0 1 2.2 0q1.5.3 2.8 1.2a7 7 0 0 1 3 4.4q.4 2.6-1.4 5.5a7 7 0 0 1-4.5 3.3 7 7 0 0 1-5.2-1.1 7 7 0 0 1-3-4.4q-.4-2.7 1.4-5.4\"/><path fill=\"#fff\" d=\"M428.6 260.3q-1.4 2-1.1 3.6a4 4 0 0 0 1.6 2.5q1.5 1 3 .6t2.9-2.4q1.4-2.1 1.1-3.6t-1.6-2.6c-1.4-1.1-2-.8-3-.5q-1.5.3-3 2.4z\"/><\/g><path fill=\"#309e3a\" d=\"m301.8 204.5 2.3-9.8 7.2 1.7-.3 1.6-5.3-1.2-.5 2.2 4.9 1.1-.4 1.7-4.9-1.2-.6 2.7 5.5 1.3-.4 1.6z\"/><\/g><\/svg>","in":"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 640 480\"><path fill=\"#f93\" d=\"M0 0h640v160H0z\"/><path fill=\"#fff\" d=\"M0 160h640v160H0z\"/><path fill=\"#128807\" d=\"M0 320h640v160H0z\"/><g transform=\"matrix(3.2 0 0 3.2 320 240)\"><circle r=\"20\" fill=\"#008\"/><circle r=\"17.5\" fill=\"#fff\"/><circle r=\"3.5\" fill=\"#008\"/><g><g><g><g fill=\"#008\"><circle r=\".9\" transform=\"rotate(7.5 -8.8 133.5)\"/><path d=\"M0 17.5.6 7 0 2l-.6 5z\"/><\/g><use xlink:href=\"#in-a\" width=\"100%\" height=\"100%\" transform=\"rotate(15)\"/><\/g><use xlink:href=\"#in-b\" width=\"100%\" height=\"100%\" transform=\"rotate(30)\"/><\/g><use xlink:href=\"#in-c\" width=\"100%\" height=\"100%\" transform=\"rotate(60)\"/><\/g><use xlink:href=\"#in-d\" width=\"100%\" height=\"100%\" transform=\"rotate(120)\"/><use xlink:href=\"#in-d\" width=\"100%\" height=\"100%\" transform=\"rotate(-120)\"/><\/g><\/svg>","cn":"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 640 480\"><defs><path fill=\"#ff0\" d=\"M-.6.8 0-1 .6.8-1-.3h2z\"/><\/defs><path fill=\"#ee1c25\" d=\"M0 0h640v480H0z\"/><use xlink:href=\"#cn-a\" width=\"30\" height=\"20\" transform=\"matrix(71.9991 0 0 72 120 120)\"/><use xlink:href=\"#cn-a\" width=\"30\" height=\"20\" transform=\"matrix(-12.33562 -20.5871 20.58684 -12.33577 240.3 48)\"/><use xlink:href=\"#cn-a\" width=\"30\" height=\"20\" transform=\"matrix(-3.38573 -23.75998 23.75968 -3.38578 288 95.8)\"/><use xlink:href=\"#cn-a\" width=\"30\" height=\"20\" transform=\"matrix(6.5991 -23.0749 23.0746 6.59919 288 168)\"/><use xlink:href=\"#cn-a\" width=\"30\" height=\"20\" transform=\"matrix(14.9991 -18.73557 18.73533 14.99929 240 216)\"/><\/svg>","kr":"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 640 480\"><defs><clipPath><path fill-opacity=\".7\" d=\"M-95.8-.4h682.7v512H-95.8z\"/><\/clipPath><\/defs><g fill-rule=\"evenodd\" clip-path=\"url(#kr-a)\" transform=\"translate(89.8 .4)scale(.9375)\"><path fill=\"#fff\" d=\"M-95.8-.4H587v512H-95.8Z\"/><g transform=\"rotate(-56.3 361.6 -101.3)scale(10.66667)\"><g><path fill=\"#000001\" d=\"M-6-26H6v2H-6Zm0 3H6v2H-6Zm0 3H6v2H-6Z\"/><use xlink:href=\"#kr-b\" width=\"100%\" height=\"100%\" y=\"44\"/><\/g><path stroke=\"#fff\" d=\"M0 17v10\"/><path fill=\"#cd2e3a\" d=\"M0-12a12 12 0 0 1 0 24Z\"/><path fill=\"#0047a0\" d=\"M0-12a12 12 0 0 0 0 24A6 6 0 0 0 0 0Z\"/><circle cy=\"-6\" r=\"6\" fill=\"#cd2e3a\"/><\/g><g transform=\"rotate(-123.7 191.2 62.2)scale(10.66667)\"><use xlink:href=\"#kr-c\" width=\"100%\" height=\"100%\"/><path stroke=\"#fff\" d=\"M0-23.5v3M0 17v3.5m0 3v3\"/><\/g><\/g><\/svg>"}}</script>
 <script>
 (function(){
 'use strict';
 const INLINE = document.getElementById('atlas-inline').textContent.trim();
-const HASH_ONLY = !!INLINE; // the published preview only carries #name in its link
-let D, IDX = {}, state = {view:'home', group:null, region:'ALL', system:null, flow:null, step:1, sheetFull:false};
-let lastRowFocus = null;
+const HASH_ONLY = !!INLINE;
+const ICONS = JSON.parse(document.getElementById('icons-inline').textContent);
+const TZ = 'America/Toronto';
+const LAYER_ORDER = ['7','6','5','4a','4b','3','2a','2b','1'];
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const MODE = {'rtgs':'Real-time gross','deferred-net':'Deferred net','real-time-funded':'Real time, funded account','central-bank-ledger':'Central bank ledger','pvp':'Payment versus payment','on-chain':'On-chain','none':'Does not settle','unknown':'Not confirmed'};
+// Column placement for the wide layer map. Presentation only, keyed by node id.
+const LAYOUT = {
+  CAD:{cols:9, pos:{'ca-wire':'1','ca-direct-deposit':'2','ca-pad':'3','ca-cheque':'4','ca-pos-debit':'5','ca-etransfer':'6','ca-credit-card':'7 / span 2','ca-rtr-payment':'9',
+        'interac-e-transfer':'6','visanet-canada':'7','mastercard-canada':'8','acss':'2 / span 4','ca-through-a-seat':'7','ca-seat-holders':'8','lynx':'1 / span 6','rtr':'9'}},
+  USD:{cols:9, pos:{'fedwire-funds':'1 / span 4'}}
+};
+
+let D, IDX = {};
+let S = {view:'home', ccy:null, node:null, type:null, flow:null, step:1, holiday:false, full:false};
+let lastFocus = null, ro = null;
 
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const $ = (s, r=document) => r.querySelector(s);
-const fmtDate = d => { const m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; const [y,mo,da]=d.split('-'); return `${+da} ${m[+mo-1]} ${y}`; };
-const MODE = {
-  'rtgs':'Real-time gross', 'deferred-net':'Deferred net', 'real-time-funded':'Real time, funded account',
-  'central-bank-ledger':'Central bank ledger', 'pvp':'Payment versus payment', 'on-chain':'On-chain', 'none':'Does not settle', 'unknown':'Not confirmed'
-};
+const $ = (q, r=document) => r.querySelector(q);
+const $$ = (q, r=document) => [...r.querySelectorAll(q)];
+const flag = cc => cc && ICONS.flag[cc] ? `<span class="flag" aria-hidden="true">${ICONS.flag[cc]}</span>` : '';
+const logo = k => k && ICONS.logo[k] ? `<span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="${ICONS.logo[k]}"/></svg></span>` : '';
+const fmtDate = d => { const m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; const [y,mo,da]=d.split('-'); return da ? `${+da} ${m[+mo-1]} ${y}` : `${m[+mo-1]} ${y}`; };
 
 async function load(){
   if (INLINE) return JSON.parse(INLINE);
@@ -249,327 +409,564 @@ async function load(){
   return r.json();
 }
 
-function index(){
-  for (const k of ['groups','regions','parties','systems','scenarios','sources']) IDX[k] = Object.fromEntries(D[k].map(x => [x.id, x]));
-  IDX.feeders = {};
-  for (const s of D.systems) if (s.settles_in) (IDX.feeders[s.settles_in] ||= []).push(s.id);
+/* ---------- index ---------- */
+function build(){
+  for (const k of ['groups','regions','parties','systems','scenarios','sources','layers','currencies','products','access']) IDX[k] = Object.fromEntries((D[k]||[]).map(x => [x.id, x]));
+  IDX.node = {};
+  D.systems.forEach(s => IDX.node[s.id] = {id:s.id, kind:'system', rec:s, region:s.region, layer:s.layer, name:s.name, short:s.short});
+  D.products.forEach(p => IDX.node[p.id] = {id:p.id, kind:'product', rec:p, region:p.region, layer:'7', name:p.name, short:p.name});
+  D.access.forEach(a => IDX.node[a.id] = {id:a.id, kind:'access', rec:a, region:a.region, layer:a.layer, name:a.name, short:a.name});
+  // edges: from upper to lower
+  IDX.edges = [];
+  D.products.forEach(p => [p.runs_on].flat().forEach(t => IDX.edges.push({from:p.id, to:t, type:'runs'})));
+  D.systems.forEach(s => { if (s.settles_in) IDX.edges.push({from:s.id, to:s.settles_in, type:'settle', label:s.settles_label||''}); });
+  D.access.forEach(a => { if (a.holds_account_at) IDX.edges.push({from:a.id, to:a.holds_account_at, type:'access'}); if (a.through) IDX.edges.push({from:a.id, to:a.through, type:'access'}); });
+  IDX.down = {}; IDX.up = {};
+  IDX.edges.forEach(e => { (IDX.down[e.from] ||= []).push(e); (IDX.up[e.to] ||= []).push(e); });
   IDX.flowsFor = {};
-  for (const sc of D.scenarios){
-    const ids = new Set([sc.rail]); sc.steps.forEach(st => st.via && IDX.systems[st.via] && ids.add(st.via));
-    ids.forEach(id => (IDX.flowsFor[id] ||= []).push(sc.id));
-  }
+  D.scenarios.forEach(sc => { const ids = new Set([sc.rail]); sc.steps.forEach(st => st.via && IDX.systems[st.via] && ids.add(st.via)); ids.forEach(id => (IDX.flowsFor[id] ||= []).push(sc.id)); });
+  IDX.ccyByRegion = Object.fromEntries(D.currencies.filter(c => c.region).map(c => [c.region, c]));
 }
+const node = id => IDX.node[id];
 const sys = id => IDX.systems[id];
 const party = id => IDX.parties[id];
-const inRegion = s => state.region === 'ALL' || s.region === state.region;
-const chain = id => { const out=[]; let c=sys(id); const seen=new Set(); while(c && !seen.has(c.id)){ out.push(c); seen.add(c.id); c = c.settles_in ? sys(c.settles_in) : null; } return out; };
-
-/* ---------- routing ---------- */
-function toURL(){
-  if (HASH_ONLY){
-    let h = '';
-    if (state.view==='flow') h = 'flow-' + state.flow + (state.step>1 ? '-step' + state.step : '');
-    else if (state.system) h = state.system;
-    else if (state.group) h = 'group-' + state.group + (state.region!=='ALL' ? '-in-' + state.region.toLowerCase() : '');
-    else if (state.region!=='ALL') h = 'region-' + state.region.toLowerCase();
-    return h ? '#' + h : location.pathname + location.search;
-  }
-  const p = new URLSearchParams();
-  if (state.view==='flow'){ p.set('flow', state.flow); if (state.step>1) p.set('step', state.step); }
-  else { if (state.group) p.set('group', state.group); if (state.region!=='ALL') p.set('region', state.region); if (state.system) p.set('system', state.system); }
-  const q = p.toString(); return location.pathname + (q ? '?' + q : '');
+function reach(id, dir){ const out = new Set(); const st=[id]; while(st.length){ const c=st.pop(); for (const e of (dir==='down'?IDX.down[c]:IDX.up[c])||[]){ const n = dir==='down'?e.to:e.from; if(!out.has(n)){ out.add(n); st.push(n);} } } return out; }
+function pathDown(id){ // single primary chain: follow first outgoing edge until root
+  const out=[{id, via:null}]; const seen=new Set([id]); let c=id;
+  while(true){ const es=(IDX.down[c]||[]).filter(e=>e.type!=='access' || node(c).kind==='access'); if(!es.length) break; const e=es[0]; if(seen.has(e.to)) break; out.push({id:e.to, via:e}); seen.add(e.to); c=e.to; }
+  return out;
 }
-function fromURL(){
-  const s = {view:'home', group:null, region:'ALL', system:null, flow:null, step:1, sheetFull:false};
-  if (HASH_ONLY){
-    const h = decodeURIComponent(location.hash.slice(1));
-    let m;
-    if ((m = h.match(/^flow-(.+?)(?:-step(\d+))?$/)) && IDX.scenarios[m[1]]){ s.view='flow'; s.flow=m[1]; s.step=+(m[2]||1); }
-    else if (IDX.systems[h]){ s.system=h; s.group=sys(h).group; s.view='group'; }
-    else if ((m = h.match(/^group-([a-z-]+?)(?:-in-([a-z]+))?$/)) && IDX.groups[m[1]]){ s.view='group'; s.group=m[1]; if (m[2]) s.region=m[2].toUpperCase(); }
-    else if ((m = h.match(/^region-([a-z]+)$/))){ s.region=m[1].toUpperCase(); }
-  } else {
-    const p = new URLSearchParams(location.search);
-    if (p.get('flow') && IDX.scenarios[p.get('flow')]){ s.view='flow'; s.flow=p.get('flow'); s.step=+(p.get('step')||1); }
-    else {
-      if (IDX.groups[p.get('group')]){ s.group=p.get('group'); s.view='group'; }
-      if (IDX.regions[p.get('region')]) s.region=p.get('region');
-      if (IDX.systems[p.get('system')]){ s.system=p.get('system'); s.group ||= sys(s.system).group; s.view='group'; }
+
+/* ---------- time ---------- */
+function torontoNow(){
+  const f = new Intl.DateTimeFormat('en-CA',{timeZone:TZ,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',weekday:'short',hour12:false});
+  const p = Object.fromEntries(f.formatToParts(new Date()).map(x=>[x.type,x.value]));
+  const dow = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].indexOf(p.weekday);
+  const h = +p.hour % 24, m = +p.minute;
+  return {dow, h, m, mins:h*60+m, date:`${p.year}-${p.month}-${p.day}`, label:`${p.weekday} ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`};
+}
+const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60+(m||0); };
+const fmtMin = m => `${String(Math.floor(m/60)%24).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+function isBiz(dow, holiday){ return dow<5 && !(holiday && dow===0); }
+// open intervals [start,end) in minutes for one weekday, from a system's windows
+function openIntervals(s, dow, holiday){
+  const out=[];
+  for (const w of s.windows||[]) {
+    if (w.kind!=='open') continue;
+    if (w.days==='daily') { out.push([0,1440]); continue; }
+    if (w.days==='business') {
+      if (w.start.endsWith('-1')) { // starts the previous evening
+        const st = toMin(w.start.slice(0,-2)), en = toMin(w.end);
+        if (isBiz(dow, holiday)) out.push([0,en]);
+        if (isBiz((dow+1)%7, holiday)) out.push([st,1440]);
+      } else if (isBiz(dow, holiday)) out.push([toMin(w.start), toMin(w.end)]);
     }
   }
-  if (s.view==='flow'){ const n = IDX.scenarios[s.flow].steps.length; s.step = Math.min(Math.max(1, s.step||1), n); }
+  return out;
+}
+function openStatus(s){
+  const n = torontoNow(); const iv = openIntervals(s, n.dow, false);
+  const open = iv.some(([a,b]) => n.mins>=a && n.mins<b);
+  if (open) { const end = iv.find(([a,b]) => n.mins>=a && n.mins<b)[1]; return {open, text:`open until ${fmtMin(end===1440?0:end)}${end===1440?' (next day)':''} ET`}; }
+  for (let k=0;k<8;k++){ const d=(n.dow+k)%7; const ivs=openIntervals(s,d,false).filter(([a])=>k>0 || a>n.mins).sort((x,y)=>x[0]-y[0]); if(ivs.length){ return {open, text:`opens ${k===0?'today':k===1?'tomorrow':DAYS[d]} ${fmtMin(ivs[0][0])} ET`}; } }
+  return {open, text:'hours not confirmed'};
+}
+
+/* ---------- routing ---------- */
+function toURL(st=S){
+  if (HASH_ONLY){
+    let h='';
+    if (st.view==='flow') h = `flow-${st.flow}${st.step>1?'-'+st.step:''}`;
+    else if (st.view==='type') h = `type-${st.type}`;
+    else if (st.view==='ccy') h = st.ccy.toLowerCase() + (st.node ? '-'+st.node : '');
+    return h ? '#'+h : location.pathname + location.search;
+  }
+  const p = new URLSearchParams();
+  if (st.view==='flow'){ p.set('flow', st.flow); if (st.step>1) p.set('step', st.step); }
+  else if (st.view==='type') p.set('type', st.type);
+  else if (st.view==='ccy'){ p.set('ccy', st.ccy); if (st.node) p.set('node', st.node); }
+  const q=p.toString(); return location.pathname + (q?'?'+q:'');
+}
+function fromURL(){
+  const s = {view:'home', ccy:null, node:null, type:null, flow:null, step:1, holiday:S.holiday, full:false};
+  let flow, step, type, ccy, nd;
+  if (HASH_ONLY){
+    const h = decodeURIComponent(location.hash.slice(1)); let m;
+    if ((m = h.match(/^flow-(.+?)(?:-(\d+))?$/))) { flow=m[1]; step=m[2]; }
+    else if ((m = h.match(/^type-(.+)$/))) type=m[1];
+    else if ((m = h.match(/^([a-z]{3})(?:-(.+))?$/))) { ccy=m[1].toUpperCase(); nd=m[2]; }
+  } else {
+    const p = new URLSearchParams(location.search);
+    flow=p.get('flow'); step=p.get('step'); type=p.get('type'); ccy=p.get('ccy'); nd=p.get('node');
+  }
+  if (flow && IDX.scenarios[flow]) { s.view='flow'; s.flow=flow; s.step=Math.min(Math.max(1,+step||1), IDX.scenarios[flow].steps.length); }
+  else if (type && IDX.groups[type]) { s.view='type'; s.type=type; }
+  else if (ccy && IDX.currencies[ccy] && IDX.currencies[ccy].phase===1) { s.view='ccy'; s.ccy=ccy; if (nd && node(nd) && node(nd).region===IDX.currencies[ccy].region) s.node=nd; }
   return s;
 }
-function go(patch, {replace=false, focusPanel=false}={}){
-  state = {...state, ...patch};
-  const url = toURL();
-  try { (replace ? history.replaceState : history.pushState).call(history, null, '', url); } catch(e){ /* sandboxed frames may refuse */ }
-  render(); if (focusPanel) focusPanelHeading();
-}
-window.addEventListener('popstate', () => { state = fromURL(); render(); restoreFocus(); });
-window.addEventListener('hashchange', () => { if (HASH_ONLY){ state = fromURL(); render(); restoreFocus(); } });
-
-/* ---------- render ---------- */
-function render(){
-  $('#nav-atlas').toggleAttribute('aria-current', state.view!=='flow'); if (state.view!=='flow') $('#nav-atlas').setAttribute('aria-current','page');
-  $('#nav-flow').toggleAttribute('aria-current', state.view==='flow'); if (state.view==='flow') $('#nav-flow').setAttribute('aria-current','page');
-  const app = $('#app');
-  if (state.view==='flow'){ app.innerHTML = renderFlow(); wireFlow(); }
-  else {
-    const list = state.group ? renderGroup() : renderHome();
-    const panel = state.system ? renderPanel(sys(state.system)) : '';
-    app.innerHTML = crumbs() + regionChips() + `<div class="split${panel ? ' has-panel' : ''}"><div class="list">${list}</div>${panel}</div>`;
-    wireAtlas();
+function go(patch, {replace=false, focus=false}={}){
+  S = {...S, ...patch};
+  try { (replace?history.replaceState:history.pushState).call(history, null, '', toURL()); } catch(e){}
+  render();
+  if (focus) {
+    $('#ptitle')?.focus({preventScroll:true});
+    // On phones the record opens as a bottom sheet, so bring the selected item into the strip above it.
+    if (window.matchMedia('(max-width: 900px)').matches && S.node) {
+      const el = document.querySelector(`.map [data-node="${CSS.escape(S.node)}"]`);
+      if (el) window.scrollTo({top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - 64), behavior:'auto'});
+    }
   }
-  $('#foot').innerHTML = `Data as of ${fmtDate(D.meta.as_of)}. ${esc(D.meta.scope)} Every claim links to its source in the record. Corrections by pull request.`;
-  document.title = state.system ? `${sys(state.system).short} · Settlement Map` : state.view==='flow' ? 'Railroom · Settlement Map' : 'Settlement Map';
 }
+const href = patch => toURL({...S, ...patch});
+window.addEventListener('popstate', () => { S = fromURL(); render(); });
+window.addEventListener('hashchange', () => { if (HASH_ONLY){ S = fromURL(); render(); } });
 
-function crumbs(){
-  const parts = [`<a href="${hrefFor({view:'home',group:null,system:null,region:'ALL'})}" data-go='{"view":"home","group":null,"system":null,"region":"ALL"}'>World</a>`];
-  if (state.group) parts.push(`<a href="${hrefFor({group:state.group,system:null})}" data-go='{"group":"${state.group}","system":null}'>${esc(IDX.groups[state.group].name)}</a>`);
-  if (state.region!=='ALL') parts.push(`<a href="${hrefFor({system:null})}" data-go='{"system":null}'>${esc(IDX.regions[state.region].name)}</a>`);
-  if (state.system) parts.push(`<span aria-current="location">${esc(sys(state.system).short)}</span>`);
-  else { const last = parts.pop(); parts.push(last.replace(/^<a [^>]*>(.*)<\/a>$/, '<span aria-current="location">$1</span>')); }
-  return `<nav class="crumbs" aria-label="Breadcrumb">${parts.join('<span class="sep" aria-hidden="true">›</span>')}</nav>`;
+/* ---------- render shell ---------- */
+function render(){
+  const navHome = $('#nav-home'), navFlow = $('#nav-flow');
+  navHome.toggleAttribute('aria-current', S.view!=='flow'); if (S.view!=='flow') navHome.setAttribute('aria-current','page');
+  navFlow.toggleAttribute('aria-current', S.view==='flow'); if (S.view==='flow') navFlow.setAttribute('aria-current','page');
+  navHome.href = href({view:'home',ccy:null,node:null,type:null,flow:null});
+  navFlow.href = href({view:'flow',flow:D.scenarios[0].id,step:1,node:null});
+  const app = $('#app');
+  if (ro) { ro.disconnect(); ro = null; }
+  if (S.view==='home') app.innerHTML = vHome();
+  else if (S.view==='type') app.innerHTML = vType();
+  else if (S.view==='flow') app.innerHTML = vFlow();
+  else app.innerHTML = vCcy();
+  wire();
+  if (S.view==='ccy') drawEdges();
+  const t = S.view==='ccy' ? (S.node ? `${node(S.node).short} · ${S.ccy}` : S.ccy) : S.view==='flow' ? 'Railroom' : S.view==='type' ? IDX.groups[S.type].name : '';
+  document.title = t ? `${t} · Settlement Map` : 'Settlement Map';
+  $('#foot').innerHTML = `<p>Data as of ${fmtDate(D.meta.as_of)}. ${esc(D.meta.scope)}</p><p>How this was made. Built by Fintech North with Claude, from central bank and operator documents first. Every number links to its source. Corrections by pull request.</p>`;
 }
-function hrefFor(patch){ const keep = state; state = {...state, ...patch}; const u = toURL(); state = keep; return u.startsWith('#') ? u : (u || '#'); }
-
-function regionChips(){
-  const opts = [['ALL','All'], ...D.regions.map(r => [r.id, r.name])];
-  return `<div class="regions" role="group" aria-label="Region filter"><span>Region</span>${opts.map(([id,n]) =>
-    `<button class="chip" type="button" data-region="${id}" aria-pressed="${state.region===id}">${esc(n)}</button>`).join('')}</div>`;
+function crumbs(parts){
+  return `<nav class="crumbs" aria-label="Breadcrumb">${parts.map((p,i) => i===parts.length-1 ? `<span aria-current="location">${p.label}</span>` : `<a href="${p.href}" data-go='${JSON.stringify(p.go)}'>${p.label}</a>`).join('<span class="sep" aria-hidden="true">›</span>')}</nav>`;
 }
+const HOME = {label:'Currencies', href:'', go:{view:'home',ccy:null,node:null,type:null,flow:null}};
 
-function renderHome(){
-  const rows = [...D.groups].sort((a,b)=>a.order-b.order).map(g => {
-    const n = D.systems.filter(s => s.group===g.id && inRegion(s)).length;
-    return `<li><a class="row${n ? '' : ' empty'}" href="${hrefFor({view:'group',group:g.id,system:null})}" data-go='{"view":"group","group":"${g.id}","system":null}' data-row="${g.id}">
-      <span class="row-name">${esc(g.name)}</span>
-      <span class="row-count">${n ? `${n} system${n>1?'s':''}` : 'Phase 2'}</span>
-      <span class="row-def">${esc(g.definition)}</span></a></li>`;
+/* ---------- L1 ---------- */
+function rootMainSystem(ccy){ // the RTGS that settles into the root, used for the 24h strip
+  const r = ccy.root; const feeders = (IDX.up[r]||[]).map(e=>sys(e.from)).filter(s => s && s.status==='live' && s.settlement_mode==='rtgs');
+  return feeders[0];
+}
+function day24(s, dow, holiday, withNow){
+  const iv = openIntervals(s, dow, holiday); const n = torontoNow();
+  return `<div class="day24" role="img" aria-label="${esc(s.short)} hours ${iv.length ? iv.map(([a,b])=>fmtMin(a)+' to '+fmtMin(b===1440?0:b)).join(', ') : 'closed'}">${[6,12,18].map(h=>`<span class="tick" style="left:${h/24*100}%"></span>`).join('')}${iv.map(([a,b])=>`<span class="open" style="left:${a/1440*100}%;width:${(b-a)/1440*100}%"></span>`).join('')}${withNow?`<span class="now" style="left:calc(${n.mins/1440*100}% - 1px)"></span>`:''}</div>`;
+}
+function vHome(){
+  const n = torontoNow();
+  const loaded = D.currencies.filter(c=>c.phase===1), later = D.currencies.filter(c=>c.phase!==1);
+  const rows = loaded.map(c => {
+    const region = c.region;
+    const used = new Set([...D.systems.filter(s=>s.region===region && s.id!==c.root).map(s=>s.layer), ...D.products.filter(p=>p.region===region).map(()=> '7'), ...D.access.filter(a=>a.region===region).map(a=>a.layer)]);
+    const count = D.systems.filter(s=>s.region===region).length + D.products.filter(p=>p.region===region).length;
+    const rs = rootMainSystem(c); const st = rs ? openStatus(rs) : null;
+    return `<a class="ccy" href="${href({view:'ccy',ccy:c.id,node:null})}" data-go='{"view":"ccy","ccy":"${c.id}","node":null}'>
+      <div class="ccy-id">${flag(c.flag)}<span class="ccy-code">${c.id}</span></div>
+      <div class="ccy-main"><div class="ccy-cb">${esc(c.central_bank)}</div><div class="ccy-how">${esc(c.how)}</div></div>
+      <div><div class="strip-label"><span>Layers 7 to 1</span><span>${count} records</span></div>
+        <div class="layerstrip" aria-label="Layers with records">${LAYER_ORDER.map(l=>`<i class="${l==='1'?'root':used.has(l)?'on':''}" title="${esc(IDX.layers[l].name)}">${l}</i>`).join('')}</div></div>
+      <div>${rs ? `<div class="strip-label"><span>${esc(rs.short)} today</span><span class="${st.open?'status-open':'status-closed'}"><span class="dot ${st.open?'on':'off'}"></span>${st.open?'open':'closed'}</span></div>${day24(rs, n.dow, false, true)}<div class="strip-label" style="margin-top:3px"><span>00</span><span>12</span><span>24</span></div>` : ''}</div>
+    </a>`;
   }).join('');
-  const where = state.region==='ALL' ? 'worldwide' : 'in ' + IDX.regions[state.region].name;
-  return `<h1>Who settles what, and where it ends up</h1>
-    <p class="lede">Seven kinds of payment infrastructure ${esc(where)}. Open a group to see its systems, then follow any system down to the central bank account where it finally settles.</p>
-    <ul class="rows" aria-label="Groups">${rows}</ul>`;
+  const types = [...D.groups].sort((a,b)=>a.order-b.order).map(g => { const k = D.systems.filter(s=>s.group===g.id).length;
+    return `<li><a class="${k?'':'empty'}" href="${href({view:'type',type:g.id})}" data-go='{"view":"type","type":"${g.id}"}'><span>${esc(g.name)}</span><span class="mono">${k ? k+' system'+(k>1?'s':'') : 'Phase 2'}</span></a></li>`; }).join('');
+  const flows = D.scenarios.map(sc => `<li><a href="${href({view:'flow',flow:sc.id,step:1})}" data-flow="${sc.id}"><span>${esc(sc.title)}</span><span class="mono">${sc.steps.length} steps</span></a></li>`).join('');
+  return `<section class="pagehead"><div><h1>Where money becomes final</h1><p>Each currency settles in one place, the central bank. Open a currency to see who does what on top of it, what depends on what, and when each system settles.</p></div>
+      <div class="now">Toronto <b>${n.label}</b></div></section>
+    <div class="section-h"><h2>Currencies</h2><p>Phase 1 covers Canada end to end and the US systems the Canada to US flow touches.</p></div>
+    <div class="ledger">${rows}</div>
+    <div class="ccy-later" aria-label="Coming in Phase 2">${later.map(c=>`<div>${flag(c.flag)}<b>${c.id}</b><span>${esc(c.central_bank)}</span></div>`).join('')}</div>
+    <div class="idx" style="margin-top:34px">
+      <div><div class="section-h" style="margin-top:0"><h2>By system type</h2></div><ul>${types}</ul></div>
+      <div><div class="section-h" style="margin-top:0"><h2>Flows</h2><p>Step through one payment.</p></div><ul>${flows}</ul></div>
+    </div>`;
 }
 
-function renderGroup(){
-  const g = IDX.groups[state.group];
-  const list = D.systems.filter(s => s.group===g.id && inRegion(s));
-  const body = list.length ? `<div class="tablebox"><table class="stack"><thead><tr><th scope="col">System</th><th scope="col">Operator</th><th scope="col">Settles in</th><th scope="col">Timing</th><th scope="col">Hours</th></tr></thead><tbody>
-    ${list.map(s => `<tr data-row="${s.id}" aria-selected="${state.system===s.id}">
-      <td class="sys" data-label="System"><span class="cc" title="${esc(IDX.regions[s.region].name)}">${esc(s.region==='GLOBAL'?'GL':s.region)}</span><button type="button" data-open="${s.id}">${esc(s.name)}</button>${s.status==='planned'?'<span class="st-planned">planned</span>':''}</td>
-      <td data-label="Operator">${esc(party(s.operator).name)}</td>
-      <td data-label="Settles in">${settlesCell(s)}</td>
-      <td data-label="Timing">${s.settlement_timing ? esc(s.settlement_timing) : '<span class="unknown">Not confirmed</span>'}</td>
-      <td data-label="Hours">${s.hours ? esc(s.hours) : '<span class="unknown">Not confirmed</span>'}</td></tr>`).join('')}
-    </tbody></table></div>` : `<p class="muted">No ${esc(g.name.toLowerCase())} systems are loaded for this region yet. They arrive in Phase 2.</p>`;
-  return `<h1>${esc(g.name)}</h1><p class="lede">${esc(g.definition)}</p>${body}`;
-}
-function settlesCell(s){
-  if (s.settlement_mode==='none') return '<span class="muted">Does not settle</span>';
-  if (!s.settles_in) return s.settlement_mode==='unknown' ? '<span class="unknown">Not confirmed</span>' : '<span class="muted">Final here</span>';
-  return `<a class="settle-link" href="${hrefFor({system:s.settles_in, group:sys(s.settles_in).group})}" data-open="${s.settles_in}">${esc(sys(s.settles_in).short)} ↓</a>`;
+/* ---------- type view ---------- */
+function vType(){
+  const g = IDX.groups[S.type]; const list = D.systems.filter(s=>s.group===g.id);
+  const rows = list.map(s => { const c = IDX.ccyByRegion[s.region];
+    return `<li><button type="button" data-open-ccy="${c?c.id:''}" data-node="${s.id}" ${c?'':'disabled'}>${flag(c?.flag)||'<span class="mono">GL</span>'}<b>${esc(s.name)}${s.status==='planned'?' <span class="mono" style="color:var(--planned)">planned</span>':''}</b><span class="muted">${esc(party(s.operator).name)}</span><span class="${s.settles_in?'set':'muted'}">${s.settles_in ? 'settles in '+esc(sys(s.settles_in).short) : s.settlement_mode==='unknown' ? 'settlement not confirmed' : s.settlement_mode==='none' ? 'does not settle' : 'final here'}</span></button></li>`; }).join('');
+  return crumbs([HOME, {label:'By system type'}, {label:esc(g.name)}]) +
+    `<section class="pagehead"><div><h1>${esc(g.name)}</h1><p>${esc(g.definition)}</p></div></section>
+     ${list.length ? `<ul class="typelist" style="margin-top:18px">${rows}</ul>` : `<p class="muted">Nothing loaded for this type yet. It arrives in Phase 2.</p>`}`;
 }
 
-function srcNames(ids){ const pubs=[...new Set(ids.map(i=>IDX.sources[i]?.publisher).filter(Boolean))]; return pubs.join(', ').replace(/\.$/,''); }
-function allSourceIds(s){ return [...new Set(Object.values(s.field_sources).flat())]; }
-
-function renderPanel(s){
-  const ch = chain(s.id);
-  const feeders = (IDX.feeders[s.id]||[]).map(sys);
-  const up = feeders.length, down = s.settles_in;
-  const fld = (k, label, val) => `<div${k==='settles_in'?' class="settles"':''} style="display:contents"><dt>${label}</dt><dd>${val}</dd></div>`;
-  const settlesVal = s.settlement_mode==='none' ? 'Does not settle' : s.settles_in ? esc(sys(s.settles_in).name) : s.settlement_mode==='unknown' ? '<span class="unknown">Not confirmed</span>' : 'Final here';
-  const ladder = ch.map((c,i) => {
-    const next = ch[i+1];
-    const how = next ? `${MODE[c.settlement_mode]}${c.settlement_timing ? ' · ' + c.settlement_timing : ''}` :
-      (c.settlement_mode==='central-bank-ledger' ? `Final. ${c.settlement_asset}` : c.settlement_mode==='none' ? 'Carries messages only' : 'End of the known path. Where it settles is not confirmed.');
-    return `<li class="rung${i===0?' here':''}${!next?' terminal':''}"><span class="rail" aria-hidden="true"></span><div class="body">
-      ${i===0 ? `<strong>${esc(c.name)}</strong>` : `<button class="to" type="button" data-open="${c.id}">${esc(c.name)}</button>`}
-      <span class="how">${esc(how)}</span></div></li>`;
+/* ---------- L2 currency ---------- */
+function vCcy(){
+  const c = IDX.currencies[S.ccy]; const region = c.region; const root = sys(c.root);
+  const lay = LAYOUT[c.id] || {cols:6,pos:{}};
+  const nodesIn = D.systems.filter(s=>s.region===region && s.id!==root.id).map(s=>node(s.id))
+    .concat(D.products.filter(p=>p.region===region).map(p=>node(p.id)))
+    .concat(D.access.filter(a=>a.region===region).map(a=>node(a.id)));
+  const lit = S.node ? new Set([S.node, ...reach(S.node,'down'), ...reach(S.node,'up')]) : null;
+  const rows = LAYER_ORDER.filter(l => nodesIn.some(n=>n.layer===l)).map(l => {
+    const L = IDX.layers[l]; const ns = nodesIn.filter(n=>n.layer===l);
+    return `<div class="lrow" data-layer="${l}"><div class="lhead"><span class="lid">${l}</span><b>${esc(l==='7'?'What customers use':L.name)}</b><span>${esc(L.does)}</span></div>
+      <div class="lnodes" style="--cols:${lay.cols}">${ns.map(n => nodeBtn(n, lay.pos[n.id], lit)).join('')}</div></div>`;
   }).join('');
-  const flows = (IDX.flowsFor[s.id]||[]);
-  const flowLink = flows.length ? `<a class="flowlink" href="${hrefFor({view:'flow',flow:flows[0],step:1})}" data-flow="${flows[0]}">Show the flow →</a>` :
-    `<p class="srcline">No flow drawn for this system yet. Canada flows on RTR and ACSS come with Phase 4.</p>`;
-  const fs = s.field_sources;
-  const srcRows = D.sources.filter(x => allSourceIds(s).includes(x.id)).map(x => {
-    const fields = Object.entries(fs).filter(([,v]) => v.includes(x.id)).map(([k]) => k.replace(/_/g,' ')).join(', ');
-    return `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a><span class="code">${esc(x.tier)} · ${x.published ? 'dated ' + esc(x.published) + ' · ' : ''}checked ${esc(x.accessed)} · supports ${esc(fields)}</span></li>`;
+  const rs = rootMainSystem(c); const st = rs ? openStatus(rs) : null; const n = torontoNow();
+  const map = `<div class="map${S.node?' has-sel':''}" id="map">
+      <svg class="edges" id="edges" aria-hidden="true"></svg>
+      ${rows}
+      <button type="button" class="base${S.node===root.id?' sel':''}${lit && lit.has(root.id)?' lit':''}" data-node="${root.id}" aria-label="${esc(root.name)}. Final settlement in ${esc(root.settlement_asset)}.">
+        <div class="lhead"><span class="lid">CB</span><b>Central bank</b><span>Holds the accounts everything above settles in.</span></div>
+        <span class="bname">${flag(c.flag)}${esc(root.name)}</span>
+        <span class="bsub">Final · ${esc(root.settlement_asset)}</span>
+      </button>
+    </div>
+    <div class="maplegend" aria-hidden="true">
+      <span><svg width="34" height="10"><path d="M0 5H34" class="e e-runs"/></svg>runs on</span>
+      <span><svg width="34" height="10"><path d="M0 5H34" class="e e-settle-out"/><path d="M0 5H34" class="e e-settle-in"/></svg>settles in, with timing</span>
+      <span><svg width="34" height="10"><path d="M0 5H34" class="e e-access"/></svg>holds an account at</span>
+      <span><svg width="34" height="10"><path d="M0 5H22" class="e e-unknown"/><text x="25" y="9" class="e-q">?</text></svg>not confirmed</span>
+      <span><svg width="22" height="12"><rect width="22" height="12" fill="url(#hatch-l)" stroke="currentColor" stroke-width=".8"/><defs><pattern id="hatch-l" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="6" fill="currentColor" opacity=".35"/></pattern></defs></svg>planned</span>
+    </div>`;
+  const clock = vClock(c);
+  const tl = vTimeline(c);
+  const panel = S.node ? vPanel(node(S.node), c) : '';
+  return crumbs([HOME, ...(S.node ? [{label:c.id, href:href({node:null}), go:{node:null}}, {label:esc(node(S.node).short)}] : [{label:c.id}])]) +
+   `<div class="split${panel?' has-panel':''}"><div class="main-col">
+     <section class="pagehead"><div><h1>${flag(c.flag)}${c.id} <span style="font-weight:400;color:var(--muted)">${esc(c.central_bank)}</span></h1><p>${esc(c.how)}</p></div>
+       ${rs ? `<div class="now">Toronto <b>${n.label}</b><br><span class="dot ${st.open?'on':'off'}"></span>${esc(rs.short)} ${st.open?'open':'closed'}, ${esc(st.text)}</div>` : ''}</section>
+     <div class="section-h"><h2>Who does what</h2><p>Pick anything to see what it settles through, down to the central bank, and what depends on it.</p></div>
+     ${map}
+     <p class="hint narrow-hint">Tap a payment type to draw its path to the central bank.</p>
+     ${clock}
+     ${tl}
+   </div>${panel}</div>`;
+}
+function nodeBtn(n, pos, lit){
+  const r = n.rec; const cls = ['node','k-'+n.kind, 'l-'+n.layer];
+  if (r.status==='planned') cls.push('planned');
+  if (n.kind==='system' && r.settlement_mode==='unknown') cls.push('unknown');
+  if (S.node===n.id) cls.push('sel');
+  if (lit && lit.has(n.id)) cls.push('lit');
+  let sub = '', lg = '';
+  if (n.kind==='product') sub = r.plain;
+  else if (n.kind==='system') { sub = party(r.operator).name.replace(/ Inc\.| International Inc\.| Corp\./g,''); lg = logo(party(r.operator).logo); }
+  else sub = r.through ? 'via a seat holder' : 'hold Bank of Canada accounts';
+  const dn = pathDown(n.id).slice(1).map(x=>node(x.id)?.short).filter(Boolean);
+  const aria = `${n.name}${r.status==='planned'?', planned':''}. ${dn.length ? 'Settles through '+dn.join(', then ') : n.kind==='system' && r.settlement_mode==='unknown' ? 'Settlement path not confirmed' : ''}.`;
+  return `<button type="button" class="${cls.join(' ')}" data-node="${n.id}" ${pos?`style="grid-column:${pos}"`:''} aria-label="${esc(aria)}" aria-pressed="${S.node===n.id}"><span class="nm">${lg}${esc(n.short)}</span><span class="sb">${esc(sub)}</span></button>`;
+}
+
+function drawEdges(){
+  const map = $('#map'), svg = $('#edges'); if (!map || !svg) return;
+  const draw = () => {
+    const mb = map.getBoundingClientRect();
+    const box = id => { const el = map.querySelector(`[data-node="${CSS.escape(id)}"]`); if(!el) return null; const b = el.getBoundingClientRect(); return {x:b.left-mb.left, y:b.top-mb.top, w:b.width, h:b.height, base:el.classList.contains('base')}; };
+    const lit = S.node ? new Set([S.node, ...reach(S.node,'down'), ...reach(S.node,'up')]) : null;
+    const upS = S.node ? new Set([S.node, ...reach(S.node,'up')]) : null, dnS = S.node ? new Set([S.node, ...reach(S.node,'down')]) : null;
+    const narrow = map.clientWidth < 860;
+    // On narrow screens the product lines only appear for the selected path, so the map stays legible.
+    const es = IDX.edges.filter(e => box(e.from) && box(e.to) && !(narrow && e.type==='runs' && (!lit || !lit.has(e.from) || !lit.has(e.to))));
+    map.classList.toggle('narrow', narrow);
+    // spread attachment points along node edges
+    const outs = {}, ins = {};
+    es.forEach(e => { (outs[e.from] ||= []).push(e); (ins[e.to] ||= []).push(e); });
+    const cx = id => { const b = box(id); return b.x + b.w/2; };
+    Object.values(outs).forEach(a => a.sort((p,q)=>cx(p.to)-cx(q.to)));
+    Object.values(ins).forEach(a => a.sort((p,q)=>cx(p.from)-cx(q.from)));
+    const attach = (b, list, e, base, side) => {
+      const i = list.indexOf(e), k = list.length;
+      if (base) { const fb = box(e.from); return Math.min(Math.max(fb.x+fb.w/2, b.x+20), b.x+b.w-20); }
+      const span = Math.min(b.w*0.7, k*14); return b.x + b.w/2 - span/2 + (k===1 ? span/2 : span*i/(k-1));
+    };
+    let out = `<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="6" fill="var(--planned)" opacity=".35"/></pattern></defs>`;
+    const labels = [];
+    for (const e of es) {
+      const a = box(e.from), b = box(e.to);
+      const horiz = Math.abs((a.y+a.h/2)-(b.y+b.h/2)) < 8;
+      let d;
+      if (horiz) { const y = a.y + a.h/2; const x1 = a.x + (b.x>a.x ? a.w : 0), x2 = b.x + (b.x>a.x ? 0 : b.w); d = `M${x1} ${y} L${x2} ${y}`; }
+      else {
+        const x1 = attach(a, outs[e.from], e, false), y1 = a.y + a.h;
+        const x2 = attach(b, ins[e.to], e, b.base), y2 = b.y;
+        const dy = Math.max(18, (y2-y1)*0.5);
+        d = `M${x1} ${y1} C${x1} ${y1+dy} ${x2} ${y2-dy} ${x2} ${y2}`;
+        if (e.type==='settle' && e.label && (!narrow || (lit && lit.has(e.from) && lit.has(e.to)))) labels.push({x:(x1+x2)/2, y:(y1+y2)/2, t:e.label, e});
+      }
+      const on = !lit || (upS.has(e.from) && upS.has(e.to)) || (dnS.has(e.from) && dnS.has(e.to));
+      const L = on && lit ? ' lit' : '';
+      if (e.type==='settle') out += `<path d="${d}" class="e e-settle-out${L}"/><path d="${d}" class="e e-settle-in${L}"/>`;
+      else if (e.type==='access') out += `<path d="${d}" class="e e-access${L}"/>`;
+      else out += `<path d="${d}" class="e e-runs${L}"/>`;
+    }
+    // stubs for systems with no confirmed settlement path
+    D.systems.filter(s => s.settlement_mode==='unknown' && box(s.id)).forEach(s => {
+      const b = box(s.id); const x = b.x + b.w/2, y = b.y + b.h; const L = lit && lit.has(s.id) ? ' lit' : '';
+      out += `<path d="M${x} ${y} L${x} ${y+16}" class="e e-unknown${L}"/><text x="${x}" y="${y+28}" text-anchor="middle" class="e-q${L}">?</text>`;
+    });
+    const placed = [];
+    labels.sort((p,q)=>p.y-q.y);
+    for (const l of labels) {
+      const w0 = l.t.length*6.3 + 10;
+      for (let k=0; k<6; k++) { const hit = placed.some(r => Math.abs(r.x-l.x) < (r.w+w0)/2+4 && Math.abs(r.y-l.y) < 18); if (!hit) break; l.y -= 18; }
+      placed.push({x:l.x, y:l.y, w:w0});
+    }
+    for (const l of labels) {
+      const on = !lit || (upS.has(l.e.from) && upS.has(l.e.to)) || (dnS.has(l.e.from) && dnS.has(l.e.to));
+      const w = l.t.length*6.3 + 10;
+      out += `<g class="e-lab${on&&lit?' lit':''}"><rect x="${l.x-w/2}" y="${l.y-8}" width="${w}" height="16" rx="1"/><text x="${l.x}" y="${l.y+3.5}" text-anchor="middle">${esc(l.t)}</text></g>`;
+    }
+    svg.setAttribute('viewBox', `0 0 ${mb.width} ${mb.height}`);
+    svg.innerHTML = out;
+  };
+  draw();
+  if ('ResizeObserver' in window) { ro = new ResizeObserver(() => draw()); ro.observe(map); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+}
+
+/* ---------- clock ---------- */
+function vClock(c){
+  const region = c.region;
+  const rows = [];
+  const all = D.systems.filter(s => s.region===region && s.id!==c.root);
+  const unknownCards = all.filter(s => s.settlement_mode==='unknown');
+  const sysIn = all.filter(s => s.settlement_mode!=='unknown');
+  if (unknownCards.length) sysIn.push({id:'cards-unknown', short:'Card networks', settlement_mode:'unknown', windows:[], names:unknownCards.map(x=>x.short)});
+  const order = ['lynx','acss','interac-e-transfer','rtr','fedwire-funds','cards-unknown'];
+  sysIn.sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));
+  const W=1000, LW=150, dayW=(W-LW)/7, top=40, rh=52;
+  const n = torontoNow(); const hol = S.holiday;
+  const x = (dow, min) => LW + dow*dayW + min/1440*dayW;
+  let g = `<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="6" fill="var(--planned)" opacity=".4"/></pattern></defs>`;
+  // header
+  const today = new Date(n.date+'T12:00:00'); const monday = new Date(today); monday.setDate(today.getDate()-n.dow);
+  for (let d=0; d<7; d++){
+    const dt = new Date(monday); dt.setDate(monday.getDate()+d);
+    if (hol && d===0) g += `<rect x="${x(0,0)}" y="${top-6}" width="${dayW}" height="${sysIn.length*rh+6}" class="c-hol"/>`;
+    g += `<text x="${x(d,0)+6}" y="16" class="c-day">${DAYS[d]}${hol&&d===0?' · holiday':''}</text><text x="${x(d,0)+6}" y="30" class="c-date">${dt.getDate()} ${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()]}</text>`;
+    g += `<line x1="${x(d,0)}" x2="${x(d,0)}" y1="${top-6}" y2="${top+sysIn.length*rh}" class="c-gridd"/>`;
+    g += `<line x1="${x(d,720)}" x2="${x(d,720)}" y1="${top-2}" y2="${top+sysIn.length*rh}" class="c-grid"/>`;
+  }
+  const notes = [];
+  sysIn.forEach((s,i) => {
+    const y = top + i*rh, mid = y + rh/2;
+    g += `<line x1="0" x2="${W}" y1="${y+rh}" y2="${y+rh}" class="c-grid"/>`;
+    g += `<text x="0" y="${mid-2}" class="c-row">${esc(s.short)}${s.status==='planned'?' ':''}</text>`;
+    let sub = s.status==='planned' ? 'planned' : s.settlement_mode==='unknown' ? 'not confirmed' : MODE[s.settlement_mode].toLowerCase();
+    g += `<text x="0" y="${mid+12}" class="c-sub">${esc(sub)}</text>`;
+    if (s.settlement_mode==='unknown') { g += `<text x="${LW+8}" y="${mid+4}" class="c-unk">${esc(s.names.join(' and '))}. Where net amounts settle in ${c.id} is not confirmed in the sources checked.</text>`; return; }
+    if (s.status==='planned') {
+      g += `<rect x="${x(0,0)}" y="${mid-8}" width="${7*dayW}" height="16" class="c-plan"/><rect x="${x(0,0)}" y="${mid-8}" width="${7*dayW}" height="16" class="c-plan-edge"/>`;
+      g += `<rect x="${x(0,0)+4}" y="${mid-6}" width="280" height="12" fill="var(--paper)"/><text x="${x(0,0)+8}" y="${mid+3.5}" class="c-plan-t">24/7/365 exchange and settlement, once live</text>`;
+      return;
+    }
+    if (s.id==='acss') {
+      for (let d=0; d<7; d++) if (isBiz(d,hol)) { const prev = (()=>{ let k=d-1; const list=[]; while(k>=-1){ const dd=(k+7)%7; list.unshift(DAYS[dd]); if (isBiz(dd,hol) || k===d-1 && false) break; k--; if (list.length>3) break; } return list; })();
+        g += `<rect x="${x(d,6*60)}" y="${mid-7}" width="${dayW*0.25}" height="14" class="c-settle"/><text x="${x(d,6*60)}" y="${mid-11}" class="c-settle-t">morning</text>`; }
+      notes.push(`<li><b>ACSS</b> settles the previous business day's net balances each business morning, through Lynx.</li>`);
+      return;
+    }
+    if (s.id==='interac-e-transfer') {
+      g += `<line x1="${x(0,0)}" x2="${x(6,1440)}" y1="${mid-12}" y2="${mid-12}" class="c-cust"/><rect x="${x(5,0)+2}" y="${mid-19}" width="186" height="13" fill="var(--paper)"/><text x="${x(5,0)+6}" y="${mid-9}" class="c-sub">customers send and receive any time</text>`;
+      // settlement days: each cycle settles on the next business day after its value date
+      const settleOn = {};
+      for (let d=0; d<7; d++){ let k=1; while(k<6 && !isBiz((d+k)%7,hol)) k++; const sd=(d+k)%7; if (d+k<=7+1) (settleOn[sd] ||= []).push(d); }
+      for (let d=0; d<7; d++) if (isBiz(d,hol) && settleOn[d]) {
+        const fromDays = settleOn[d].map(k=>DAYS[k]);
+        g += `<rect x="${x(d,0)+2}" y="${mid-1}" width="${dayW-4}" height="9" class="c-settle"/><text x="${x(d,0)+4}" y="${mid+19}" class="c-settle-t">settles ${fromDays.length>1 ? fromDays[0]+'–'+fromDays.at(-1) : fromDays[0]}</text>`;
+      }
+      notes.push(`<li><b>e-Transfer</b> lands for the customer in minutes. Between banks it settles net the day after the value date, through Lynx. ${hol ? 'With Monday off, Friday to Monday all settle on Tuesday.' : 'Toggle the holiday to see a four-day gap.'}</li>`);
+      return;
+    }
+    // open windows (Lynx, Fedwire)
+    for (let d=0; d<7; d++) for (const [a,b] of openIntervals(s,d,hol)) g += `<rect x="${x(d,a)}" y="${mid-6}" width="${(b-a)/1440*dayW}" height="12" class="c-open"/>`;
+    for (const w of s.windows.filter(w=>w.kind==='cutoff')) for (let d=0; d<7; d++) if (isBiz(d,hol)) g += `<line x1="${x(d,toMin(w.start))}" x2="${x(d,toMin(w.start))}" y1="${mid-6}" y2="${mid+6}" class="c-cut"/>`;
+    if (s.id==='lynx') notes.push(`<li><b>Lynx</b> settles each payment as it goes, on business days only. The white mark is 18:00, when regular payments close.</li>`);
+    if (s.id==='fedwire-funds') notes.push(`<li><b>Fedwire</b> opens at 21:00 the evening before each business day. The white mark is the 18:45 third-party cutoff.</li>`);
+  });
+  const H = top + sysIn.length*rh + 8;
+  const nx = x(n.dow, n.mins);
+  g += `<line x1="${nx}" x2="${nx}" y1="${top-10}" y2="${H}" class="c-now"/><text x="${nx+4}" y="${H-2}" class="c-now-t">now</text>`;
+  return `<div class="section-h"><h2>When it's final</h2><p>This week in Toronto time. Bars are opening hours, accent marks are when money settles between institutions.</p></div>
+    <label class="toggle"><input type="checkbox" id="holiday" ${hol?'checked':''}> Monday is a statutory holiday</label>
+    <div class="clockbox" tabindex="0" role="img" aria-label="Weekly settlement clock for ${c.id}. ${esc(notes.map(n=>n.replace(/<[^>]+>/g,'')).join(' '))}"><svg viewBox="0 0 ${W} ${H+6}">${g}</svg></div>
+    <p class="scrollhint">Scroll sideways for the full week.</p>
+    <ul class="clock-notes">${notes.join('')}</ul>`;
+}
+
+/* ---------- timeline ---------- */
+function vTimeline(c){
+  const ev = D.timeline.filter(t => t.region===c.region); if (!ev.length) return '';
+  const y0 = 2020, y1 = 2028, W = 1000, pad = 20, H = 80;
+  const x = d => { const [yy,mm,dd] = d.split('-').map(Number); return pad + ((yy + (mm-1)/12 + ((dd||1)-1)/365) - y0)/(y1-y0)*(W-2*pad); };
+  const n = torontoNow();
+  let g = `<defs><pattern id="hatch2" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1.8" height="5" fill="var(--planned)" opacity=".5"/></pattern></defs>`;
+  g += `<line x1="${pad}" x2="${W-pad}" y1="50" y2="50" class="t-axis"/>`;
+  const nx0 = x(n.date);
+  for (let y=y0; y<=y1; y++) { const yx = x(y+'-01-01'); g += `<line x1="${yx}" x2="${yx}" y1="46" y2="54" class="t-axis"/>${Math.abs(yx-nx0) > 30 ? `<text x="${yx}" y="72" text-anchor="middle" class="t-yr">${y}</text>` : ''}`; }
+  ev.forEach((t,i) => {
+    const xx = t.precision==='undated' ? W-pad-14 : x(t.date), yy = 30 - (i%2)*16;
+    if (t.precision==='undated') g += `<text x="${xx}" y="${yy-14}" text-anchor="middle" class="t-yr">no date</text>`;
+    g += `<line x1="${xx}" x2="${xx}" y1="${yy+8}" y2="50" stroke="var(--rule-strong)"/>`;
+    if (t.status==='done') g += `<circle cx="${xx}" cy="${yy}" r="9" class="t-done"/><text x="${xx}" y="${yy+3.5}" text-anchor="middle" class="t-n">${i+1}</text>`;
+    else g += `<circle cx="${xx}" cy="${yy}" r="9" class="t-plan"/><text x="${xx}" y="${yy+3.5}" text-anchor="middle" class="t-np">${i+1}</text>`;
+  });
+  const nx = x(n.date);
+  g += `<line x1="${nx}" x2="${nx}" y1="40" y2="60" class="t-now"/><text x="${nx}" y="72" text-anchor="middle" class="t-now-t">now</text>`;
+  const fmt = t => t.precision==='quarter' ? `Q${Math.floor((+t.date.slice(5,7)-1)/3)+1} ${t.date.slice(0,4)}` : t.precision==='undated' ? 'No date' : fmtDate(t.date);
+  return `<div class="section-h"><h2>What's changing</h2><p>Solid is done. Hatched is planned.</p></div>
+    <div class="tlbox" aria-hidden="true"><svg viewBox="0 0 ${W} ${H+4}">${g}</svg></div>
+    <ol class="tl-list">${ev.map((t,i) => `<li><span class="n${t.status==='planned'?' p':''}">${i+1}</span><span class="d">${fmt(t)}</span><span>${esc(t.text)}<span class="s">${esc(srcNames(t.sources))}</span></span></li>`).join('')}</ol>`;
+}
+
+/* ---------- panel ---------- */
+function srcNames(ids){ return [...new Set((ids||[]).map(i=>IDX.sources[i]?.publisher).filter(Boolean))].join(', ').replace(/\.$/,''); }
+function vPanel(n, c){
+  const r = n.rec; const root = sys(c.root);
+  const chain = pathDown(n.id);
+  const ups = (IDX.up[n.id]||[]).map(e=>node(e.from)).filter(Boolean);
+  const downId = (IDX.down[n.id]||[])[0]?.to;
+  let kindLabel, facts = '', explain = '', srcIds = [], allSrc = [], today = '';
+  if (n.kind==='system'){
+    kindLabel = `${IDX.groups[r.group].name} · layer ${r.layer} ${IDX.layers[r.layer].name}`;
+    const f = (k,v) => `<dt>${k}</dt><dd${k==='Settles in'?' class="acc"':''}>${v}</dd>`;
+    const unk = '<span class="unk">Not confirmed</span>';
+    facts = f('Operator', esc(party(r.operator).name)) +
+      f('Participants', esc(r.participants_count || r.participants_summary) || unk) +
+      f('Settlement asset', esc(r.settlement_asset) || unk) +
+      f('Hours', esc(r.hours) || unk) +
+      f('Settles in', r.settlement_mode==='none' ? 'Does not settle' : r.settles_in ? esc(sys(r.settles_in).name) : r.settlement_mode==='unknown' ? unk : 'Final here');
+    explain = r.explainer; srcIds = r.field_sources.explainer; allSrc = [...new Set(Object.values(r.field_sources).flat())];
+    if ((r.windows||[]).some(w=>w.kind==='open')) { const nn = torontoNow(); today = `<div class="today"><div class="ph"><span>Today</span><span>${esc(openStatus(r).text)}</span></div>${day24(r, nn.dow, false, true)}<div class="hrs"><span>00:00</span><span>06</span><span>12</span><span>18</span><span>24:00</span></div></div>`; }
+  } else if (n.kind==='product'){
+    kindLabel = 'What customers use · layer 7';
+    const targets = [r.runs_on].flat().map(t=>sys(t));
+    facts = `<dt>What it is</dt><dd>${esc(r.plain)}</dd><dt>Runs on</dt><dd>${targets.map(t=>esc(t.name)).join(', ')}</dd><dt>Settles in</dt><dd class="acc">${targets.map(t => t.settles_in ? esc(sys(t.settles_in).name) : '<span class="unk">Not confirmed</span>').join(', ')}</dd>`;
+    explain = `${r.name} runs on ${targets.map(t=>t.name).join(' and ')}. Follow the path below to see where it becomes final.`;
+    srcIds = r.sources; allSrc = r.sources;
+  } else {
+    kindLabel = `Layer ${r.layer} · ${IDX.layers[r.layer].name}`;
+    facts = `<dt>Who</dt><dd>${esc(party(r.party).name)}</dd>${r.holds_account_at?`<dt>Account at</dt><dd class="acc">${esc(sys(r.holds_account_at).name)}</dd>`:''}${r.through?`<dt>Access</dt><dd>Through ${esc(node(r.through).name.toLowerCase())}</dd>`:''}<dt>Uses</dt><dd>${r.uses.map(u=>esc(sys(u).short)).join(', ')}</dd>`;
+    explain = r.summary; srcIds = r.sources; allSrc = r.sources;
+  }
+  const ladder = chain.map((x,i) => { const nd = node(x.id); const next = chain[i+1];
+    const isRoot = x.id===root.id;
+    let how = '';
+    if (next) { const e = next.via; how = e.type==='runs' ? 'runs on' : e.type==='access' ? 'holds an account at' : `settles ${e.label || MODE[nd.rec.settlement_mode].toLowerCase()}`; }
+    else if (isRoot) how = `Final · ${root.settlement_asset}`;
+    else if (nd.kind==='system' && nd.rec.settlement_mode==='unknown') how = 'settlement path not confirmed';
+    const kcls = next && next.via.type==='runs' ? ' k-runs' : '';
+    return `<li class="rung${i===0?' cur':''}${isRoot?' root':''}${kcls}"><span class="rl" aria-hidden="true"></span><div class="rb">${i===0?`<b>${esc(nd.name)}</b>`:`<button type="button" data-node="${x.id}">${esc(nd.name)}</button>`}<span class="how">${esc(how)}</span></div></li>`;
   }).join('');
-  return `<aside class="panel${state.sheetFull?' full':''}" id="panel" aria-labelledby="panel-title" role="region">
-    <div class="panel-bar"><button class="icon-btn grip" type="button" id="sheet-size" aria-expanded="${state.sheetFull}">${state.sheetFull?'Half height':'Full height'}</button>
-      <span></span><button class="icon-btn" type="button" id="panel-close" aria-label="Close record">Close ×</button></div>
-    <h2 id="panel-title" tabindex="-1">${esc(s.name)}${s.status==='planned'?' <span class="st-planned">planned</span>':''}</h2>
-    <p class="kind">${esc(IDX.groups[s.group].name)} · ${esc(IDX.regions[s.region].name)}</p>
-    <dl class="facts">
-      ${fld('operator','Operator', esc(party(s.operator).name))}
-      ${fld('participants','Participants', s.participants_summary ? esc(s.participants_summary) : '<span class="unknown">Not confirmed</span>')}
-      ${fld('asset','Settlement asset', s.settlement_asset ? esc(s.settlement_asset) : '<span class="unknown">Not confirmed</span>')}
-      ${fld('hours','Hours', s.hours ? esc(s.hours) : '<span class="unknown">Not confirmed</span>')}
-      ${fld('settles_in','Settles in', settlesVal)}
-    </dl>
-    <p class="explain">${esc(s.explainer)}</p>
-    <p class="srcline">Source: ${esc(srcNames(fs.explainer||[]))}. Checked ${fmtDate(s.last_checked)}.</p>
-
-    <section class="drill" aria-labelledby="drill-h">
-      <h3 id="drill-h">Settlement path</h3>
-      <ol class="ladder">${ladder}</ol>
-      <div class="drill-btns">
-        <button type="button" data-open="${down||''}" ${down?'':'disabled'}>↓ Drill down${down?' to '+esc(sys(down).short):''}</button>
-        <button type="button" id="drill-up" ${up?'':'disabled'} aria-expanded="false" aria-controls="feeders">↑ Settles here (${up})</button>
-      </div>
-      <ul class="feeders" id="feeders" hidden>${feeders.map(f => `<li><button type="button" data-open="${f.id}">${esc(f.name)}</button><span class="code muted">${esc(MODE[f.settlement_mode])}${f.settlement_timing?' · '+esc(f.settlement_timing):''}</span></li>`).join('')}</ul>
-    </section>
-    ${flowLink}
-
-    <details><summary>Rulebook and operator</summary><div>
-      <p>Operator: ${esc(party(s.operator).name)}. Rules set by: ${s.scheme_owner ? esc(party(s.scheme_owner).name) : 'no separate rulebook'}.</p>
-      <p class="code muted">Roles: ${s.roles.map(esc).join(', ')} · Settlement: ${esc(MODE[s.settlement_mode])}</p></div></details>
-    <details><summary>Participants</summary><div><p>${s.participants_summary ? esc(s.participants_summary) : 'Not confirmed.'}</p><p class="srcline">Source: ${esc(srcNames(fs.participants_summary||[])) || 'none yet'}.</p></div></details>
-    <details><summary>Caveats</summary><div>${s.caveats.length ? `<ul>${s.caveats.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>` : '<p class="muted">None recorded.</p>'}</div></details>
-    <details><summary>Not known yet</summary><div>${s.unknowns.length ? `<ul>${s.unknowns.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>` : '<p class="muted">Nothing open.</p>'}</div></details>
-    <details><summary>All sources</summary><div><ul class="srclist">${srcRows}</ul><p class="code muted">Last checked ${esc(s.last_checked)}</p></div></details>
+  const multi = n.kind==='product' && [r.runs_on].flat().length>1 ? `<p class="src">Also runs on ${[r.runs_on].flat().slice(1).map(t=>esc(sys(t).name)).join(', ')}.</p>` : '';
+  const flows = IDX.flowsFor[n.id]||[];
+  const srcRows = D.sources.filter(s=>allSrc.includes(s.id)).map(s => {
+    const fields = n.kind==='system' ? Object.entries(r.field_sources).filter(([,v])=>v.includes(s.id)).map(([k])=>k.replace(/_/g,' ')).join(', ') : 'this record';
+    return `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a><span class="mono">${esc(s.tier)} · ${s.published?'dated '+esc(s.published)+' · ':''}checked ${esc(s.accessed)} · supports ${esc(fields)}</span></li>`; }).join('');
+  const caveats = n.kind==='system' ? r.caveats : [], unknowns = n.kind==='system' ? r.unknowns : [];
+  const icon = n.kind==='system' ? logo(party(r.operator).logo) : '';
+  return `<aside class="panel${S.full?' full':''}" id="panel" aria-labelledby="ptitle" role="region">
+    <div class="pbar"><button class="btn grip" type="button" id="sheet" aria-expanded="${S.full}">${S.full?'Half height':'Full height'}</button><span></span><button class="btn" type="button" id="pclose">Close</button></div>
+    <p class="ptype">${esc(kindLabel)}</p>
+    <h2 id="ptitle" tabindex="-1">${icon}${esc(n.name)}${r.status==='planned'?' <span class="tag">planned</span>':''}</h2>
+    <dl class="facts">${facts}</dl>
+    <p class="explain">${esc(explain)}</p>
+    <p class="src">Source: ${esc(srcNames(srcIds))}.${n.kind==='system'?' Checked '+fmtDate(r.last_checked)+'.':''}</p>
+    <div class="ph"><span>Settlement path</span><span>${n.id===root.id ? 'this is where it ends' : (chain.at(-1).id===root.id ? (chain.length-1)+' step'+(chain.length===2?'':'s')+' to the central bank' : 'path not confirmed')}</span></div>
+    <ol class="ladder">${ladder}</ol>${multi}
+    <div class="drillrow">
+      <button class="btn strong" type="button" data-node="${downId||''}" ${downId?'':'disabled'}>↓ Drill down</button>
+      <button class="btn" type="button" id="drillup" ${ups.length?'':'disabled'} aria-expanded="false" aria-controls="feeders">↑ Settles here (${ups.length})</button>
+    </div>
+    <ul class="feeders" id="feeders" hidden>${ups.map(u => `<li><button type="button" data-node="${u.id}"><b>${esc(u.name)}</b><span class="mono muted">${u.kind==='product'?'runs on':u.kind==='access'?'account':esc(u.rec.settles_label||MODE[u.rec.settlement_mode])}</span></button></li>`).join('')}</ul>
+    ${today}
+    ${flows.length ? `<a class="flowlink" href="${href({view:'flow',flow:flows[0],step:1,node:null})}" data-flow="${flows[0]}">Show the flow →</a>` : ''}
+    ${n.kind==='system' ? `<details><summary>Rulebook and operator</summary><div><p>Operated by ${esc(party(r.operator).name)}. Rules set by ${r.scheme_owner ? esc(party(r.scheme_owner).name) : 'no separate rule owner'}.</p><p class="mono muted">Roles: ${r.roles.map(esc).join(', ')} · ${esc(MODE[r.settlement_mode])}</p></div></details>
+      <details><summary>Participants</summary><div><p>${esc(r.participants_summary||'Not confirmed.')}</p>${r.participants_count?`<p>${esc(r.participants_count)}</p>`:''}</div></details>` : ''}
+    ${caveats.length ? `<details><summary>Caveats</summary><div><ul>${caveats.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></details>` : ''}
+    ${unknowns.length ? `<details><summary>Not known yet</summary><div><ul>${unknowns.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></details>` : ''}
+    <details><summary>All sources</summary><div><ul class="srcs">${srcRows}</ul></div></details>
   </aside>`;
 }
 
 /* ---------- Railroom ---------- */
-function renderFlow(){
-  const sc = IDX.scenarios[state.flow];
-  const st = sc.steps[state.step-1];
-  const phases = ['authorization','clearing','settlement'];
-  const rail = sys(sc.rail);
+function vFlow(){
+  const sc = IDX.scenarios[S.flow]; const st = sc.steps[S.step-1]; const rail = sys(sc.rail);
   const lineName = {message:'Message', money:'Money movement', settlement:'Settlement', customer:'Customer'};
-  return `<nav class="crumbs" aria-label="Breadcrumb"><a href="${hrefFor({view:'home',group:null,system:null})}" data-go='{"view":"home","group":null,"system":null,"flow":null}'>World</a><span class="sep" aria-hidden="true">›</span><span>Railroom</span><span class="sep" aria-hidden="true">›</span><span aria-current="location">${esc(sc.title)}</span></nav>
-    <div class="flow-head"><h1>${esc(sc.title)}</h1>
-      <span class="code muted">Rail: <a class="settle-link" href="${hrefFor({view:'group',system:rail.id,group:rail.group,flow:null})}" data-open-map="${rail.id}">${esc(rail.name)}</a></span></div>
-    <p class="lede">${esc(sc.summary)}</p>
-    <p class="legend-inline">Dashed thin line: a message. Solid line: money moving between accounts at a commercial bank. Double line ending in the settlement column: final settlement in central bank money. Plain text in a lane: what the customer sees.</p>
-    <div class="diagram" id="diagram" role="img" aria-label="Sequence diagram, ${sc.steps.length} steps. The same steps are listed in text below.">${svgFlow(sc)}</div>
+  const ccy = IDX.ccyByRegion[rail.region];
+  return crumbs([HOME, {label:'Railroom'}, {label:esc(sc.title)}]) +
+   `<div class="flow-head"><h1>${esc(sc.title)}</h1><span class="mono muted">Rail <a class="set" style="color:var(--accent);font-weight:600" href="${href({view:'ccy',ccy:ccy.id,node:rail.id})}" data-go='{"view":"ccy","ccy":"${ccy.id}","node":"${rail.id}"}'>${esc(rail.name)}</a></span></div>
+    <p class="lede">${esc(sc.summary)} Dashed line is a message. Solid line is money moving on a bank's books. Double line into the last column is final settlement in central bank money.</p>
+    <div class="diagram" role="img" aria-label="Sequence diagram with ${sc.steps.length} steps. The steps are listed in text below.">${svgFlow(sc)}</div>
     <div class="controls">
-      <button type="button" id="prev" ${state.step===1?'disabled':''}>← Previous</button>
-      <button type="button" id="next" ${state.step===sc.steps.length?'disabled':''}>Next →</button>
-      <label class="scrub"><span class="code muted">Step ${state.step} of ${sc.steps.length} · ${esc(st.phase)} · ${esc(st.timing)}</span>
-        <input type="range" id="scrub" min="1" max="${sc.steps.length}" value="${state.step}" aria-label="Step">
-        <span class="marks" aria-hidden="true">${phases.map(p => `<span>${p}</span>`).join('')}<span>${esc(sc.steps.at(-1).timing)}</span></span></label>
+      <button class="btn strong" type="button" id="prev" ${S.step===1?'disabled':''}>← Previous</button>
+      <button class="btn strong" type="button" id="next" ${S.step===sc.steps.length?'disabled':''}>Next →</button>
+      <label class="scrub"><span class="mono muted">Step ${S.step} of ${sc.steps.length} · ${esc(st.phase)} · ${esc(st.timing)}</span>
+        <input type="range" id="scrub" min="1" max="${sc.steps.length}" value="${S.step}" aria-label="Step">
+        <span class="marks" aria-hidden="true"><span>authorization</span><span>clearing</span><span>settlement</span></span></label>
     </div>
-    <p class="caption" aria-live="polite"><span class="code">${state.step}. ${esc(lineName[st.type])}</span>${esc(st.caption)}</p>
-    <div class="four">
-      ${[['messaging','Messaging'],['money','Money movement'],['settlement','Settlement'],['customer','Customer sees']].map(([k,l]) =>
-        `<div><h3${k==='settlement'?' class="settle"':''}>${l}</h3><p>${esc(sc.explainer[k].text)}</p><p class="srcline" style="margin:0">Source: ${esc(srcNames(sc.explainer[k].sources))}</p></div>`).join('')}
-    </div>
-    <h3 class="code" style="text-transform:uppercase;letter-spacing:.08em;font-size:var(--s1)">Steps in text</h3>
-    <ol class="steps-text">${sc.steps.map(x => `<li${x.n===state.step?' aria-current="step"':''}>${esc(x.caption)} <span class="code">${esc(lineName[x.type])} · ${esc(x.timing)} · ${esc(srcNames(x.sources))}</span></li>`).join('')}</ol>
-    <details><summary>Caveats</summary><div><ul>${sc.caveats.map(c=>`<li>${esc(c)}</li>`).join('')}</ul></div></details>`;
+    <p class="caption" aria-live="polite"><span class="mono">${S.step}. ${esc(lineName[st.type])}</span>${esc(st.caption)}</p>
+    <div class="four">${[['messaging','Messaging'],['money','Money movement'],['settlement','Settlement'],['customer','Customer sees']].map(([k,l]) => `<div><h3${k==='settlement'?' class="acc"':''}>${l}</h3><p>${esc(sc.explainer[k].text)}</p><p class="src" style="margin:0">${esc(srcNames(sc.explainer[k].sources))}</p></div>`).join('')}</div>
+    <div class="ph"><span>Steps in text</span></div>
+    <ol class="steps-text">${sc.steps.map(x => `<li${x.n===S.step?' aria-current="step"':''}>${esc(x.caption)} <span class="mono">${esc(lineName[x.type])} · ${esc(x.timing)} · ${esc(srcNames(x.sources))}</span></li>`).join('')}</ol>
+    <details><summary>Caveats</summary><div><ul>${sc.caveats.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></details>`;
 }
-
 function svgFlow(sc){
   const lanes = [...sc.lanes, sc.settlement_lane];
-  const colW = 128, left = 34, top = 52, rowH = 58, w = left + lanes.length*colW + 8, h = top + sc.steps.length*rowH + 16;
-  const x = id => left + lanes.indexOf(id)*colW + colW/2;
-  const settleX = x(sc.settlement_lane);
-  let g = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <marker id="m-open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="context-stroke" stroke-width="1.4"/></marker>
-      <marker id="m-fill" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker>
-    </defs>`;
-  lanes.forEach((id,i) => {
-    const cx = x(id), settle = id===sc.settlement_lane;
-    const words = party(id).name.replace(/\s*\(.*\)/,'').split(' ');
-    const l1 = [], l2 = []; words.forEach(wd => ((l1.join(' ').length + wd.length < 16) && !l2.length ? l1 : l2).push(wd));
-    g += `<text class="lane-label${settle?' settle':''}" x="${cx}" y="18" text-anchor="middle">${esc(settle?'Settlement':l1.join(' '))}</text>`;
-    g += `<text class="lane-label${settle?' settle':''}" x="${cx}" y="33" text-anchor="middle">${esc(settle?party(id).name:l2.join(' '))}</text>`;
-    g += `<line class="lane-rule${settle?' settle':''}" x1="${cx}" x2="${cx}" y1="${top-8}" y2="${h-6}"/>`;
-  });
-  sc.steps.forEach((st,i) => {
-    const y = top + i*rowH + 22, on = st.n===state.step ? ' on' : '';
-    const fx = x(st.from), tx = x(st.to);
-    g += `<g class="step${on}" data-step="${st.n}"><text class="step-num" x="4" y="${y+4}">${st.n}</text>`;
-    if (st.type==='customer'){
-      g += `<text class="lbl" x="${fx}" y="${y+4}" text-anchor="middle">${st.n===1?'asks to pay':'sees credit'}</text>`;
-    } else if (st.type==='money' && st.from===st.to){
-      g += `<line class="ln" x1="${fx-26}" x2="${fx+26}" y1="${y}" y2="${y}" stroke-width="2.5"/><text class="lbl" x="${fx}" y="${y+18}" text-anchor="middle">book entry</text>`;
-    } else if (st.type==='message'){
-      g += `<line class="ln" x1="${fx}" x2="${tx-4}" y1="${y}" y2="${y}" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#m-open)"/>`;
-      if (st.via) g += `<text class="lbl" x="${x(st.via)}" y="${y-7}" text-anchor="middle">${esc(party(st.via)?.name || sys(st.via)?.short)}</text>`;
-    } else if (st.type==='money'){
-      const dir = tx>fx ? -6 : 6;
-      g += `<line class="ln" x1="${fx}" x2="${tx+dir}" y1="${y}" y2="${y}" stroke-width="2.5" marker-end="url(#m-fill)"/>`;
-      g += `<text class="lbl" x="${(fx+tx)/2}" y="${y-7}" text-anchor="middle">credit</text>`;
-    } else if (st.type==='settlement'){
-      // double line from sender to the settlement column, then back to the receiver
-      for (const off of [-2.5, 2.5]){
-        g += `<line class="ln settle" x1="${fx}" x2="${settleX}" y1="${y-8+off}" y2="${y-8+off}" stroke-width="1.6"/>`;
-        g += `<line class="ln settle" x1="${settleX}" x2="${tx}" y1="${y+10+off}" y2="${y+10+off}" stroke-width="1.6"/>`;
-      }
-      g += `<line class="ln settle" x1="${settleX}" x2="${settleX}" y1="${y-14}" y2="${y+16}" stroke-width="2.5"/>`;
-      g += `<text class="lbl" x="${(fx+settleX)/2}" y="${y-15}" text-anchor="middle">${esc(sys(st.via)?.short || '')}</text>`;
-      g += `<text class="lbl final" x="${settleX+6}" y="${y+4}">final</text>`;
-    }
-    g += `</g>`;
-  });
-  return g + `</svg>`;
+  const colW = 128, left = 34, top = 54, rowH = 56, w = left + lanes.length*colW + 10, h = top + sc.steps.length*rowH + 14;
+  const x = id => left + lanes.indexOf(id)*colW + colW/2, settleX = x(sc.settlement_lane);
+  let g = `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg"><defs>
+    <marker id="m-open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1,1 L9,5 L1,9" fill="none" stroke="context-stroke" stroke-width="1.4"/></marker>
+    <marker id="m-fill" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker></defs>`;
+  lanes.forEach(id => { const cx = x(id), st = id===sc.settlement_lane; const p = party(id);
+    const words = p.name.replace(/\s*\(.*\)/,'').split(' '); const l1=[], l2=[]; words.forEach(wd => ((l1.join(' ').length+wd.length<15) && !l2.length ? l1 : l2).push(wd));
+    const ctry = p.country==='CA' ? 'ca' : p.country==='US' ? 'us' : null;
+    g += `<text class="lane-label${st?' settle':''}" x="${cx}" y="18" text-anchor="middle">${esc(st?'Settlement':l1.join(' '))}</text><text class="lane-label${st?' settle':''}" x="${cx}" y="33" text-anchor="middle">${esc(st?p.name:l2.join(' '))}</text>`;
+    if (ctry && !st) g += `<g transform="translate(${cx-8} 38) scale(.025)">${ICONS.flag[ctry].replace(/^<svg[^>]*>|<\/svg>$/g,'')}</g>`;
+    g += `<line class="lane-rule${st?' settle':''}" x1="${cx}" x2="${cx}" y1="${top-4}" y2="${h-6}"/>`; });
+  sc.steps.forEach((st,i) => { const y = top + i*rowH + 22, on = st.n===S.step ? ' on' : ''; const fx = x(st.from), tx = x(st.to);
+    g += `<g class="step${on}" data-step="${st.n}"><rect x="0" y="${y-22}" width="${w}" height="${rowH}" fill="transparent"/><text class="step-num" x="4" y="${y+4}">${st.n}</text>`;
+    if (st.type==='customer') g += `<text class="lbl" x="${fx}" y="${y+4}" text-anchor="middle">${st.n===1?'asks to pay':'sees credit'}</text>`;
+    else if (st.from===st.to) g += `<line class="ln" x1="${fx-26}" x2="${fx+26}" y1="${y}" y2="${y}" stroke-width="2.5"/><text class="lbl" x="${fx}" y="${y+16}" text-anchor="middle">book entry</text>`;
+    else if (st.type==='message') { g += `<line class="ln" x1="${fx}" x2="${tx-4}" y1="${y}" y2="${y}" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#m-open)"/>`; if (st.via) g += `<text class="lbl" x="${x(st.via)}" y="${y-7}" text-anchor="middle">${esc(party(st.via)?.name||sys(st.via)?.short)}</text>`; }
+    else if (st.type==='money') g += `<line class="ln" x1="${fx}" x2="${tx+(tx>fx?-6:6)}" y1="${y}" y2="${y}" stroke-width="2.5" marker-end="url(#m-fill)"/><text class="lbl" x="${(fx+tx)/2}" y="${y-7}" text-anchor="middle">credit</text>`;
+    else if (st.type==='settlement') { for (const off of [-2.5,2.5]) { g += `<line class="ln settle" x1="${fx}" x2="${settleX}" y1="${y-8+off}" y2="${y-8+off}" stroke-width="1.6"/><line class="ln settle" x1="${settleX}" x2="${tx}" y1="${y+10+off}" y2="${y+10+off}" stroke-width="1.6"/>`; }
+      g += `<line class="ln settle" x1="${settleX}" x2="${settleX}" y1="${y-14}" y2="${y+16}" stroke-width="2.5"/><text class="lbl" x="${(fx+settleX)/2}" y="${y-15}" text-anchor="middle">${esc(sys(st.via)?.short||'')}</text><text class="lbl final" x="${settleX+6}" y="${y+4}">final</text>`; }
+    g += `</g>`; });
+  return g + '</svg>';
 }
 
 /* ---------- events ---------- */
-function openSystem(id){
-  if (!id || !sys(id)) return;
-  const active = document.activeElement?.closest('[data-row]');
-  if (active && !state.system) lastRowFocus = active.dataset.row;
-  else if (!state.system) lastRowFocus = id;
-  go({view:'group', system:id, group: state.group && sys(id).group===state.group ? state.group : sys(id).group, flow:null}, {focusPanel:true});
+function openNode(id){
+  if (!id || !node(id)) return;
+  if (!S.node) lastFocus = id;
+  const n = node(id); const c = IDX.ccyByRegion[n.region];
+  go({view:'ccy', ccy:c.id, node:id, flow:null, type:null}, {focus:true});
 }
-function closePanel(){ const id = state.system; go({system:null, sheetFull:false}); restoreFocus(id); }
-function focusPanelHeading(){ const h = $('#panel-title'); if (h) h.focus({preventScroll:false}); }
-function restoreFocus(id){
-  const target = id || lastRowFocus; if (!target) return;
-  const row = document.querySelector(`[data-row="${target}"] button, a[data-row="${target}"]`); if (row) row.focus();
-}
-
-function wireAtlas(){
+function closePanel(){ const id = S.node; go({node:null, full:false}); const el = document.querySelector(`.map [data-node="${CSS.escape(lastFocus||id)}"]`); el && el.focus(); }
+function wire(){
   const app = $('#app');
-  app.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go(JSON.parse(a.dataset.go)); }));
-  app.querySelectorAll('[data-region]').forEach(b => b.addEventListener('click', () => go({region:b.dataset.region}, {replace:true})));
-  app.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openSystem(b.dataset.open); }));
-  app.querySelectorAll('tbody tr[data-row]').forEach(tr => tr.addEventListener('click', () => openSystem(tr.dataset.row)));
-  app.querySelectorAll('[data-flow]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go({view:'flow', flow:a.dataset.flow, step:1, system:null}); }));
-  $('#panel-close')?.addEventListener('click', closePanel);
-  $('#sheet-size')?.addEventListener('click', () => { state.sheetFull = !state.sheetFull; $('#panel').classList.toggle('full', state.sheetFull); const b=$('#sheet-size'); b.setAttribute('aria-expanded', state.sheetFull); b.textContent = state.sheetFull?'Half height':'Full height'; });
-  $('#drill-up')?.addEventListener('click', e => { const f = $('#feeders'); f.hidden = !f.hidden; e.currentTarget.setAttribute('aria-expanded', !f.hidden); if (!f.hidden) f.querySelector('button')?.focus(); });
+  $$('[data-go]', app).forEach(a => a.addEventListener('click', e => { e.preventDefault(); go(JSON.parse(a.dataset.go)); }));
+  $$('[data-node]', app).forEach(b => b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); const id=b.dataset.node; if (!id) return; if (b.closest('.map') && S.node===id) closePanel(); else openNode(id); }));
+  $$('[data-open-ccy]', app).forEach(b => b.addEventListener('click', () => openNode(b.dataset.node)));
+  $$('[data-flow]', app).forEach(a => a.addEventListener('click', e => { e.preventDefault(); go({view:'flow', flow:a.dataset.flow, step:1, node:null}); }));
+  $('#pclose')?.addEventListener('click', closePanel);
+  $('#sheet')?.addEventListener('click', () => { S.full=!S.full; $('#panel').classList.toggle('full',S.full); const b=$('#sheet'); b.setAttribute('aria-expanded',S.full); b.textContent=S.full?'Half height':'Full height'; });
+  $('#drillup')?.addEventListener('click', e => { const f=$('#feeders'); f.hidden=!f.hidden; e.currentTarget.setAttribute('aria-expanded', !f.hidden); if(!f.hidden) f.querySelector('button')?.focus(); });
+  $('#holiday')?.addEventListener('change', e => { S.holiday = e.target.checked; render(); $('#holiday')?.focus(); });
+  if (S.view==='flow'){
+    const n = IDX.scenarios[S.flow].steps.length;
+    const set = k => go({step:Math.min(n,Math.max(1,k))}, {replace:true});
+    $('#prev').addEventListener('click', () => { set(S.step-1); $('#prev')?.focus(); });
+    $('#next').addEventListener('click', () => { set(S.step+1); (S.step===n?$('#prev'):$('#next'))?.focus(); });
+    $('#scrub').addEventListener('input', e => { set(+e.target.value); $('#scrub')?.focus(); });
+    $$('.step', app).forEach(g => g.addEventListener('click', () => set(+g.dataset.step)));
+  }
 }
-function wireFlow(){
-  const app = $('#app'), n = IDX.scenarios[state.flow].steps.length;
-  app.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); go(JSON.parse(a.dataset.go)); }));
-  app.querySelector('[data-open-map]')?.addEventListener('click', e => { e.preventDefault(); const id = e.currentTarget.dataset.openMap; go({view:'group', group:sys(id).group, system:id, flow:null}, {focusPanel:true}); });
-  const setStep = (k) => { go({step:Math.min(n, Math.max(1, k))}, {replace:true}); const s = $('#scrub'); s && s.focus(); };
-  $('#prev').addEventListener('click', () => { setStep(state.step-1); $('#prev')?.focus(); });
-  $('#next').addEventListener('click', () => { setStep(state.step+1); (state.step===n ? $('#prev') : $('#next'))?.focus(); });
-  $('#scrub').addEventListener('input', e => setStep(+e.target.value));
-  app.querySelectorAll('.step').forEach(g => g.addEventListener('click', () => setStep(+g.dataset.step)));
-}
-
 document.addEventListener('keydown', e => {
-  if (e.key==='Escape' && state.system){ e.preventDefault(); closePanel(); return; }
-  if (state.view==='flow' && (e.key==='ArrowRight'||e.key==='ArrowLeft') && !e.target.matches('input')){
-    e.preventDefault(); const n = IDX.scenarios[state.flow].steps.length;
-    go({step:Math.min(n, Math.max(1, state.step + (e.key==='ArrowRight'?1:-1)))}, {replace:true}); return;
-  }
-  if ((e.key==='ArrowDown'||e.key==='ArrowUp') && e.target.closest('.rows, tbody')){
-    const items = [...document.querySelectorAll('.rows a.row, tbody td.sys button')];
-    const i = items.indexOf(e.target); if (i<0) return;
-    e.preventDefault(); items[Math.min(items.length-1, Math.max(0, i + (e.key==='ArrowDown'?1:-1)))].focus();
-  }
+  if (e.key==='Escape' && S.node){ e.preventDefault(); closePanel(); return; }
+  if (S.view==='flow' && (e.key==='ArrowRight'||e.key==='ArrowLeft') && !e.target.matches('input')){ e.preventDefault(); const n=IDX.scenarios[S.flow].steps.length; go({step:Math.min(n,Math.max(1,S.step+(e.key==='ArrowRight'?1:-1)))},{replace:true}); }
 });
-document.querySelectorAll('header [data-nav]').forEach(a => a.addEventListener('click', e => {
-  e.preventDefault();
-  if (a.dataset.nav==='flow') go({view:'flow', flow:D.scenarios[0].id, step:1, system:null});
-  else go({view:'home', group:null, system:null, flow:null});
-}));
+$$('header [data-nav]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); if (a.dataset.nav==='flow') go({view:'flow', flow:D.scenarios[0].id, step:1, node:null}); else go({view:'home', ccy:null, node:null, type:null, flow:null}); }));
 
-load().then(d => { D = d; index(); state = fromURL(); render(); if (state.system) focusPanelHeading(); })
-  .catch(err => { $('#app').innerHTML = `<div class="err"><strong>The atlas data did not load.</strong> ${esc(err.message)}. Serve the repo root with a local web server (for example <span class="code">npx serve .</span>) and open /prototype/canada/.</div>`; });
+load().then(d => { D=d; build(); S=fromURL(); render(); if (S.node) $('#ptitle')?.focus({preventScroll:true}); })
+  .catch(err => { $('#app').innerHTML = `<div class="err"><strong>The atlas data did not load.</strong> ${esc(err.message)}. Serve the repo root with a local web server (for example <span class="mono">npx serve .</span>) and open /prototype/canada/.</div>`; console.error(err); });
 })();
 </script>
 <!--/page-->
