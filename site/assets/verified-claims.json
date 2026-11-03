@@ -1,0 +1,112 @@
+{
+  "as_of": "2026-10-30",
+  "review_policy": {
+    "source_age_warning": "12 months",
+    "confidence": "primary verified means primary source directly supports structural claim; not a verified bilateral route",
+    "planned": "published policy or target, not live system participation"
+  },
+  "claims": [
+    {
+      "id": "canada-payments-canada-operator",
+      "claim": "Payments Canada owns and operates Lynx and ACSS; settlement uses Bank of Canada accounts.",
+      "level": "primary-verified",
+      "source_date": "2026-07-31",
+      "source_url": "https://www.bankofcanada.ca/core-functions/financial-system/bank-canadas-settlement-account-policies-for-payments-canada-payment-systems/"
+    },
+    {
+      "id": "canada-rtr-status",
+      "claim": "RTR in sequenced Q4 2026 target launch; not confirmed live as of Oct 30.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.payments.ca/systems-services/payment-systems/real-time-rail-payment-system/testing-and-launch"
+    },
+    {
+      "id": "interac-holding",
+      "claim": "Interac does not hold e-Transfer customer balances; financial institutions handle the bank accounts.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.interac.ca/en/resources/personal-resources/personal-faq/interac-e-transfer/"
+    },
+    {
+      "id": "interac-ownership",
+      "claim": "Interac shareholder types include banks, credit unions, caisses populaires and payment acquirers.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.interac.ca/en/interac-e-transfer-disclosure/"
+    },
+    {
+      "id": "pix-ownership",
+      "claim": "BCB owns Pix scheme and operates SPI and DICT.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.bcb.gov.br/en/financialstability/pixcentralbanksrole"
+    },
+    {
+      "id": "pix-spi-access",
+      "claim": "SPI direct participants hold PI accounts at BCB; indirect participants settle through direct participant or special agent.",
+      "level": "primary-verified",
+      "source_date": "2026-07-07 participant list; web page checked 2026-10-30",
+      "source_url": "https://www.bcb.gov.br/en/financialstability/pixparticipants"
+    },
+    {
+      "id": "us-rtp-access",
+      "claim": "RTP participation does not require The Clearing House ownership or membership.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.theclearinghouse.org/payment-systems/rtp"
+    },
+    {
+      "id": "chips-model",
+      "claim": "CHIPS uses a liquidity-saving mechanism to offset payment obligations and provides continuous settlement finality.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.theclearinghouse.org/payment-systems/chips"
+    },
+    {
+      "id": "uk-access",
+      "claim": "Eligible FCA-authorised non-bank PSPs can hold BoE settlement accounts subject to criteria; separate from reserves accounts.",
+      "level": "primary-verified",
+      "source_date": "checked 2026-10-30; page undated",
+      "source_url": "https://www.bankofengland.co.uk/Payment%20and%20settlement/access-to-uk-payment-systems-for-non-bank-payment-service-providers"
+    },
+    {
+      "id": "us-chips-settlement-account",
+      "claim": "CHIPS payments settle against the CHIPS Prefunded Balance Account at the Federal Reserve Bank of New York, held for the joint benefit of funding participants; TCH operates CHIPS and instructs the account as their agent and does not own the balances.",
+      "level": "primary-verified",
+      "source_date": "rules effective 2026-06-04",
+      "source_url": "https://www.theclearinghouse.org/-/media/New/TCH/Documents/Payment-Systems/CHIPS/CHIPS-Rules-and-Administrative-Procedures-June-4-2026.pdf"
+    },
+    {
+      "id": "us-rtp-settlement-account",
+      "claim": "RTP settlement is final when the RTP system records the change in participants' positions, which are backed by a prefunded balance account at a Federal Reserve Bank funded through Fedwire or LMT; TCH is agent for funding participants and funding agents. The 2026 rules do not name the Reserve Bank; TCH's 2020 settlement note names FRBNY.",
+      "level": "primary-verified",
+      "source_date": "rules effective 2026-09-30; note 2020-11",
+      "source_url": "https://www.theclearinghouse.org/-/media/New/TCH/Documents/Payment-Systems/RTP/RTP-Operating-Rules-Effective-September-30-2026.pdf",
+      "secondary_url": "https://www.theclearinghouse.org/-/media/New/TCH/Documents/Payment-Systems/RTP_Settlement_Model_and_Reconciliation_for_Funding_Participants_November_2020.pdf"
+    },
+    {
+      "id": "usdc-reserve-roles",
+      "claim": "For USDC, Circle issues the token; the majority of reserves sit in the Circle Reserve Fund, a government money market fund managed by BlackRock, with The Bank of New York Mellon as fund custodian; the rest is cash at banks. Not a model for all stablecoins.",
+      "level": "primary-verified",
+      "source_date": "Circle reserves as of 2026-10-26; N-CSR period ended 2025-10-31",
+      "source_url": "https://www.circle.com/transparency",
+      "secondary_url": "https://www.sec.gov/Archives/edgar/data/844779/000119312526003784/d62473dncsrs.htm"
+    },
+    {
+      "id": "india-upi-settlement",
+      "claim": "NPCI is the UPI clearing and settlement agency; it calculates net positions, and RBI's RTGS posts them as a multilateral net settlement batch to members' RTGS accounts at RBI.",
+      "level": "primary-verified",
+      "source_date": "NPCI document undated; RBI report Dec 2024",
+      "source_url": "https://www.npci.org.in/PDF/npci/others/UPI-Settlement-Process.pdf",
+      "secondary_url": "https://www.rbi.org.in/scripts/PublicationsView.aspx?Id=23127",
+      "note": "Review cited NPCI uploads/ PDFs; those returned 403 on 2026-10-30."
+    },
+    {
+      "id": "uk-rtgs-scope",
+      "claim": "Bank of England RTGS settles CHAPS and the net positions of Faster Payments, Bacs, the Image Clearing System, Visa Europe, Mastercard, LINK and PEXA, plus CLS sterling legs and CREST.",
+      "level": "primary-verified",
+      "source_date": "assessed 2023-10-31; published 2024-09",
+      "source_url": "https://www.bankofengland.co.uk/payments/rtgs-and-chaps-2023-pfmi-self-assessment"
+    }
+  ]
+}

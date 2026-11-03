@@ -1,0 +1,38 @@
+/* App shell for phones: compact sticky header, back link, bottom tab bar, page transitions.
+   Loaded after the page's own stylesheet on every page. Desktop layout is unchanged. */
+:root{--shell-bg:#ffffff;--shell-ink:#132b35;--shell-muted:#56686f;--shell-line:#d9e0e3;--shell-accent:#08717d}
+
+@view-transition{navigation:auto}
+@media(prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+
+.tabbar{display:none}
+
+@media(max-width:800px){
+  html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+  body{padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))}
+
+  /* interior pages: the sidebar becomes a one-line sticky app header */
+  .sidebar{position:sticky!important;top:0;z-index:20;padding:10px max(16px,env(safe-area-inset-left,0px)) 10px max(16px,env(safe-area-inset-right,0px))!important;padding-top:calc(10px + env(safe-area-inset-top,0px))!important}
+  .sidebar .brand small,.sidebar .brand em,.sidebar .mobnav{display:none!important}
+  .sidebar .brand strong{font-size:17px!important;margin:0!important;line-height:1.3}
+  .sidebar .brand strong br{display:none}
+
+  /* breadcrumb becomes a back link to the parent page */
+  .topbar{min-height:0!important;padding:10px max(16px,env(safe-area-inset-left,0px))!important}
+  .crumb>*:not(:nth-last-child(-n+3)){display:none}
+  .crumb>a:nth-last-child(3)::before{content:"‹\00a0";font-size:18px}
+  .crumb>a:nth-last-child(3){display:inline-flex;align-items:center;min-height:36px;font-size:14px;color:var(--shell-accent)}
+  .crumb>.sep:nth-last-child(2),.crumb>:last-child{display:none}
+
+  /* comfortable tap targets */
+  .flat-row,.layerbar,.fn-list a,.v9-layer,.v9-group-item,.v9-more a{min-height:44px}
+  .fn-list a{display:inline-flex;align-items:center}
+
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;
+    background:var(--shell-bg);border-top:1px solid var(--shell-line);
+    padding:0 env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+  .tabbar a{display:flex;align-items:center;justify-content:center;min-height:56px;padding:0 2px;
+    font:500 12px/1.2 'DM Sans',Inter,Arial,sans-serif;color:var(--shell-muted);text-decoration:none;text-align:center;border-top:2px solid transparent;margin-top:-1px}
+  .tabbar a[aria-current="page"],.tabbar a.here{color:var(--shell-accent);border-top-color:var(--shell-accent)}
+  .tabbar a:focus-visible{outline:2px solid var(--shell-accent);outline-offset:-4px}
+}

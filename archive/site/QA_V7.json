@@ -1,0 +1,14 @@
+{
+  "checks": 56,
+  "issues": [],
+  "js_errors": [],
+  "max_horizontal_overflow": 0,
+  "visuals_generated": 8,
+  "html_pages": 115,
+  "links_checked": 3196,
+  "broken_internal_links": [],
+  "missing_local_images": [],
+  "source_items_before": 198,
+  "source_items_after": 198,
+  "visual_qa": "56 render checks across 14 representative pages and 4 viewport sizes; search and tabs exercised. No material content claims newly researched in this pass."
+}

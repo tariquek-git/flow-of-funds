@@ -1,0 +1,149 @@
+{
+  "as_of": "2026-10-30",
+  "cases": [
+    {
+      "id": "interac-ownership-is-not-only-banks",
+      "page": "systems/interac.html",
+      "must_contain": [
+        "shareholder",
+        "credit unions",
+        "payment acquirers"
+      ],
+      "must_not_contain": [
+        "owned exclusively by banks",
+        "only banks own Interac"
+      ],
+      "source": "https://www.interac.ca/en/interac-e-transfer-disclosure/",
+      "principle": "Shareholding, participation, direct connection, holding money and oversight differ."
+    },
+    {
+      "id": "pix-scheme-vs-spi",
+      "page": "systems/pix.html",
+      "must_contain": [
+        "Pix",
+        "SPI",
+        "DICT",
+        "scheme",
+        "settlement"
+      ],
+      "must_not_contain": [
+        "Pix itself is the central bank settlement account"
+      ],
+      "source": "https://www.bcb.gov.br/en/financialstability/pixcentralbanksrole",
+      "principle": "A scheme is not identical to its settlement infrastructure or directory."
+    },
+    {
+      "id": "rtp-not-fednow",
+      "page": "systems/rtp.html",
+      "must_contain": [
+        "Clearing House",
+        "FedNow",
+        "settlement"
+      ],
+      "must_not_contain": [
+        "RTP is FedNow"
+      ],
+      "source": "https://www.theclearinghouse.org/payment-systems/rtp/institution",
+      "principle": "Private and public instant systems are not one operator or necessarily interoperable."
+    },
+    {
+      "id": "swift-messaging-not-settlement",
+      "page": "participants/swift.html",
+      "must_contain": [
+        "messag"
+      ],
+      "must_not_contain": [
+        "Swift settles customer money",
+        "SWIFT settles customer funds",
+        "Swift itself holds settlement balances"
+      ],
+      "source": "https://www.swift.com/your-needs/banking/payments",
+      "principle": "Message transmission is not the movement or final settlement of customer money."
+    },
+    {
+      "id": "rtr-policy-not-live",
+      "page": "systems/rtr.html",
+      "must_contain": [
+        "planned",
+        "Payments Canada"
+      ],
+      "must_not_contain": [
+        "RTR is now live",
+        "RTR launched in 2026",
+        "All payment companies have RTR settlement accounts"
+      ],
+      "source": "https://www.payments.ca/systems-services/payment-systems/real-time-rail-payment-system/testing-and-launch",
+      "principle": "Target date and eligibility do not prove operating access."
+    },
+    {
+      "id": "country-currency-different",
+      "page": "corridors/us-ecuador.html",
+      "must_contain": [
+        "USD",
+        "Ecuador",
+        "illustrative"
+      ],
+      "must_not_contain": [
+        "FX conversion is mandatory",
+        "settles at the Federal Reserve in Ecuador"
+      ],
+      "source": "https://www.bce.fin.ec/sistema-de-pagos/sistema-central-de-pagos/sistema-de-pagos-interbancarios-spi/",
+      "principle": "A shared currency does not imply shared jurisdiction, direct account access or settlement."
+    },
+    {
+      "id": "on-us-not-always-external",
+      "page": "corridors/on-us.html",
+      "must_contain": [
+        "ledger"
+      ],
+      "must_not_contain": [
+        "all payments must use central-bank settlement"
+      ],
+      "source": "https://www.bis.org/cpmi/publ/d201.htm",
+      "principle": "Internal book transfers and interbank transfers can differ."
+    },
+    {
+      "id": "canada-balance-is-not-interac",
+      "page": "markets/canada.html",
+      "must_contain": [
+        "Interac",
+        "Bank of Canada",
+        "ACSS",
+        "Lynx"
+      ],
+      "must_not_contain": [
+        "Interac safeguards customer balances",
+        "Interac owns Lynx",
+        "Interac is Payments Canada"
+      ],
+      "source": "https://www.interac.ca/en/interac-e-transfer-disclosure/",
+      "principle": "Operator, scheme, balance holder, settlement operator not interchangeable."
+    },
+    {
+      "id": "clear-money-model-not-exclusivity",
+      "page": "holding/index.html",
+      "must_contain": [
+        "bank",
+        "safeguard"
+      ],
+      "must_not_contain": [
+        "all safeguarding occurs only in bank deposits"
+      ],
+      "source": "https://www.bankofengland.co.uk/payment-and-settlement/non-bank-payment-service-providers",
+      "principle": "Legal safeguarding and location of backing assets can overlap."
+    },
+    {
+      "id": "no-volume-fiction",
+      "page": "index.html",
+      "must_contain": [
+        "How money moves"
+      ],
+      "must_not_contain": [
+        "most payments globally use Wise",
+        "largest cross-border corridor is Ecuador"
+      ],
+      "source": "https://www.bis.org/cpmi/payment.htm",
+      "principle": "Visual prominence cannot be conflated with share or volume."
+    }
+  ]
+}

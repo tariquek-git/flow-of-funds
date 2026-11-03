@@ -1,0 +1,47 @@
+{
+  "as_of": "2026-10-30",
+  "editorial_principle": "Selection is by structural explanatory value and breadth, not alphabetical order or frequency in earlier AI conversation.",
+  "featured_cases": [
+    {
+      "path": "markets/canada.html",
+      "label": "Canada",
+      "type": "statutory and private operators",
+      "why": "Shows Payments Canada, Interac and the Bank of Canada as different institutions, and separate scheme/clearing/settlement roles.",
+      "alternative": "United Kingdom",
+      "comparison": "UK has different scheme governance and access model; neither represents the whole world.",
+      "source_url": "https://www.payments.ca/systems-services/payment-systems/high-value-payment-system-lynx"
+    },
+    {
+      "path": "participants/wise.html",
+      "label": "Wise",
+      "type": "multi-function participant",
+      "why": "Shows an institution spanning customer interface, multi-market accounts, FX and last-mile payout functions; roles vary by market.",
+      "alternative": "Airwallex",
+      "comparison": "Another multi-market provider; featured company does not imply market leadership or all corridors.",
+      "source_url": "https://wise.com/help/articles/2946451/how-our-uk-entity-works"
+    },
+    {
+      "path": "systems/brazil-pix.html",
+      "label": "Pix (Brazil)",
+      "type": "central-bank-led scheme",
+      "why": "Demonstrates a distinct model: BCB owns Pix scheme, operates SPI settlement and DICT directory, and permits different participation arrangements.",
+      "alternative": "India UPI",
+      "comparison": "NPCI/UPI illustrates a different operator/central-bank relationship; Pix chosen to contrast Canada.",
+      "source_url": "https://www.bcb.gov.br/en/financialstability/pixcentralbanksrole"
+    }
+  ],
+  "specialized_case": {
+    "path": "corridors/us-ecuador.html",
+    "why": "Shows a USD-to-USD cross-border payment that still crosses legal and banking jurisdictions; not selected for market scale.",
+    "status": "case-study-only"
+  },
+  "market_selection_criteria": [
+    "payment-system scale and relevance from operator/regulator statistics",
+    "distinct architecture or access model",
+    "variation by geography, language and payment type",
+    "corridor relevance and end-user delivery mechanisms",
+    "independent official evidence and its date",
+    "live vs proposed changes"
+  ],
+  "not_a_ranking": true
+}

@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-30",
+  "mutations": [
+    {
+      "mutation": "false-live-RTR",
+      "detected": true,
+      "test_output": ""
+    },
+    {
+      "mutation": "falsely-bank-only-Interac",
+      "detected": true,
+      "test_output": ""
+    },
+    {
+      "mutation": "homepage-anchor-Ecuador",
+      "detected": true,
+      "test_output": ""
+    },
+    {
+      "mutation": "broken-local-link",
+      "detected": true,
+      "test_output": ""
+    },
+    {
+      "mutation": "missing-Pix-source",
+      "detected": true,
+      "test_output": ""
+    }
+  ],
+  "detected": 5,
+  "total": 5
+}

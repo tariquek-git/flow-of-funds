@@ -1,0 +1,133 @@
+{
+  "as_of": "2026-10-30",
+  "description": "Scope and omissions are explicit; lack of coverage does not imply a system or participant does not exist.",
+  "currencies": [
+    {
+      "currency": "USD",
+      "market_pages": [
+        "United States",
+        "Ecuador"
+      ],
+      "coverage_status": "prototype_examples",
+      "warning": "Existing pages are educational examples, not a currency-wide or globally verified settlement directory."
+    },
+    {
+      "currency": "CAD",
+      "market_pages": [
+        "Canada"
+      ],
+      "coverage_status": "prototype_examples",
+      "warning": "Existing pages are educational examples, not a currency-wide or globally verified settlement directory."
+    },
+    {
+      "currency": "GBP",
+      "market_pages": [
+        "UK"
+      ],
+      "coverage_status": "prototype_examples",
+      "warning": "Existing pages are educational examples, not a currency-wide or globally verified settlement directory."
+    },
+    {
+      "currency": "EUR",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "CHF",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "BRL",
+      "market_pages": [
+        "Brazil"
+      ],
+      "coverage_status": "prototype_examples",
+      "warning": "Existing pages are educational examples, not a currency-wide or globally verified settlement directory."
+    },
+    {
+      "currency": "MXN",
+      "market_pages": [
+        "Mexico"
+      ],
+      "coverage_status": "prototype_examples",
+      "warning": "Existing pages are educational examples, not a currency-wide or globally verified settlement directory."
+    },
+    {
+      "currency": "AUD",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "JPY",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "SGD",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "INR",
+      "market_pages": [
+        "India"
+      ],
+      "coverage_status": "prototype_examples",
+      "warning": "Existing pages are educational examples, not a currency-wide or globally verified settlement directory."
+    },
+    {
+      "currency": "CNY",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "KRW",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "HKD",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "AED",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "SAR",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "PHP",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "IDR",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    },
+    {
+      "currency": "ZAR",
+      "market_pages": [],
+      "coverage_status": "research_pending",
+      "warning": "No dedicated market coverage in this build."
+    }
+  ]
+}
