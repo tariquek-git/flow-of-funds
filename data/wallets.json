@@ -1,0 +1,190 @@
+{
+ "note": "Where the money behind a wallet or payment app balance sits. 'used' lists where the largest players are documented to hold it. 'allowed' lists what the rules permit. Every entry carries a source.",
+ "rungs": [
+  {
+   "key": "promise",
+   "name": "Insurance or a guarantee",
+   "line": "A promise to pay customers if the company fails. No money is set aside."
+  },
+  {
+   "key": "trust",
+   "name": "Trust at a bank",
+   "line": "Held for customers by a trustee, apart from the company."
+  },
+  {
+   "key": "deposit",
+   "name": "Deposit at a bank",
+   "line": "A pooled or segregated account at a commercial bank."
+  },
+  {
+   "key": "govt",
+   "name": "Government securities",
+   "line": "Short-term government debt bought with customer money."
+  },
+  {
+   "key": "office",
+   "name": "Deposit with a government office",
+   "line": "A security deposit lodged with the state."
+  },
+  {
+   "key": "cb",
+   "name": "The central bank",
+   "line": "All of it, in a custody account at the central bank."
+  }
+ ],
+ "markets": [
+  {
+   "code": "CNY",
+   "name": "China",
+   "who": "Alipay and WeChat Pay",
+   "used": [
+    "cb"
+   ],
+   "allowed": [
+    "cb"
+   ],
+   "line": "Licensed payment companies must place all customer reserve funds in a custody account at the People's Bank of China, which pays no interest.",
+   "src": [
+    [
+     "State Council, centralised deposit of customer reserve funds",
+     "https://english.www.gov.cn/policies/policy_watch/2019/01/15/content_281476479885412.htm"
+    ]
+   ],
+   "conf": "stated"
+  },
+  {
+   "code": "KES",
+   "name": "Kenya",
+   "who": "M-Pesa",
+   "used": [
+    "trust",
+    "govt"
+   ],
+   "allowed": [
+    "trust",
+    "govt"
+   ],
+   "line": "Customer money is held in a trust fund placed in licensed commercial banks or government securities, managed by a trustee separate from the operator.",
+   "src": [
+    [
+     "Central Bank of Kenya, National Payment System Regulations",
+     "https://www.centralbank.go.ke/images/docs/legislation/NPSRegulations2014.pdf"
+    ]
+   ],
+   "conf": "verified"
+  },
+  {
+   "code": "KRW",
+   "name": "South Korea",
+   "who": "Kakao Pay, Toss, Naver Pay",
+   "used": [],
+   "allowed": [
+    "deposit",
+    "trust",
+    "promise"
+   ],
+   "line": "Prepaid balances must be held in full outside the company, in a bank deposit, a trust invested in safe assets, or payment guarantee insurance.",
+   "src": [
+    [
+     "Financial Services Commission",
+     "https://fsc.go.kr/eng/pr010101/83006"
+    ]
+   ],
+   "conf": "verified"
+  },
+  {
+   "code": "PHP",
+   "name": "Philippines",
+   "who": "GCash, Maya",
+   "used": [],
+   "allowed": [
+    "deposit",
+    "govt"
+   ],
+   "line": "E-money issuers must hold liquid assets equal to the e-money they have issued, as bank deposits or government securities.",
+   "src": [
+    [
+     "Bangko Sentral ng Pilipinas, payments and settlements",
+     "https://www.bsp.gov.ph/SitePages/PaymentsAndSettlements/PaymentsAndSettlements.aspx"
+    ]
+   ],
+   "conf": "stated"
+  },
+  {
+   "code": "JPY",
+   "name": "Japan",
+   "who": "PayPay and other money transfer apps",
+   "used": [],
+   "allowed": [
+    "office",
+    "promise",
+    "trust"
+   ],
+   "line": "Money transfer companies lodge a security deposit with the state, or use a guarantee contract or a trust for users. Prepaid issuers deposit at least half of unused balances.",
+   "src": [
+    [
+     "Payment Services Act, official translation",
+     "https://www.japaneselawtranslation.go.jp/en/laws/view/4477/en"
+    ]
+   ],
+   "conf": "verified"
+  },
+  {
+   "code": "USD",
+   "name": "United States",
+   "who": "Chime, PayPal",
+   "used": [
+    "deposit"
+   ],
+   "allowed": [
+    "deposit",
+    "govt"
+   ],
+   "line": "Apps that are not banks hold customer money at partner banks or in permitted investments. Chime's sits in pooled accounts at partner banks. PayPal reports cash, bank deposits and debt securities.",
+   "src": [],
+   "conf": "stated",
+   "rows": [
+    "P072",
+    "P076"
+   ]
+  },
+  {
+   "code": "GBP",
+   "name": "United Kingdom",
+   "who": "Wise",
+   "used": [
+    "deposit",
+    "govt"
+   ],
+   "allowed": [
+    "deposit",
+    "govt",
+    "promise"
+   ],
+   "line": "E-money firms safeguard customer money in segregated bank accounts or secure liquid assets, or protect it with insurance or a guarantee.",
+   "src": [],
+   "conf": "stated",
+   "rows": [
+    "P049"
+   ]
+  },
+  {
+   "code": "CAD",
+   "name": "Canada",
+   "who": "Payment companies registered with the Bank of Canada",
+   "used": [],
+   "allowed": [
+    "trust",
+    "promise"
+   ],
+   "line": "Registered payment companies hold customer money in a trust account at a bank or similar institution, or protect it with insurance or a guarantee.",
+   "src": [
+    [
+     "Bank of Canada, retail payments supervision",
+     "https://www.bankofcanada.ca/core-functions/retail-payments-supervision/"
+    ]
+   ],
+   "conf": "stated"
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "rule": "A player gets its own page only if it holds a seat, licence or charter that changes where money settles, or operates a rail; a practitioner in that market knows the name without searching; and the row cites a primary source. Same-function players share one grouped page. One company, one page.",
+ "keep": ["P001","P002","P003","P004","P005","P507","P006","P007","P008","C104",
+          "P010","P011","P076",
+          "P044","P068","P073","P045",
+          "P047","P048","P046","P506",
+          "P101","P102","P103","P405",
+          "P053","P508","P601","P104","P105","P602","P301","P055","P603",
+          "P061","P521","P406","P604",
+          "P014","P038","P049","P052","P056"],
+ "groups": [
+  {"id":"G-TCH","name":"The Clearing House (CHIPS and RTP)","line":"Bank-owned operator of two US systems. CHIPS nets large dollar payments between banks. RTP is an instant system funded from a joint account at the Federal Reserve.","ids":["P012","P013"]},
+  {"id":"G-USCLR","name":"US clearing and correspondent banks","line":"Large banks that clear dollars for other banks, at home and across borders. Most cross-border dollar payments pass through one of them.","ids":["P017","P018","P019","P066","P067"]},
+  {"id":"G-USSPON","name":"US sponsor banks","line":"Small and mid-size US banks that hold the charter and the deposits behind fintech apps and card programs. The fintech runs the product. The bank holds the money and the regulatory duty.","ids":["P020","P021","P022","P023","P024","P025","P026","P027","P201","P202"]},
+  {"id":"G-BAAS","name":"Banking as a service middleware","line":"Software between fintech programs and sponsor banks. Holds no customer money itself.","ids":["P028","P029","P030","P031"]},
+  {"id":"G-ISSPROC","name":"Card issuer processors","line":"Run card issuing and ledgers for whoever holds the licence. The issuing bank holds the money.","ids":["P032","P033","P034","P035"]},
+  {"id":"G-NOVEL","name":"Novel US charters","line":"Newer charters, such as Wyoming special purpose depository institutions and national trust banks, testing how close a nonbank model can get to the Federal Reserve.","ids":["P015","P041"]},
+  {"id":"G-STABLE","name":"Stablecoin issuers","line":"Issue dollar and euro tokens backed by reserves held at banks and in short-term government debt. The token moves on a public ledger. The reserves stay in the banking system.","ids":["P039","P040"]},
+  {"id":"G-EUT2","name":"Payment companies with their own TARGET access","line":"Licensed payment and e-money companies in the euro area that hold their own account in TARGET, now that the ECB allows it.","ids":["P504","P505"]},
+  {"id":"G-PIX","name":"Payment companies in Pix directly","line":"Brazilian payment institutions that connect to Pix and settle on their own account at the central bank, without a bank in between.","ids":["P522","P523","P524","P525"]},
+  {"id":"G-PUSH","name":"Card push rails (Visa Direct, Mastercard Move)","line":"The card networks' services for pushing money to a card or account, at home and across borders.","ids":["P036","P037"]},
+  {"id":"G-PAYOUT","name":"Cross-border payout networks","line":"Reach bank accounts, wallets and cash in many countries through local partner banks. The sender's provider prefunds them.","ids":["P050","P051","P043"]},
+  {"id":"G-FX","name":"FX and hard-to-reach currencies","line":"Convert currencies and supply liquidity on the far side so payouts land already funded.","ids":["P064","P065"]},
+  {"id":"G-REMIT","name":"Remittance apps","line":"Collect money in one country and pay it out in another, to a bank, a wallet or cash.","ids":["P042","P071","P072"]},
+  {"id":"G-EMCOL","name":"Emerging market collection agents","line":"Collect local payments such as Pix or cash vouchers for global merchants that have no local entity, then pay out abroad.","ids":["P062","P063"]}
+ ]
+}
